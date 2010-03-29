@@ -1,0 +1,616 @@
+Delphi中的线程类 
+ 
+
+Delphi中有一个线程类TThread是用来实现多线程编程的，这个绝大多数Delphi书藉都有说到，但基本上都是对
+
+TThread类的几个成员作一简单介绍，再说明一下Execute的实现和Synchronize的用法就完了。然而这并不是多线程编
+程的全部，我写此文的目的在于对此作一个补充。
+
+线程本质上是进程中一段并发运行的代码。一个进程至少有一个线程，即所谓的主线程。同时还可以有多个子线程。
+当一个进程中用到超过一个线程时，就是所谓的“多线程”。
+那么这个所谓的“一段代码”是如何定义的呢？其实就是一个函数或过程（对Delphi而言）。
+如果用Windows API来创建线程的话，是通过一个叫做CreateThread的API函数来实现的，它的定义为：
+HANDLE CreateThread(
+    LPSECURITY_ATTRIBUTES lpThreadAttributes, 
+    DWORD dwStackSize, 
+    LPTHREAD_START_ROUTINE lpStartAddress, 
+    LPVOID lpParameter, 
+    DWORD dwCreationFlags, 
+    LPDWORD lpThreadId 
+);
+
+其各参数如它们的名称所说，分别是：线程属性（用于在NT下进行线程的安全属性设置，在9X下无效），堆栈大小，
+起始地址，参数，创建标志（用于设置线程创建时的状态），线程ID，最后返回线程Handle。其中的起始地址就是线
+程函数的入口，直至线程函数结束，线程也就结束了。
+
+因为CreateThread参数很多，而且是Windows的API，所以在C Runtime Library里提供了一个通用的线程函数（理论上
+可以在任何支持线程的OS中使用）：
+unsigned long _beginthread(void (_USERENTRY *__start)(void *), unsigned __stksize, void *__arg);
+
+Delphi也提供了一个相同功能的类似函数：
+function BeginThread(
+    SecurityAttributes: Pointer; 
+    StackSize: LongWord; 
+    ThreadFunc: TThreadFunc; 
+    Parameter: Pointer; 
+    CreationFlags: LongWord; 
+    var ThreadId: LongWord
+): Integer;
+
+ 
+
+这三个函数的功能是基本相同的，它们都是将线程函数中的代码放到一个独立的线程中执行。线程函数与一般函数的
+最大不同在于，线程函数一启动，这三个线程启动函数就返回了，主线程继续向下执行，而线程函数在一个独立的线
+程中执行，它要执行多久，什么时候返回，主线程是不管也不知道的。
+正常情况下，线程函数返回后，线程就终止了。但也有其它方式：
+
+Windows API：
+VOID ExitThread( DWORD dwExitCode );
+
+C Runtime Library：
+void _endthread(void);
+
+Delphi Runtime Library：
+procedure EndThread(ExitCode: Integer);
+
+为了记录一些必要的线程数据（状态/属性等），OS会为线程创建一个内部Object，如在Windows中那个Handle便是这
+个内部Object的Handle，所以在线程结束的时候还应该释放这个Object。
+
+虽然说用API或RTL(Runtime Library)已经可以很方便地进行多线程编程了，但是还是需要进行较多的细节处理，为此
+Delphi在Classes单元中对线程作了一个较好的封装，这就是VCL的线程类：TThread
+使用这个类也很简单，大多数的Delphi书籍都有说，基本用法是：先从TThread派生一个自己的线程类（因为TThread
+是一个抽象类，不能生成实例），然后是Override抽象方法：Execute（这就是线程函数，也就是在线程中执行的代码
+部分），如果需要用到可视VCL对象，还需要通过Synchronize过程进行。关于之方面的具体细节，这里不再赘述，请
+参考相关书籍。
+
+本文接下来要讨论的是TThread类是如何对线程进行封装的，也就是深入研究一下TThread类的实现。因为只是真正地
+了解了它，才更好地使用它。
+下面是DELPHI7中TThread类的声明（本文只讨论在Windows平台下的实现，所以去掉了所有有关Linux平台部分的代码
+）：
+
+TThread = class
+private
+    FHandle: THandle;
+    FThreadID: THandle;
+    FCreateSuspended: Boolean;
+    FTerminated: Boolean;
+    FSuspended: Boolean;
+    FFreeOnTerminate: Boolean;
+    FFinished: Boolean;
+    FReturnValue: Integer;
+    FOnTerminate: TNotifyEvent;
+    FSynchronize: TSynchronizeRecord;
+    FFatalException: TObject;
+    procedure CallOnTerminate;
+    class procedure Synchronize(ASyncRec: PSynchronizeRecord); overload;
+    function GetPriority: TThreadPriority;
+    procedure SetPriority(Value: TThreadPriority);
+    procedure SetSuspended(Value: Boolean);
+protected
+    procedure CheckThreadError(ErrCode: Integer); overload;
+    procedure CheckThreadError(Success: Boolean); overload;
+    procedure DoTerminate; virtual;
+    procedure Execute; virtual; abstract;
+    procedure Synchronize(Method: TThreadMethod); overload;
+    property ReturnValue: Integer read FReturnValue write FReturnValue;
+    property Terminated: Boolean read FTerminated;
+public
+    constructor Create(CreateSuspended: Boolean);
+    destructor Destroy; override;
+    procedure AfterConstruction; override;
+    procedure Resume;
+    procedure Suspend;
+    procedure Terminate;
+    function WaitFor: LongWord;
+    class procedure Synchronize(AThread: TThread; AMethod: TThreadMethod); overload;
+    class procedure StaticSynchronize(AThread: TThread; AMethod: TThreadMethod);
+    property FatalException: TObject read FFatalException;
+    property FreeOnTerminate: Boolean read FFreeOnTerminate write FFreeOnTerminate;
+    property Handle: THandle read FHandle;
+    property Priority: TThreadPriority read GetPriority write SetPriority;
+    property Suspended: Boolean read FSuspended write SetSuspended;
+    property ThreadID: THandle read FThreadID;
+    property OnTerminate: TNotifyEvent read FOnTerminate write FOnTerminate;
+end;
+
+TThread类在Delphi的RTL里算是比较简单的类，类成员也不多，类属性都很简单明白，本文将只对几个比较重要的类
+成员方法和唯一的事件：OnTerminate作详细分析。
+首先就是构造函数：
+constructor TThread.Create(CreateSuspended: Boolean);
+begin
+    inherited Create;
+    AddThread;
+    FSuspended := CreateSuspended;
+    FCreateSuspended := CreateSuspended;
+    FHandle := BeginThread(nil, 0, @ThreadProc, Pointer(Self), CREATE_SUSPENDED, FThreadID);
+    if FHandle = 0 then
+        raise EThread.CreateResFmt(@SThreadCreateError, [SysErrorMessage(GetLastError)]);
+end;
+虽然这个构造函数没有多少代码，但却可以算是最重要的一个成员，因为线程就是在这里被创建的。
+在通过Inherited调用TObject.Create后，第一句就是调用一个过程：AddThread，其源码如下：
+procedure AddThread;
+begin
+    InterlockedIncrement(ThreadCount);
+end;
+
+同样有一个对应的RemoveThread：
+procedure RemoveThread;
+begin
+    InterlockedDecrement(ThreadCount);
+end;
+它们的功能很简单，就是通过增减一个全局变量来统计进程中的线程数。只是这里用于增减变量的并不是常用的
+Inc/Dec过程，而是用了InterlockedIncrement/InterlockedDecrement这一对过程，它们实现的功能完全一样，都是
+对变量加一或减一。但它们有一个最大的区别，那就是InterlockedIncrement/InterlockedDecrement是线程安全的。
+即它们在多线程下能保证执行结果正确，而Inc/Dec不能。或者按操作系统理论中的术语来说，这是一对“原语”操作。
+
+以加一为例来说明二者实现细节上的不同：
+一般来说，对内存数据加一的操作分解以后有三个步骤：
+1、 从内存中读出数据
+2、 数据加一
+3、 存入内存
+现在假设在一个两个线程的应用中用Inc进行加一操作可能出现的一种情况：
+1、 线程A从内存中读出数据（假设为3）
+2、 线程B从内存中读出数据（也是3）
+3、 线程A对数据加一（现在是4）
+4、 线程B对数据加一（现在也是4）
+5、 线程A将数据存入内存（现在内存中的数据是4）
+6、 线程B也将数据存入内存（现在内存中的数据还是4，但两个线程都对它加了一，应该是5才对，所以这里出现了
+错误的结果）
+
+ 
+
+而用InterlockIncrement过程则没有这个问题，因为所谓“原语”是一种不可中断的操作，即操作系统能保证在一个
+“原语”执行完毕前不会进行线程切换。所以在上面那个例子中，只有当线程A执行完将数据存入内存后，线程B才可
+以开始从中取数并进行加一操作，这样就保证了即使是在多线程情况下，结果也一定会是正确的。
+
+前面那个例子也说明一种“线程访问冲突”的情况，这也就是为什么线程之间需要“同步”（Synchronize），关于这
+个，在后面说到同步时还会再详细讨论。
+
+说到同步，有一个题外话：加拿大滑铁卢大学的教授李明曾就Synchronize一词在“线程同步”中被译作“同步”提出
+过异议，个人认为他说的其实很有道理。在中文中“同步”的意思是“同时发生”，而“线程同步”目的就是避免这
+种“同时发生”的事情。而在英文中，Synchronize的意思有两个：一个是传统意义上的同步（To occur at the same 
+time），另一个是“协调一致”（To operate in unison）。在“线程同步”中的Synchronize一词应该是指后面一种
+意思，即“保证多个线程在访问同一数据时，保持协调一致，避免出错”。不过像这样译得不准的词在IT业还有很多
+，既然已经是约定俗成了，本文也将继续沿用，只是在这里说明一下，因为软件开发是一项细致的工作，该弄清楚的
+，绝不能含糊。
+
+扯远了，回到TThread的构造函数上，接下来最重要就是这句了：
+FHandle := BeginThread(nil, 0, @ThreadProc, Pointer(Self), CREATE_SUSPENDED, FThreadID);
+这里就用到了前面说到的Delphi RTL函数BeginThread，它有很多参数，关键的是第三、四两个参数。第三个参数就是
+前面说到的线程函数，即在线程中执行的代码部分。第四个参数则是传递给线程函数的参数，在这里就是创建的线程
+对象（即Self）。其它的参数中，第五个是用于设置线程在创建后即挂起，不立即执行（启动线程的工作是在
+AfterConstruction中根据CreateSuspended标志来决定的），第六个是返回线程ID。
+
+现在来看TThread的核心：线程函数ThreadProc。有意思的是这个线程类的核心却不是线程的成员，而是一个全局函数
+（因为BeginThread过程的参数约定只能用全局函数）。下面是它的代码：
+
+function ThreadProc(Thread: TThread): Integer;
+var
+    FreeThread: Boolean;
+begin
+      try
+            if not Thread.Terminated then
+            try
+                Thread.Execute;
+            except
+                Thread.FFatalException := AcquireExceptionObject;
+            end;
+      finally
+            FreeThread := Thread.FFreeOnTerminate;
+            Result := Thread.FReturnValue;
+            Thread.DoTerminate;
+            Thread.FFinished := True;
+            SignalSyncEvent;
+            if FreeThread then Thread.Free;
+            EndThread(Result);
+      end;
+end;
+虽然也没有多少代码，但却是整个TThread中最重要的部分，因为这段代码是真正在线程中执行的代码。下面对代码作
+逐行说明：
+首先判断线程类的Terminated标志，如果未被标志为终止，则调用线程类的Execute方法执行线程代码，因为TThread
+是抽象类，Execute方法是抽象方法，所以本质上是执行派生类中的Execute代码。
+
+所以说，Execute就是线程类中的线程函数，所有在Execute中的代码都需要当作线程代码来考虑，如防止访问冲突等。
+如果Execute发生异常，则通过AcquireExceptionObject取得异常对象，并存入线程类的FFatalException成员中。
+最后是线程结束前做的一些收尾工作。局部变量FreeThread记录了线程类的FreeOnTerminated属性的设置，然后将线
+程返回值设置为线程类的返回值属性的值。然后执行线程类的DoTerminate方法。
+
+DoTerminate方法的代码如下：
+procedure TThread.DoTerminate;
+begin
+    if Assigned(FOnTerminate) then Synchronize(CallOnTerminate);
+end;
+
+很简单，就是通过Synchronize来调用CallOnTerminate方法，而CallOnTerminate方法的代码如下，就是简单地调用
+OnTerminate事件：
+procedure TThread.CallOnTerminate;
+begin
+    if Assigned(FOnTerminate) then FOnTerminate(Self);
+end;
+
+因为OnTerminate事件是在Synchronize中执行的，所以本质上它并不是线程代码，而是主线程代码（具体见后面对
+Synchronize的分析）。
+
+执行完OnTerminate后，将线程类的FFinished标志设置为True。接下来执行SignalSyncEvent过程，其代码如下：
+procedure SignalSyncEvent;
+begin
+    SetEvent(SyncEvent);
+end;
+
+也很简单，就是设置一下一个全局Event：SyncEvent，关于Event的使用，本文将在后文详述，而SyncEvent的用途将
+在WaitFor过程中说明。
+
+然后根据FreeThread中保存的FreeOnTerminate设置决定是否释放线程类，在线程类释放时，还有一些些操作，详见接
+下来的析构函数实现。
+最后调用EndThread结束线程，返回线程返回值。至此，线程完全结束。
+说完构造函数，再来看析构函数：
+destructor TThread.Destroy;
+begin
+  if (FThreadID <> 0) and not FFinished then  begin
+      Terminate;
+      if FCreateSuspended then
+          Resume;
+      WaitFor;
+  end;
+  if FHandle <> 0 then CloseHandle(FHandle);
+  inherited Destroy;
+  FFatalException.Free;
+  RemoveThread;
+end;
+
+在线程对象被释放前，首先要检查线程是否还在执行中，如果线程还在执行中（线程ID不为0，并且线程结束标志未设
+置），则调用Terminate过程结束线程。Terminate过程只是简单地设置线程类的Terminated标志，如下面的代码：
+
+procedure TThread.Terminate;
+begin
+    FTerminated := True;
+end;
+
+所以线程仍然必须继续执行到正常结束后才行，而不是立即终止线程，这一点要注意。
+
+在这里说一点题外话：很多人都问过我，如何才能“立即”终止线程（当然是指用TThread创建的线程）。结果当然是
+不行！终止线程的唯一办法就是让Execute方法执行完毕，所以一般来说，要让你的线程能够尽快终止，必须在
+Execute方法中在较短的时间内不断地检查Terminated标志，以便能及时地退出。这是设计线程代码的一个很重要的原
+则！
+
+当然如果你一定要能“立即”退出线程，那么TThread类不是一个好的选择，因为如果用API强制终止线程的话，最终
+会导致TThread线程对象不能被正确释放，在对象析构时出现Access Violation。这种情况你只能用API或RTL函数来创
+建线程。
+
+如果线程处于启动挂起状态，则将线程转入运行状态，然后调用WaitFor进行等待，其功能就是等待到线程结束后才继
+续向下执行。关于WaitFor的实现，将放到后面说明。
+
+线程结束后，关闭线程Handle（正常线程创建的情况下Handle都是存在的），释放操作系统创建的线程对象。
+然后调用TObject.Destroy释放本对象，并释放已经捕获的异常对象，最后调用RemoveThread减小进程的线程数。
+
+其它关于Suspend/Resume及线程优先级设置等方面，不是本文的重点，不再赘述。下面要讨论的是本文的另两个重点
+：Synchronize和WaitFor。
+
+但是在介绍这两个函数之前，需要先介绍另外两个线程同步技术：事件和临界区。
+
+事件（Event）与Delphi中的事件有所不同。从本质上说，Event其实相当于一个全局的布尔变量。它有两个赋值操作
+：Set和Reset，相当于把它设置为True或False。而检查它的值是通过WaitFor操作进行。对应在Windows平台上，是三
+个API函数：SetEvent、ResetEvent、WaitForSingleObject（实现WaitFor功能的API还有几个，这是最简单的一个）。
+
+这三个都是原语，所以Event可以实现一般布尔变量不能实现的在多线程中的应用。Set和Reset的功能前面已经说过了
+，现在来说一下WaitFor的功能：
+
+WaitFor的功能是检查Event的状态是否是Set状态（相当于True），如果是则立即返回，如果不是，则等待它变为Set
+状态，在等待期间，调用WaitFor的线程处于挂起状态。另外WaitFor有一个参数用于超时设置，如果此参数为0，则不
+等待，立即返回Event的状态，如果是INFINITE则无限等待，直到Set状态发生，若是一个有限的数值，则等待相应的
+毫秒数后返回Event的状态。
+
+当Event从Reset状态向Set状态转换时，唤醒其它由于WaitFor这个Event而挂起的线程，这就是它为什么叫Event的原
+因。所谓“事件”就是指“状态的转换”。通过Event可以在线程间传递这种“状态转换”信息。
+
+当然用一个受保护（见下面的临界区介绍）的布尔变量也能实现类似的功能，只要用一个循环检查此布尔值的代码来
+代替WaitFor即可。从功能上说完全没有问题，但实际使用中就会发现，这样的等待会占用大量的CPU资源，降低系统
+性能，影响到别的线程的执行速度，所以是不经济的，有的时候甚至可能会有问题。所以不建议这样用。
+
+临界区（CriticalSection）则是一项共享数据访问保护的技术。它其实也是相当于一个全局的布尔变量。但对它的操
+作有所不同，它只有两个操作：Enter和Leave，同样可以把它的两个状态当作True和False，分别表示现在是否处于临
+界区中。这两个操作也是原语，所以它可以用于在多线程应用中保护共享数据，防止访问冲突。
+
+用临界区保护共享数据的方法很简单：在每次要访问共享数据之前调用Enter设置进入临界区标志，然后再操作数据，
+最后调用Leave离开临界区。它的保护原理是这样的：当一个线程进入临界区后，如果此时另一个线程也要访问这个数
+据，则它会在调用Enter时，发现已经有线程进入临界区，然后此线程就会被挂起，等待当前在临界区的线程调用
+Leave离开临界区，当另一个线程完成操作，调用Leave离开后，此线程就会被唤醒，并设置临界区标志，开始操作数
+据，这样就防止了访问冲突。
+
+以前面那个InterlockedIncrement为例，我们用CriticalSection（Windows API）来实现它：
+Var
+InterlockedCrit : TRTLCriticalSection;
+Procedure InterlockedIncrement( var aValue : Integer );
+Begin
+    EnterCriticalSection( InterlockedCrit );
+    Inc( aValue );
+    LeaveCriticalSection( InterlockedCrit );
+End;
+
+现在再来看前面那个例子：
+1. 线程A进入临界区（假设数据为3）
+2. 线程B进入临界区，因为A已经在临界区中，所以B被挂起
+3. 线程A对数据加一（现在是4）
+4. 线程A离开临界区，唤醒线程B（现在内存中的数据是4）
+5. 线程B被唤醒，对数据加一（现在就是5了）
+6. 线程B离开临界区，现在的数据就是正确的了。
+
+临界区就是这样保护共享数据的访问。
+
+关于临界区的使用，有一点要注意：即数据访问时的异常情况处理。因为如果在数据操作时发生异常，将导致Leave操
+作没有被执行，结果将使本应被唤醒的线程未被唤醒，可能造成程序的没有响应。所以一般来说，如下面这样使用临
+界区才是正确的做法：
+
+EnterCriticalSection
+Try
+// 操作临界区数据
+Finally
+    LeaveCriticalSection
+End;
+
+最后要说明的是，Event和CriticalSection都是操作系统资源，使用前都需要创建，使用完后也同样需要释放。如
+TThread类用到的一个全局Event：SyncEvent和全局CriticalSection：TheadLock，都是在
+InitThreadSynchronization和DoneThreadSynchronization中进行创建和释放的，而它们则是在Classes单元的
+Initialization和Finalization中被调用的。
+
+由于在TThread中都是用API来操作Event和CriticalSection的，所以前面都是以API为例，其实Delphi已经提供了对它
+们的封装，在SyncObjs单元中，分别是TEvent类和TCriticalSection类。用法也与前面用API的方法相差无几。因为
+TEvent的构造函数参数过多，为了简单起见，Delphi还提供了一个用默认参数初始化的Event类：TSimpleEvent。
+
+顺便再介绍一下另一个用于线程同步的类：TMultiReadExclusiveWriteSynchronizer，它是在SysUtils单元中定义的
+。据我所知，这是Delphi RTL中定义的最长的一个类名，还好它有一个短的别名：TMREWSync。至于它的用处，我想光
+看名字就可以知道了，我也就不多说了。
+
+有了前面对Event和CriticalSection的准备知识，可以正式开始讨论Synchronize和WaitFor了。
+我们知道，Synchronize是通过将部分代码放到主线程中执行来实现线程同步的，因为在一个进程中，只有一个主线程
+。先来看看Synchronize的实现：
+
+procedure TThread.Synchronize(Method: TThreadMethod);
+begin
+    FSynchronize.FThread := Self;
+    FSynchronize.FSynchronizeException := nil;
+    FSynchronize.FMethod := Method;
+    Synchronize(@FSynchronize);
+end;
+
+其中FSynchronize是一个记录类型：
+PSynchronizeRecord = ^TSynchronizeRecord;
+TSynchronizeRecord = record
+    FThread: TObject;
+    FMethod: TThreadMethod;
+    FSynchronizeException: TObject;
+end;
+
+用于进行线程和主线程之间进行数据交换，包括传入线程类对象，同步方法及发生的异常。
+在Synchronize中调用了它的一个重载版本，而且这个重载版本比较特别，它是一个“类方法”。所谓类方法，是一种
+特殊的类成员方法，它的调用并不需要创建类实例，而是像构造函数那样，通过类名调用。之所以会用类方法来实现
+它，是因为为了可以在线程对象没有创建时也能调用它。不过实际中是用它的另一个重载版本（也是类方法）和另一
+个类方法StaticSynchronize。下面是这个Synchronize的代码：
+
+class procedure TThread.Synchronize(ASyncRec: PSynchronizeRecord);
+var
+    SyncProc: TSyncProc;
+begin
+    if GetCurrentThreadID = MainThreadID then
+        ASyncRec.FMethod
+    else begin
+    SyncProc.Signal := CreateEvent(nil, True, False, nil);
+    try
+    EnterCriticalSection(ThreadLock);
+    try
+    if SyncList = nil then
+        SyncList := TList.Create;
+        SyncProc.SyncRec := ASyncRec;
+        SyncList.Add(@SyncProc);
+        SignalSyncEvent;
+        if Assigned(WakeMainThread) then
+            WakeMainThread(SyncProc.SyncRec.FThread);
+        LeaveCriticalSection(ThreadLock);
+        try
+            WaitForSingleObject(SyncProc.Signal, INFINITE);
+        finally
+            EnterCriticalSection(ThreadLock);
+        end;
+        finally
+            LeaveCriticalSection(ThreadLock);
+        end;
+        finally
+            CloseHandle(SyncProc.Signal);
+        end;
+        if Assigned(ASyncRec.FSynchronizeException) then 
+            raise ASyncRec.FSynchronizeException;
+    end;
+end;
+
+这段代码略多一些，不过也不算太复杂。
+首先是判断当前线程是否是主线程，如果是，则简单地执行同步方法后返回。
+如果不是主线程，则准备开始同步过程。
+通过局部变量SyncProc记录线程交换数据（参数）和一个Event Handle，其记录结构如下：
+TSyncProc = record
+SyncRec: PSynchronizeRecord;
+Signal: THandle;
+end;
+
+然后创建一个Event，接着进入临界区（通过全局变量ThreadLock进行，因为同时只能有一个线程进入Synchronize状
+态，所以可以用全局变量记录），然后就是把这个记录数据存入SyncList这个列表中（如果这个列表不存在的话，则
+创建它）。可见ThreadLock这个临界区就是为了保护对SyncList的访问，这一点在后面介绍CheckSynchronize时会再
+次看到。
+
+再接下就是调用SignalSyncEvent，其代码在前面介绍TThread的构造函数时已经介绍过了，它的功能就是简单地将
+SyncEvent作一个Set的操作。关于这个SyncEvent的用途，将在后面介绍WaitFor时再详述。
+
+接下来就是最主要的部分了：调用WakeMainThread事件进行同步操作。WakeMainThread是一个TNotifyEvent类型的全
+局事件。这里之所以要用事件进行处理，是因为Synchronize方法本质上是通过消息，将需要同步的过程放到主线程中
+执行，如果在一些没有消息循环的应用中（如Console或DLL）是无法使用的，所以要使用这个事件进行处理。
+而响应这个事件的是Application对象，下面两个方法分别用于设置和清空WakeMainThread事件的响应（来自Forms单元）：
+
+procedure TApplication.HookSynchronizeWakeup;
+begin
+    Classes.WakeMainThread := WakeMainThread;
+end;
+
+procedure TApplication.UnhookSynchronizeWakeup;
+begin
+    Classes.WakeMainThread := nil;
+end;
+
+上面两个方法分别是在TApplication类的构造函数和析构函数中被调用。
+这就是在Application对象中WakeMainThread事件响应的代码，消息就是在这里被发出的，它利用了一个空消息来实现：
+
+procedure TApplication.WakeMainThread(Sender: TObject);
+begin
+    PostMessage(Handle, WM_NULL, 0, 0);
+end;
+
+而这个消息的响应也是在Application对象中，见下面的代码（删除无关的部分）：
+procedure TApplication.WndProc(var Message: TMessage);
+…
+begin
+    try
+        …
+        with Message do
+        case Msg of
+        …
+        WM_NULL:
+        CheckSynchronize;
+        …
+    except
+        HandleException(Self);
+    end;
+end;
+
+其中的CheckSynchronize也是定义在Classes单元中的，由于它比较复杂，暂时不详细说明，只要知道它是具体处理
+Synchronize功能的部分就好，现在继续分析Synchronize的代码。
+在执行完WakeMainThread事件后，就退出临界区，然后调用WaitForSingleObject开始等待在进入临界区前创建的那个
+Event。这个Event的功能是等待这个同步方法的执行结束，关于这点，在后面分析CheckSynchronize时会再说明。
+注意在WaitForSingleObject之后又重新进入临界区，但没有做任何事就退出了，似乎没有意义，但这是必须的！
+因为临界区的Enter和Leave必须严格的一一对应。那么是否可以改成这样呢：
+
+if Assigned(WakeMainThread) then
+    WakeMainThread(SyncProc.SyncRec.FThread);
+    WaitForSingleObject(SyncProc.Signal, INFINITE);
+    finally
+        LeaveCriticalSection(ThreadLock);
+end;
+
+上面的代码和原来的代码最大的区别在于把WaitForSingleObject也纳入临界区的限制中了。看上去没什么影响，还使
+代码大大简化了，但真的可以吗？
+事实上是不行！
+
+因为我们知道，在Enter临界区后，如果别的线程要再进入，则会被挂起。而WaitFor方法则会挂起当前线程，直到等
+待别的线程SetEvent后才会被唤醒。如果改成上面那样的代码的话，如果那个SetEvent的线程也需要进入临界区的话
+，死锁（Deadlock）就发生了（关于死锁的理论，请自行参考操作系统原理方面的资料）。
+死锁是线程同步中最需要注意的方面之一！
+最后释放开始时创建的Event，如果被同步的方法返回异常的话，还会在这里再次抛出异常。
+
+回到前面CheckSynchronize，见下面的代码：
+
+function CheckSynchronize(Timeout: Integer = 0): Boolean;
+var
+     SyncProc: PSyncProc;
+     LocalSyncList: TList;
+begin
+     if GetCurrentThreadID <> MainThreadID then
+          raise EThread.CreateResFmt(@SCheckSynchronizeError, [GetCurrentThreadID]);
+     if Timeout > 0 then
+          WaitForSyncEvent(Timeout)
+     else
+          ResetSyncEvent;
+     LocalSyncList := nil;
+     EnterCriticalSection(ThreadLock);
+     try
+          Integer(LocalSyncList) := InterlockedExchange(Integer(SyncList), Integer(LocalSyncList));
+          try
+               Result := (LocalSyncList <> nil) and (LocalSyncList.Count > 0);
+               if Result then begin
+                    while LocalSyncList.Count > 0 do begin
+                         SyncProc := LocalSyncList[0];
+                         LocalSyncList.Delete(0);
+                         LeaveCriticalSection(ThreadLock);
+                         try
+                              try
+                                   SyncProc.SyncRec.FMethod;
+                              except
+                                   SyncProc.SyncRec.FSynchronizeException := AcquireExceptionObject;
+                              end;
+                         finally
+                              EnterCriticalSection(ThreadLock);
+                         end;
+                         SetEvent(SyncProc.signal);
+                    end;
+               end;
+          finally
+               LocalSyncList.Free;
+          end;
+     finally
+          LeaveCriticalSection(ThreadLock);
+     end;
+end;
+
+首先，这个方法必须在主线程中被调用（如前面通过消息传递到主线程），否则就抛出异常。
+接下来调用ResetSyncEvent（它与前面SetSyncEvent对应的，之所以不考虑WaitForSyncEvent的情况，是因为只有在
+Linux版下才会调用带参数的CheckSynchronize，Windows版下都是调用默认参数0的CheckSynchronize）。
+现在可以看出SyncList的用途了：它是用于记录所有未被执行的同步方法的。因为主线程只有一个，而子线程可能有
+很多个，当多个子线程同时调用同步方法时，主线程可能一时无法处理，所以需要一个列表来记录它们。
+在这里用一个局部变量LocalSyncList来交换SyncList，这里用的也是一个原语：InterlockedExchange。同样，这里
+也是用临界区将对SyncList的访问保护起来。
+只要LocalSyncList不为空，则通过一个循环来依次处理累积的所有同步方法调用。最后把处理完的LocalSyncList释
+放掉，退出临界区。
+
+再来看对同步方法的处理：首先是从列表中移出（取出并从列表中删除）第一个同步方法调用数据。然后退出临界区
+（原因当然也是为了防止死锁）。
+接着就是真正的调用同步方法了。
+如果同步方法中出现异常，将被捕获后存入同步方法数据记录中。
+重新进入临界区后，调用SetEvent通知调用线程，同步方法执行完成了（详见前面Synchronize中的
+WaitForSingleObject调用）。
+至此，整个Synchronize的实现介绍完成。
+
+最后来说一下WaitFor，它的功能就是等待线程执行结束。其代码如下：
+function TThread.WaitFor: LongWord;
+var
+    H: array[0..1] of THandle;
+    WaitResult: Cardinal;
+    Msg: TMsg;
+begin
+    H[0] := FHandle;
+    if GetCurrentThreadID = MainThreadID then  begin
+        WaitResult := 0;
+        H[1] := SyncEvent;
+        repeat
+            { This prevents a potential deadlock if the background thread does a SendMessage to the foreground thread }
+            if WaitResult = WAIT_OBJECT_0 + 2 then
+                PeekMessage(Msg, 0, 0, 0, PM_NOREMOVE);
+            WaitResult := MsgWaitForMultipleObjects(2, H, False, 1000, QS_SENDMESSAGE);
+            CheckThreadError(WaitResult <> WAIT_FAILED);
+            if WaitResult = WAIT_OBJECT_0 + 1 then
+                CheckSynchronize;
+        until WaitResult = WAIT_OBJECT_0;
+    end else 
+        WaitForSingleObject(H[0], INFINITE);
+    CheckThreadError(GetExitCodeThread(H[0], Result));
+end;
+
+如果不是在主线程中执行WaitFor的话，很简单，只要调用WaitForSingleObject等待此线程的Handle为Signaled状态
+即可。
+
+如果是在主线程中执行WaitFor则比较麻烦。首先要在Handle数组中增加一个SyncEvent，然后循环等待，直到线程结
+束（即MsgWaitForMultipleObjects返回WAIT_OBJECT_0，详见MSDN中关于此API的说明）。
+在循环等待中作如下处理：如果有消息发生，则通过PeekMessage取出此消息（但并不把它从消息循环中移除），然后
+调用MsgWaitForMultipleObjects来等待线程Handle或SyncEvent出现Signaled状态，同时监听消息（QS_SENDMESSAGE
+参数，详见MSDN中关于此API的说明）。可以把此API当作一个可以同时等待多个Handle的WaitForSingleObject。如果
+是SyncEvent被SetEvent（返回WAIT_OBJECT_0 + 1），则调用CheckSynchronize处理同步方法。
+为什么在主线程中调用WaitFor必须用MsgWaitForMultipleObjects，而不能用WaitForSingleObject等待线程结束呢？
+因为防止死锁。由于在线程函数Execute中可能调用Synchronize处理同步方法，而同步方法是在主线程中执行的，如
+果用WaitForSingleObject等待的话，则主线程在这里被挂起，同步方法无法执行，导致线程也被挂起，于是发生死锁。
+而改用WaitForMultipleObjects则没有这个问题。首先，它的第三个参数为False，表示只要线程Handle或SyncEvent
+中只要有一个Signaled即可使主线程被唤醒，至于加上QS_SENDMESSAGE是因为Synchronize是通过消息传到主线程来的
+，所以还要防止消息被阻塞。这样，当线程中调用Synchronize时，主线程就会被唤醒并处理同步调用，在调用完成后
+继续进入挂起等待状态，直到线程结束。
+至此，对线程类TThread的分析可以告一个段落了，对前面的分析作一个总结：
+1、 线程类的线程必须按正常的方式结束，即Execute执行结束，所以在其中的代码中必须在适当的地方加入足够多
+    的对Terminated标志的判断，并及时退出。如果必须要“立即”退出，则不能使用线程类，而要改用API或RTL函数。
+2、 对可视VCL的访问要放在Synchronize中，通过消息传递到主线程中，由主线程处理。
+3、 线程共享数据的访问应该用临界区进行保护（当然用Synchronize也行）。
+4、 线程通信可以采用Event进行（当然也可以用Suspend/Resume）。
+5、 当在多线程应用中使用多种线程同步方式时，一定要小心防止出现死锁。
+6、 等待线程结束要用WaitFor方法。
