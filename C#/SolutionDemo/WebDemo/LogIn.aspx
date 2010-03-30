@@ -9,6 +9,7 @@
         .style1
         {
             width: 100%;
+            height: 136px;
         }
         .style2
         {
@@ -26,21 +27,20 @@
                     <b>操作员登录界面</b></td>
             </tr>
             <tr>
-                <td>
+                <td align="center">
                     <asp:Label ID="Label1" runat="server" Text="操作员姓名："></asp:Label>
                     <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <asp:Label ID="Label2" runat="server" Text="操作员密码："></asp:Label>
+                <td align="center"><asp:Label ID="Label2" runat="server" Text="操作员密码："></asp:Label>
                     <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="确定" 
-                        Width="69px" />
+                <td align="center">
+                    <asp:Button ID="Button1" runat="server" Text="确定" Width="84px" 
+                        onclick="Button1_Click1" style="height: 26px" />
                 </td>
             </tr>
         </table>
