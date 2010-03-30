@@ -1,0 +1,9 @@
+D:\C#\SolutionDemo\BLL\bin\Debug\BLL.dll
+D:\C#\SolutionDemo\BLL\bin\Debug\BLL.pdb
+D:\C#\SolutionDemo\BLL\bin\Debug\DAL.dll
+D:\C#\SolutionDemo\BLL\bin\Debug\Model.dll
+D:\C#\SolutionDemo\BLL\bin\Debug\Model.pdb
+D:\C#\SolutionDemo\BLL\bin\Debug\DAL.pdb
+D:\C#\SolutionDemo\BLL\obj\Debug\ResolveAssemblyReference.cache
+D:\C#\SolutionDemo\BLL\obj\Debug\BLL.dll
+D:\C#\SolutionDemo\BLL\obj\Debug\BLL.pdb

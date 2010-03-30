@@ -1,0 +1,7 @@
+D:\C#\SolutionDemo\DAL\bin\Debug\DAL.dll
+D:\C#\SolutionDemo\DAL\bin\Debug\DAL.pdb
+D:\C#\SolutionDemo\DAL\bin\Debug\Model.dll
+D:\C#\SolutionDemo\DAL\bin\Debug\Model.pdb
+D:\C#\SolutionDemo\DAL\obj\Debug\ResolveAssemblyReference.cache
+D:\C#\SolutionDemo\DAL\obj\Debug\DAL.dll
+D:\C#\SolutionDemo\DAL\obj\Debug\DAL.pdb
