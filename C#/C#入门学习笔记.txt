@@ -20,4 +20,14 @@
    选择解决方案，右键-添加-新建项目-类库
    引用：DAL、Model层。
    
+6、发布：
+   一个项目完成后需要发布，在解决方案资源管理器，右击表示层-发布网站。
+   如果是Oracle数据库，发布后存在连接异常的BUG。
+   修改方法：
+   1、在ORACLE_HOME目录下ORA92目录的属性里的安全性上添加/编辑“Authenticated Users”用户，
+      在其“读取及运行”权限上先点不选，再点选择，然后“应用”。
+      显示“安全”选项卡的方法：工具-文件夹选项-查看-设置“使用简单文件共享”为非选中状态。
+   2、在ORACLE_HOME目录下ORA92\network\ADMIN目录里有一个“sqlnet.ora”文件，
+      修改成：NAMES.DIRECTORY_PATH= (TNSNAMES, ONAMES, HOSTNAME)
+
 
