@@ -18,7 +18,9 @@ uses
   UnitCustomerMgr in 'BasicInfoMgr\UnitCustomerMgr.pas' {FormCustomerMgr},
   UnitGoodsMgr in 'BasicInfoMgr\UnitGoodsMgr.pas' {FormGoodsMgr},
   UnitInDepotTypeMgr in 'BasicInfoMgr\UnitInDepotTypeMgr.pas' {FormInDepotTypeMgr},
-  UnitOutDepotTypeMgr in 'BasicInfoMgr\UnitOutDepotTypeMgr.pas' {FormOutDepotTypeMgr};
+  UnitOutDepotTypeMgr in 'BasicInfoMgr\UnitOutDepotTypeMgr.pas' {FormOutDepotTypeMgr},
+  UnitEditUser in 'UserManage\UnitEditUser.pas' {FormEditUser},
+  UnitUserManage in 'UserManage\UnitUserManage.pas' {FormUserManage};
 
 {$R *.res}
 var

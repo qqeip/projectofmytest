@@ -24,7 +24,7 @@ type
     NAbout: TMenuItem;
     NOutDepotStat: TMenuItem;
     NUserMgr: TMenuItem;
-    NUserRightsMgr: TMenuItem;
+    NUserChangePass: TMenuItem;
     NSystemLock: TMenuItem;
     NLogOut: TMenuItem;
     MenuInformationMgr: TMenuItem;
@@ -73,7 +73,7 @@ type
     procedure NBalanceAnalyseClick(Sender: TObject);
     procedure NRepertoryAnalyseClick(Sender: TObject);
     procedure NUserMgrClick(Sender: TObject);
-    procedure NUserRightsMgrClick(Sender: TObject);
+    procedure NUserChangePassClick(Sender: TObject);
     procedure NSystemLockClick(Sender: TObject);
     procedure NLogOutClick(Sender: TObject);
   private
@@ -104,7 +104,7 @@ implementation
 uses UnitLogIn, UnitPublicResourceManager, UnitResource,
      UnitUserManager, UnitAbout, UnitDataModule, UnitDepotInfoMgr,
   UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
-  UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr;
+  UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage;
 
 {$R *.dfm}
 
@@ -355,10 +355,17 @@ end;
 
 procedure TFormMain.NUserMgrClick(Sender: TObject);
 begin
-//
+  with TFormUserManage.Create(nil) do
+  begin
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+  end;
 end;
 
-procedure TFormMain.NUserRightsMgrClick(Sender: TObject);
+procedure TFormMain.NUserChangePassClick(Sender: TObject);
 begin
 //
 end;

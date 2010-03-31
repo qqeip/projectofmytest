@@ -62,7 +62,7 @@ begin
       CurUser.UserID:= FieldByName('UserID').AsInteger;
       CurUser.UserName:= FieldByName('UserName').AsString;
       CurUser.PassWord:= FieldByName('UserPWD').AsString;
-      CurUser.UserType:= FieldByName('UserType').AsString;
+      CurUser.UserType:= FieldByName('UserType').AsInteger;
       CurUser.UserRights:= FieldByName('UserRights').AsString;
       result:= True;
     end;
