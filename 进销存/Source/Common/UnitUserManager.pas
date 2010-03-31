@@ -9,12 +9,12 @@ type
     FUserID: Integer;
     FUserName: string;
     FPassWord: string;
-    FUserType: string; //用户类型：管理员 or 营业员
+    FUserType: Integer; //用户类型：管理员 0 or 营业员 1
     FLogInType: Integer; //用户登陆类型：登录 or 退出 or 注销 1,2,3
     FUserRights: string; //用户权限
     procedure SetUserName(const Value: string);
     procedure SetPassWord(const Value: string);
-    procedure SetUserType(const Value: string);
+    procedure SetUserType(const Value: Integer);
     procedure SetUserRight(const Value: string);
     procedure SetUserID(const Value: Integer);
   public
@@ -24,7 +24,7 @@ type
     property UserID: Integer read FUserID write SetUserID;
     property UserName: string read FUserName write SetUserName;
     property PassWord: string read FPassWord write SetPassWord;
-    property UserType: string read FUserType write SetUserType;
+    property UserType: Integer read FUserType write SetUserType;
     property LonInType: Integer read FLogInType write FLogInType;
     property UserRights: string read FUserRights write SetUserRight;
   end;
@@ -48,7 +48,7 @@ begin
   FPassWord := Value;
 end;
 
-procedure TUser.SetUserType(const Value: string);
+procedure TUser.SetUserType(const Value: Integer);
 begin
   FUserType := Value;
 end;

@@ -10,6 +10,7 @@ object FormMain: TFormMain
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsMDIForm
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
@@ -184,9 +185,9 @@ object FormMain: TFormMain
         Caption = #25805#20316#21592#31649#29702
         OnClick = NUserMgrClick
       end
-      object NUserRightsMgr: TMenuItem
-        Caption = #25805#20316#21592#26435#38480#35774#32622
-        OnClick = NUserRightsMgrClick
+      object NUserChangePass: TMenuItem
+        Caption = #25805#20316#21592#23494#30721#20462#25913
+        OnClick = NUserChangePassClick
       end
       object NSystemLock: TMenuItem
         Caption = #38145#23450#31995#32479
