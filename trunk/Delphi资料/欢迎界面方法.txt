@@ -1,0 +1,79 @@
+以前没接触过编程的时候,看到一些软件启动的时候总有欢迎界面,如灰鸽子启动界面.就一直很想学会这个,现在这里有个制作欢迎界面的代码的详细分析,大家参考下
+
+登陆窗体命名為:loginform.
+找到工程文件(Project -> View Source),找到如下代碼部分:
+begin
+   Application.Initialize;
+
+   Application.CreateForm(TForm1, Form1);
+   Application.CreateForm(Tloginform, loginform);
+
+   Application.Run;//到此,程序執行
+end.
+登陸窗體可以設置成在程序執行前創建:
+begin
+   Application.Initialize;//初始化
+   loginform:=tloginform.Create(application);//動態創建啟動窗體
+   loginform.Show;//顯示
+   loginform.Update;
+   sleep(2000);//系統延時2秒
+   loginform.Hide;//2秒后啟動窗體隱藏
+   Application.CreateForm(TForm1, Form1);
+   Application.CreateForm(Tloginform, loginform);
+   loginform.Free;//釋放啟動窗體
+   Application.Run;
+end.
+
+制作啟動(歡迎)窗體的另一種方法(轉載...當然自己也使用過~~):
+设置封面窗体属性使之符合启动封面要求。请修改下列封面窗体属性：
+
+Position = PoscreenCenter 
+//运行时居于屏幕中央 
+Autosize = true 
+//自动适应Image控件，使启动图片完整显示 
+BorderStyle = bsnone 
+//窗口无标题栏及最大化、最小化及关闭按钮和边框 
+Name = splashform
+
+程序代码解析 选择主菜单下的Project/View Scource 命令，打开这个项目的项目文件。根据下列代码进行修改。
+
+program Project2; 
+uses 
+Forms,Controls, 
+Unit1 in 'Unit1.pas' {MainForm}, 
+Unit2 in 'Unit2.pas' {SplashForm}; 
+{$R *.res} 
+begin 
+Application.Initialize; 
+SplashForm :=TSplashForm.Create(Application); 
+//创建splash窗体 
+SplashForm.ShowModal; 
+//以模式对话框的方式显示splash窗体 
+if (SplashForm.ModalResult = mrOK) then 
+//如果定时时间到或单击了窗体上的图形 
+begin 
+Application.Title := '测试Splash窗体'; 
+//设置应用程序的标题 
+Application.CreateForm(TMainForm, MainForm); 
+//自动方式创建的主窗体 
+SplashForm.Hide; 
+//将启动封面窗体隐藏 
+SplashForm.Release; 
+//将启动封面窗体清除 
+Application.Run; 
+end; 
+end.
+
+随后在splash窗体上编写下列事件代码
+
+procedure TSplashForm.Timer1Timer(Sender: TObject); 
+begin 
+SplashForm.ModalResult:= mrOK; 
+//定时时刻到后的事件处理程序 
+end;
+
+procedure TSplashForm.Image1Click(Sender: TObject); 
+begin 
+SplashForm.ModalResult:= mrOK; 
+//单击splash窗体上图像的事件处理程序 ,當用戶希望可以單擊啟動窗體的圖片,而不用等待就可以進入//主窗體時,可以加上這一條件
+end;
