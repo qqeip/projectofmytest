@@ -1,0 +1,22 @@
+1、新建Web Services
+  Delphi - File - New - Other - WebServices - SOAP Server Application 后选择WebServices的方式；
+  常用3种方式：
+  (1)、Dll方式
+       选择 ISAPI/NSAPI Dynamic Link Library
+  (2)、Exe方式
+       CGI Stand-alone executable
+  (3)、Web App Debugger executable
+  
+  提示是否创建SOAP接口，Yes；输入服务名。产生三个文件，impl接口实现文件、
+  intf接口文件(需要给客户端)、Unite文件。
+  在IIS的网站中添加Web Services所生成exe或dll文件所在的路径，然后改成纯文本或可执行文件。
+
+2、客户端的调用
+   新建客户端窗体，然后在Delphi - File - New - Other - WebServices - SOAP Server Application 后
+   选择WSDL Importer，在WSDL Source中输入Web Services地址：
+   (1)、如果是dll方式：http:\\localhost\project1.exe\服务名
+   (2)、如果是exe方式：http:\\localhost\project1.dll\服务名
+   在IE中输入http:\\localhost\project1.exe\服务名确定，点WSDL，会出现xml信息，把地址栏信息输入
+   到Location of WSDL File or URL中确定后会生成一个借口Intf文件，并有一个类方法返回一个借口。
+   在客户端中引用这个借口文件，定义一个借口变量，用类方法返回此接口复制给此接口变量。
+   此接口变量就可以调用Web Services中自定义的函数了。

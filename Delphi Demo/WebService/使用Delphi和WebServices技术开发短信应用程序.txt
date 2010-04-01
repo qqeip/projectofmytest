@@ -1,0 +1,262 @@
+使用Delphi和WebServices技术开发短信应用程序
+
+
+
+摘 要：本文通过使用Delphi和Web Services技术开发短信应用程序的实例详细的介绍了如何在Delphi中开发基于Web Services技术的应用程序。 
+关键字：Delphi；Web Service；短信应用程序开发
+
+
+一提起基于Web Services技术的应用程序开发，一般人首先想到的开发工具是Vs.net，其实作为快速应用程序开发工具(RAD)的老大，Delphi从6.0就开始支持Web Services的开发和应用了，本文通过使用Delphi 7.0调用新浪发送短信的Web Service进行短信应用程序开发这一实例详细的介绍在Delphi中如何开发基于Web Services的应用系统。
+
+第一步，准备工作，了解新浪短信Web Service。新浪发送短信的Web Service地址是http://smsinter.sina.com.cn/ws/smswebservice0101.wsdl，该Web Service就只有一个方法，即string sendXml(carrier,userid,password,mobilenumber,content,msgtype)。各个参数全部为string类型，其含义基本如下（可能不正确）。
+
+Carrier：运营商名称，好像可以随便输，建议输入“Sina”，如果输入其他的值，消息发送的特别慢；
+
+Userid：您在新浪无线上注册的手机ID，如果您没有在http://sms.sina.com.cn上注册您的手机，你是无法使用本Web Service发送短信的；
+
+Password：您在新浪无线上注册手机时所使用的密码；
+
+Mobilenumber：对方的手机号码；
+
+Content：发送短消息的内容；
+
+Msgtype：发送短消息的类型，我估计支持彩信，不过我不知道怎么使用，似乎随便输什么都可以，我使用的是“Text”。
+
+资费标准请参看新浪无线网站上的相关说明，应该是一条一角钱，不过也或者是一条两角线，具体不太清楚。由于其后台可能使用了消息队列机制，在繁忙的时候，可能会有较长时间的延迟。
+
+第二步，先建立一个空白的应用程序。运行Delphi 7，打开[File]->[New]->[Application]菜单，Delphi自动生成一个默认的工程。将默认的窗体Form1改为sms，然后将改工程保存为smsdemo.prj。如下图所示：
+
+
+图1
+
+第三步，引入Web Service。，打开[File]->[New]->[Other]菜单，在弹出的窗口中选择WebServices Tab页面，然后选择其中的WSDL importer选项，单击OK按钮弹出WSDL importer Wizard窗口，如图2所示。在其上的Location of WSDL File or URL 中输入：http://smsinter.sina.com.cn/ws/smswebservice0101.wsdl （注意，千万不能输错！），单击Next按钮后，再单击Finishi按钮，完成浪发送短信Web Service的引入。此时工程文件中会增加一个名字为smswebservice0101.pas的文件，这是Delphi自动生成的Web Service引入申明文件，不要手工修改他。
+
+
+图2
+
+第四步，调用Web Service的短信发送接口。在sms窗体中，依次增加四个TEdit控件，一个TButton控件，一个TMemo控件和五个TLabel控件，按图3进行排列和设置。
+
+
+图3
+
+在smsfrm单元的uses语句中包含smswebservice0101，以便改窗体中能够访问新浪发送短信的Web Service接口。
+
+在发送按钮onClick事件中写入以下代码：
+
+procedure Tsms.Button1Click(Sender: TObject);
+
+begin
+
+Memo1.Text := GetSMSWebServiceSoapPort.sendXml(Edit1.Text,
+
+Edit2.Text, Edit3.Text, Edit4.Text, Edit5.Text,''Text'');
+
+end;
+
+注意：Edit1、Edit2、Edit3、Edit4、Edit5分别对应界面上的运营商、用户名、密码、对方号码、消息内容；Memo1对应界面上的反馈。
+
+第五步，使用Web Service的短信发送接口进行短信发送。编译、运行smsdemo.prj，在用户名中输入您在新浪无线上注册的手机ID、密码中输入您在新浪无线上的密码，然后再输入对方的手机号码和消息内容，单击发送按钮，稍候片刻，在反馈信息框中将会得到该Web Service的反馈信息，如果一切正常，系统会提示您短信发送成功。
+
+小结
+
+从上面的例子我们可以看到，只要理解了Web Services的概念，在Delphi的帮助下，开发基于Web Services的应用程序将不是一件很困难的事情。Web Services最适合用于开发跨平台和跨网络进行通信（因为使用http协议为防火墙所允许）的程序，可以跨越异质架构，联系客户、供应商、企业伙伴以及企业内部之信息系统，是电子商务B2B、企业信息等集成的最佳解决方案。各个公司只要把商务逻辑“暴露”出来，成为Web Service，就可以让任何指定的合作伙伴调用这些商务逻辑，而不管他们的系统在什么平台上运行，使用什么开发工具。Web Services是目前很热门也是正在迅速发展着的一项技术，本文只是作者在学习中的一点小体会，肯定有理解不深刻甚或错误的地方，欢迎大家予以指正。 （全文完）
+
+
+
+注：本文参考了http://blog.joycode.com/joy/posts/16939.aspx中提供的新浪短信Web Service技术，在此表示感谢。
+
+
+ShowWindow。
+单元
+System
+
+var CmdShow: Integer;
+描述
+在程序中，当应用程序创建主窗口时，CmdShow变量包含了 Windows 希望传递给 ShowWindow 的参数值。
+在库(DLL)中,CmdShow总是为0。
+
+3.CompilerVersion 常量 
+指明了Delphi编译器的版本编号
+单元
+System
+
+const CompilerVersion = 15.0;
+描述
+使用CompilerVersion可以测试Delphi编译器的统配级别。如果你想条件化利用了Delphi语言更新特色的代码，这会很有用(This is useful if you want to conditionalize code that takes advantage of newer features in the Delphi language)。
+
+4.ExitProcessProc 变量
+ExitProcessProc 指定在应用程序关闭(shut down)前最后执行的过程(procedure)。
+单元
+System
+
+var ExitProcessProc: procedure;
+描述
+赋值给 ExitProcessProc 来指定你想在应用程序关闭前执行的过程。ExitProcessProc 的值是一个没有参数的过程。
+
+5.GetFileVersion 函数 
+返回文件版本
+单元
+SysUtils
+
+function GetFileVersion(const AFileName: string): Cardinal;
+描述
+GetFileVersion返回一个文件二进制版本号中最有意义的32位。AFileName指定文件名，可以使用和LoadLibrary函数相同的路径搜索到。
+
+6.GetModuleName 函数
+返回给定句柄的模块的完全限定名称(fully qualified name)。
+单元
+SysUtils
+
+function GetModuleName(Module: HMODULE): string;
+描述
+调用GetModuleFileName来获得给定句柄的模块的完全限定名称。 
+Module是模块的句柄。
+
+7.HInstance 变量
+句柄，由Windows提供给模块(module)。
+单元
+SysInit
+
+var HInstance: LongWord;
+描述
+HInstance 容纳了由Windows提供的应用程序或库的实例句柄
+
+8.HintWindowClass 变量
+指定用于显示帮助提示(help hint)的窗口的类。
+单元
+Forms
+
+var HintWindowClass: THintWindowClass = THintWindow;
+描述
+当应用程序显示帮助提示(Help Hint)时，它会创建一个HintWindowClass的实例来描绘用来显示提示的窗口。应用程序通过创建THintWindow的派生类，然后在应用程序启动时将派生类赋予HintWindowClass变量，能够定制这个窗口。
+
+9.InitProc 变量
+InitProc 是最后一个安装的初始化过程。
+单元
+System
+
+var InitProc: Pointer;
+描述
+赋值给InitProc来指定一个你想在应用程序启动时执行的过程。InitProc是一个无参数过程。例如：
+procedure MyInitProcedure;
+...
+initialization
+InitProc := @MyInitProcedure;
+begin
+end;
+只有一个初始化过程能够被赋予InitProc变量。如果你的应用程序定义了多个初始化过程，仅最后一个赋予InitProc的会执行。要允许其他初始化过程执行，你必须将过程“链接”到一起，从InitProc的新值中调用原先的值。例如，下面来自ComObj单元的代码在赋新值前保存了InitProc原先的值，然后在新赋予的初始化过程中调用保存在值：
+SaveInitProc := InitProc;
+InitProc := @InitComObj;
+
+10.IsConsole 变量
+指示模块(module)是否作为控制台应用程序编译。
+单元
+System
+
+var IsConsole: Boolean;
+描述
+如果模块作为控制台应用程序编译，那么IsConsole变量为True。同时在可执行文件和DLL中将为True(This will be True in both an executable and a DLL)。
+
+11.IsLibrary 变量
+指示模块是否是一个DLL。
+单元
+System
+
+var IsLibrary: Boolean;
+描述
+如果模块是一个DLL，那么IsLibrary变量为True。
+
+12.JITEnable 变量
+控制何时及时调度器会被调用(Controls when the just-in-time debugger is called)。
+单元
+System
+
+var JITEnable: Byte = 0;
+描述
+使用JITEnable来指示什么类型的异常会触发及时调试器。
+当JITEnable为0(默认值)时，所有的异常将使用应用程序的异常处理机制处理。及时调试器仅当应用程序没有提供任何捕获异常的机制时被调用。注意，除了Delphi单元中的初始化和结束化区，任何包含了Forms单元的应用程序都提供了异常处理(通过Application对象)，不会触发及时调试器(Note that any application that includes the Forms unit provides exception handling (via the Application object) for all but the initialization and finalization sections and does not trigger the just-in-time debugger)。
+当JITEnable为1时，任何非原生(non-native)异常(使用其他产品编译的代码引发的异常)。都会触发及时调试器。原生异常由应用程序的异常处理机制处理。
+当JITEnable大于1时，所有的异常都会触发及时调试器。
+注意：当你安装IDE时，它会被注册为及时调试器。如果你安装了其他带调试器的工具，他们可能注册了自己，而覆盖了IDE的注册。
+
+13.Languages 函数
+列出可用的支持区域(List the locale for which support is available)。
+单元
+SysUtils
+
+function Languages: TLanguages;
+描述
+使用由Languages返回的值可以获得系统支持的关于区域的信息。这个函数仅可用在Windows平台
+
+14.MainInstance变量
+指示主要的可执行文件的实例句柄。
+单元
+System
+
+var MainInstance: LongWord;
+描述
+使用MainInstance来获得一个应用程序中主要的可执行文件的实例句柄。在使用了运行时库或包的应用程序中，当你需要可执行文件而不是库的句柄时，这很有用。
+注意：当从一个使用其他工具编译的可执行文件中运行一个CLX动态链接库(Windows)或者共享对象(Linux)时，不要使用MainInstance。
+
+15.MainThreadID变量
+指示当前模块中主执行线程。
+单元
+System
+
+var MainThreadID: LongWord;
+描述
+使用MainThreadID来获得主执行线程(模块初始化时的当前线程)的线程ID。
+在调试时，这个主线程ID显示在线程状态盒中。
+在Windows上，MainThreadID的值和一些Win32API调用所需要的线程ID是兼容的。
+
+16.NoErrMsg变量
+控制当运行时错误发生时应用程序是否显示一个错误信息。
+单元
+System
+
+var NoErrMsg: Boolean = False;
+描述
+在Windows上，设置NoErrMsg来控制是否有一个消息显示来指出有一个运行时错误发生了。当NoErrMsg为false(默认值)时，运行时错误会导致应用程序显示一个消息框来提出发生的错误的类型。当NoErrMsg为true时，这些消息将被禁止。
+在Linux上，NoErrMsg没有任何效果。
+注意：SysUtils单元会将大部分的运行时错误转变成异常。如果你的应用程序包含了SysUtils，那么即使NoErrMsg是false，运行时错误消息框也未必会显示。
+
+17.PopupList变量
+提供了对发向弹出菜单(popup menu)的Windows消息的集中处理
+单元
+Menus
+var PopupList: TPopupList;
+描述
+使用PopupList可以访问应用程序中的全部弹出菜单或者访问响应弹出菜单消息的窗口的窗口句柄。PopupList维持了在应用程序中创建的全部弹出菜单组件的列表。这个列表保存一个集中处理发向这些弹出菜单的Windows消息的隐藏窗口的句柄。
+
+18.RTLVersion常量
+指出Delphi运行时库的版本号。
+单元
+System
+
+const RTLVersion = 15.0;
+描述
+使用RTLVersion可以检查不依赖于编译器版本级别的Delphi运行时库的版本号。
+
+19.Screen变量
+表现一个屏幕设备
+单元
+Forms
+
+var Screen: TScreen;
+描述
+Screen变量是一个表现应用程序运行时所在系统的屏幕的TScreen组件。默认地，应用程序会创建一个基于当前屏幕设备有关信息的屏幕组件并将其赋给Screen变量。
+
+20.Win32Platform变量
+指定Win32平台的标识符
+单元
+SysUtils
+
+var Win32Platform: Integer = 0;
+描述
+Win32Platform用于标识系统运行的Win32平台的类型。这将会是下列值之一：
+值 含义
+VER_PLATFORM_WIN32s 系统是Win32
+VER_PLATFORM_WIN32_WINDOWS 系统是Windows 95
+VER_PLATFORM_WN32_NT 系统是Windows NT
+Win32Platform仅在Windows上可用。
+
