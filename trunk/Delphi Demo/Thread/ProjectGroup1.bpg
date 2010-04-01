@@ -1,0 +1,26 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = P_FinanceAccount.dll TestThread.exe Project1.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+P_FinanceAccount.dll: E:\HSERP\Source\Client\PlugIns\Finance\P_FinanceAccount\P_FinanceAccount.dpr
+  $(DCC)
+
+TestThread.exe: TestThread.dpr
+  $(DCC)
+
+Project1.exe: C:\Documents and Settings\developer\×ÀÃæ\FileSearch\FileSearch\Project1.dpr
+  $(DCC)
+
+
