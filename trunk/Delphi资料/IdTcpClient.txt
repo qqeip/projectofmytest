@@ -1,0 +1,110 @@
+IdTCPClient和IdTCPServer主要属性
+2009年04月14日 星期二 下午 09:57
+IdTCPClient属性
+1 : IOHandler 如果有相应的输入/输出操作,那么IOHandler相对应的组件或接口将提供一个虚拟/抽象的输入/输出接口给相应的网络连接
+2 : Intercept 如果有一个网络连接正在使用,那么Intercept 提供的组件或接口将可以拦截相应的网络数据流中的数据
+3 : BoundIP 指定使用IdTCPClient组件的计算机系统的IP地址,也就是说,其中是空白那么什么样的计算机都可以使用,但如果指定的IP地址为239.126.12.2,那么就只有IP地址为239.126.12.2的计算机可以使用它.
+4 : BoundPort 网络端口的概念,指定使用IdTCPClient组件的计算机系统网络端口,也就是说,如果BoundPort中指定了以整数为端口的网络端口,那么通讯时就只能使用这个商品进行通讯
+5 : Host 如果不是使用BoundIP中的地址起先通讯,那么Host就是诣将要通讯的计算机系统的名称或它的IP地址,可以是计算机名也可以是IP地址.
+6 : Port 与BoundPort的概念是基本一样的,只是它与HOst相配合来决定IdTCPClient组件要与哪一个计算机系统中的什么样的网络通讯端口进行通讯
+
+方法
+IdTCPClient 主要使用Write,WriteBuffer,WriteCardinal,WriteFile,WriteHeader,WriteInteger,WriteLn,WriteRFCReply,WriteRFCStrings,WriteSmallInt,WriteStream,WriteStrings.通过它们 IdTCPClient 可以发送非常多的类型的数据到相应的服务端,而这些都是非常的简单
+如: Write的函数说明是:
+procedure Write(Const Aout : String) ; Virtual;
+它的目的很简单,就是发送一个字符串到相应的服务端.其中Aout就是被发送的字符串.
+而 WriteLn的函数说明是:
+procedure WriteLn(Const Aout : String = ''); Virtual;
+它的目的就是在Write的基础上,在被发送的字符串后加入相应的回车控件符.
+
+注意 : 虽然IdTCPClient可以直接使用,它不可以被单独的使用,它必须与相应的IdTCPServer组件相配合才能发挥特定的作用,当然,如果相应的网络系统中具有这样的TCP服务器应用,那么IdTCPClient也可以直接与它们进行通讯.
+
+IdTCPServer
+属性
+1 : Bindings 包括了相应的服务端所允许的所有的Socket(套接字)的相关信
+
+息,比如它们的IP地址和端口号
+2 : ListenQueue 是规定在服务端失效之前最多可以允许的监听网络连接的纯种
+
+数目.默认情况下它的值是15,但这个值可以根据自己的需要和系统的最大承受能力来
+
+进行改变
+3 : MaxConnects 它表示的内容就是服务端可以承载的最大的网络连接数目,如果
+
+它的值是0,那么就表明它没有最大的限制值,可以使用任意数目的连接.
+4 : MaxConnectionReply 与MaxConnects相配合,当连接数目大
+
+于MaxConnects的数目时,它将返回一个错误的信息,而这个信息是由TIdRFCReply
+
+类所定义的
+5 : ThreadMgr 就是使用相应的 ThreadMgr 组件来对于网络连接线程进行管
+
+理
+ 
+
+
+
+=====================================================
+//////////////////////////////////////////////////
+=====================================================
+
+
+利用IdTCPClient和IdTCPServer发送接受图片的例子
+减小字体 增大字体 作者佚名来源不详发布时间2009-3-30 9:00:12发布人admin本文主要讲解了利用IdTCPClient发送图片,IdTCPServer接受图片的方法，下面是关键代码：
+
+客户端：
+
+  //连接到服务器
+procedure TForm1.btn1Click(Sender: TObject);
+begin
+  with idtcpclient1 do
+   begin
+     Host:='127.0.0.1';
+     Port:=7788;
+     Connect;
+     if Connected then btn1.Enabled:=False;
+   end;
+end;
+   //发送图片
+procedure TForm1.btn2Click(Sender: TObject);
+var stream:TMemoryStream;  x:Integer;
+begin
+ if idtcpclient1.Connected then
+  begin
+    stream:=TMemoryStream.Create;
+    img1.Picture.Graphic.SaveToStream(stream);
+    x:=stream.Size;
+    idtcpclient1.WriteStream(stream,True,True,x);
+    ShowMessage(idtcpclient1.ReadLn);
+    stream.Free;
+  end;
+
+end;
+
+服务端：
+
+  //激活服务器
+procedure TForm1.btn1Click(Sender: TObject);
+begin
+  idtcpserver1.DefaultPort:=7788;
+  idtcpserver1.Active:=True;
+  btn1.Enabled:=False;
+end;
+//接受图片
+procedure TForm1.IdTCPServer1Execute(AThread: TIdPeerThread);
+var strem:TMemoryStream;  jpegimage:tjpegimage;
+begin
+   strem:=TMemoryStream.Create;
+   AThread.Connection.ReadStream(strem,-1,False);
+  try
+   strem.Position:=0;
+   img1.Picture.Graphic := nil;
+   jpegimage := tjpegimage.Create ;
+   jpegimage.LoadFromStream(strem);
+   img1.Picture.Graphic:=jpegimage;
+  finally
+   strem.Free;
+   jpegimage.Free ;
+   AThread.Connection.WriteLn('收到图片');
+  end;
+end;
