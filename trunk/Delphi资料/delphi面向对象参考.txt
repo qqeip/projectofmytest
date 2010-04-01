@@ -1,0 +1,513 @@
+DELPHI面向对象参考 
+
+ 
+
+一、类和对象
+
+类是对象的类型，是创建对象的模板。一个类可以创建多个对象，而一个对象总是属于某个类。类具有内部的属性（状态）和行为（操作）。
+
+对象是类的实例，具有区别于同类其他对象的属性集合。
+
+对象的声明存放于堆栈，对象的引用存放于堆。
+
+二、类的方法分类
+
+1、  普通方法
+
+不加任何修饰的方法为普通方法。普通方法必须调用类的实例进行访问。即必须
+
+建类的对象，调用方式为：对象.方法，声明方式为：
+
+procedure[function] 方法名(参数表)[:返回值]; 
+
+ 
+
+2、  构造方法
+
+构造方法用于创建类的实例，调用后返回类的句柄。构造方法可以有多个版本。声明方式是：
+
+          constructor 构造方法名(参数表); 
+
+ 
+
+3、  析构方法
+
+析构方法用于销毁类的实例，一般不建议直接调用析构方法，而采用调用对象.Free的方式进行对象释放。声明方式为：
+
+destructor 析构方法名(参数表); 
+
+ 
+
+4、  类方法
+
+类方法属于一个类，在运行时即存在于内存中。可使用类.方法的方式进行调用，即不需要创建类的实例。声明方式是在普通方法前加class：
+
+class procedure[function] 方法名(参数表)[:返回值]; 
+
+ 
+
+5、  消息处理方法
+
+消息处理方法和一个唯一的消息ID进行关联，用于响应动态分派的消息。声明方式：
+
+procedure 方法名(消息变元);message 消息ID;
+
+三、多态、继承、重载
+
+1、  静态方法
+
+静态方法由对象的类决定。属于“早期联编”，即在编译阶段就决定了方法的实现版本。一个类的实例可创建为其他类的实例，但是调用到同名方法时，使用的方法是声明该实例的类的静态方法，声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];
+
+2、  虚拟方法
+
+虚拟方法可实现“后期联编”，即在程序运行时可动态调用不同的方法版本，实现多态。所有类的虚拟方法在内存中建立了一张VMT（虚拟方法表），在调用时动态定位方法函数的位置。比动态方法多占用内存空间，但是速度较快。声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];virtual;
+
+3、  动态方法
+
+虚拟方法可实现“后期联编”，即在程序运行时可动态调用不同的方法版本，实现多态。本类的动态方法在内存中建立了一个DMT（动态方法表），在调用时根据动态方法唯一的编号定位方法地址。比虚拟方法少占用内存，但是速度较慢（因为可能用到祖先类的动态方法）。声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];dynamic;
+
+4、  抽象方法
+
+抽象方法不提供方法的实现脚本。只提供一个方法的签名（方法名称、参数表、返回值）。一般在高级别类中使用抽象方法。派生类对抽象方法进行覆盖、重载实现抽象方法脚本。使用抽象方法，必须创建实现了抽象方法的类（一般为派生类）才可使用。因为抽象方法也属于“后期联编”，因此必须和虚拟方法、动态方法结合，声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];virtual;abstract;
+
+procedure[function] 方法名(参数表)[:返回值];dynamic; abstract; 
+
+ 
+
+抽象方法提供了一种从高层次视图观察对象的方式
+
+5、  方法覆盖
+
+在父类中生命的静态方法、虚拟方法、动态方法，都可在派生类中进行同名签名登记。这将覆盖父类的这些方法。提供更特殊的功能，声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];override; 
+
+ 
+
+方法的覆盖提供了对类的多态性
+
+6、  方法重载
+
+在父类中生命的静态方法、虚拟方法、动态方法，都可在派生类中进行同名签名登记，但是需要不同的参数表。这将重载父类的这些方法。提供更特殊的功能，声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];overload; 
+
+ 
+
+方法的重载提供了对类的扩充性
+
+四、reintroduce、self、is、as
+
+1、  reintroduce
+
+当父类中以定义了一方法，派生类再定义同签名的方法将会隐藏父类的方法，如果不希望这种结果出现，可在派生类定义方法时，加此标志，声明方式：
+
+procedure[function] 方法名(参数表)[:返回值];reintroduce;
+
+2、  self
+
+self代表了实例对象自身。类的所有数据成员和函数成员都隐含存在于with self do结构范围内。使用方法：
+
+self.Edit1.text:=’’; 
+
+ 
+
+3、  is
+
+is用于进行实例对象的类型检查，以Boolean返回是否是该类实例（或派生类实例），使用方法：
+
+if Edit1 is Tedit then … 
+
+ 
+
+4、  as
+
+as用于进行对象的强制类型转换，一般适用于子类向父类的转换（特殊→一般），而从父类到子类的转换可能失败。在使用时，可结合is进行判断，使用方式：
+
+if Sender is Tedit then (Sender as TEdit).Text:=’’; 
+
+ 
+
+五、类内部成员可见性
+
+1、  类具有private、public、protected、published共4中访问属性。访问属性是指其他类对该类对象的可操作性，可读写性，以及其他类对本类中类方法（函数）的可操作性
+
+2、  private：本类内部使用；声明在同一单元的其他类可使用
+
+3、  public：本类、本类派生类、其他类都可访问
+
+4、  protected：本类、本类派生类可访问。其他类不可访问
+
+5、  published：所有类都可访问。
+
+综合举例：
+
+TClass1=class
+
+private
+
+  {内部数据/状态储存声明}
+
+  FName: string;
+
+  FAge: Integer;
+
+  {内部属性写方法声明}
+
+  procedure SetAge(const Value: Integer);
+
+protected
+
+  {保护虚方法声明}
+
+  procedure Eat;virtual;
+
+public
+
+  {公有属性/状态储存声明}
+
+  Sex: string;
+
+published
+
+  {公共属性发布声明}
+
+  {构造函数}
+
+  constructor create;
+
+  {具有读/写方法的属性声明}
+
+  property Name:string read FName write FName;
+
+  property Age: Integer read FAge write SetAge;
+
+end;
+
+TClass2=class
+
+private
+
+  FSex: string;
+
+published
+
+  constructor create;
+
+end;
+
+TClass11=class(TClass1)
+
+public
+
+  {覆盖了父类中同名的方法，提升了方法的可见性}
+
+  procedure Eat;override;
+
+end;
+
+  
+
+ 
+
+{ TClass1 }
+
+  
+
+ 
+
+constructor TClass1.create;
+
+begin
+
+end;
+
+  
+
+ 
+
+procedure TClass1.Eat;
+
+begin
+
+  
+
+ 
+
+end;
+
+  
+
+ 
+
+procedure TClass1.SetAge(const Value: Integer);
+
+begin
+
+  FAge := Value;
+
+end;
+
+  
+
+ 
+
+{ TClass2 }
+
+  
+
+ 
+
+constructor TClass2.create;
+
+var
+
+  c2:TClass2;
+
+begin
+
+  c2:=TClass2.create;
+
+  c2.FSex:='';
+
+  FreeAndNil(c2);
+
+end;
+
+  
+
+ 
+
+{ TClass11 }
+
+  
+
+ 
+
+procedure TClass11.Eat;
+
+begin
+
+  inherited;
+
+  
+
+ 
+
+end;
+
+  
+
+ 
+
+UML图-类图：
+
+6、  派生类可提升父类的可见性，却不可降低父类的可见性
+
+六、对象、对象引用、类引用、参数传递
+
+1、  对象之间通过消息传递（参数），进行互操作，使用其他类提供的服务（方法组合）；消息即对另一对象方法的调用或属性读写
+
+2、  对象分配在堆中、普通数据类型分配在栈中
+
+3、  对象名代表了该对象在栈中的位置，该位置存储的是对象在堆中的实际地址；普通变量名代表了该变量在栈中的位置，该位置存储的是具体数据，而该数据可能是其他变量/对象的地址
+
+4、  值参传递：传递的是具体的数值，进行处理后不会改变原值，其实传递的是该数据的一个副本
+
+5、  引用传递：传递的是对该变量/对象的地址引用，处理后可能会改变原值，传递的是同一个变量/对象的地址
+
+6、  类引用：类的类，形式为“class of type”，其中type代表该类可引用的类元类型。
+
+七、对象的创建、使用、销毁
+
+1、  创建：Create是 Tobject提供的默认构造函数，若从Tobject继承创建的类，自动继承该方法
+
+2、  销毁：Destroy是Tobject提供的默认析构函数，若从Tobject继承创建的类，自动继承该方法
+
+3、  使用：可使用if Assigned (对象名) 判断该对象是否存在；使用FreeAndNil(对象名)释放对象
+
+4、  克隆：继承自Tpersistent的类对象都具有克隆功能。使用对象2.Assign(对象1)的方式克隆
+
+5、  对象的属主：当对象拥有属主时，其生命周期由属主对象进行管理，无属主的对象需要进行手工管理。
+
+6、  对象的创建：先继承父类创建，再完成自身的创建
+
+7、  对象的释放：先释放自身，在完成父类的继承释放
+
+八、类及对象间的关系
+
+1、  继承：子类继承了父类的所有保护、公有、发布部分的数据成员及函数/过程成员
+
+2、  重载：不是类的特有。提供一个同名但参数不同的函数/过程，具有多个实现版本
+
+3、  覆盖：子类通过继承父类的函数/过程，重新定义了功能实现
+
+4、  引用：一个对象内部定义了另一个对象变量，即为引用关系
+
+5、  合成：对象内的各组成部分依赖于某一主体属性而同生共灭
+
+6、  聚合：对象内的各组成部分属于零散的简单组合关系，使用不同的服务组合成一个整体的功能
+
+九、接口
+
+1、  接口：具有某种特定的属性及函数/过程签名的定义，而没有实现。不具备内部数据成员。功能的调用是通过创建实现其功能签名的派生类完成的
+
+2、  接口必须具备3个方法：_AddRef/_Release/QueryInterface，最简单的方式是从TinterfacedObject继承
+
+3、  接口使用演示：
+
+IInterface=interface
+
+['{02960574-2025-46C3-9882-F79C3C67EA99}']
+
+  function GetName:string;
+
+  procedure Eat;
+
+end;
+
+  
+
+TPerson=class(TInterfacedObject,IInterface)
+
+private
+
+  FName: string;
+
+public
+
+  function GetName:string;virtual;
+
+  procedure Eat;dynamic;
+
+  procedure SayHello;virtual;abstract;
+
+published
+
+  constructor create;
+
+  destructor destory;
+
+  property Name:string read FName write FName;
+
+end;
+
+   TChinese=class(TPerson,IInterface)
+
+public
+
+  procedure SayHello(str:string);overload;
+
+  procedure SayHello;overload;override;
+
+published
+
+  constructor create;
+
+  destructor destory;
+
+end;
+
+ { TPerson }
+
+  constructor TPerson.create;
+
+begin
+
+  ShowMessage('TPerson.create');
+
+end;
+
+  
+
+ 
+
+destructor TPerson.destory;
+
+begin
+
+  ShowMessage('TPerson.destory');
+
+end;
+
+ 
+
+procedure TPerson.Eat;
+
+begin
+
+  ShowMessage('TPerson.Eat');
+
+end; 
+
+function TPerson.GetName: string;
+
+begin
+
+  result:='TPerson.GetName';
+
+end;
+
+{ TChinese }
+
+ 
+
+procedure TChinese.SayHello(str: string);
+
+begin
+
+  ShowMessage('TChinese.SayHello('+str+')');
+
+end;
+
+constructor TChinese.create;
+
+begin
+
+  ShowMessage('TChinese.create');
+
+end;
+
+ 
+
+destructor TChinese.destory;
+
+begin
+
+  ShowMessage('TChinese.destory');
+
+end;
+
+procedure TChinese.SayHello;
+
+begin
+
+  //inherited;
+
+  ShowMessage('TChinese.SayHello');
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+
+var
+
+  FMan:TPerson;
+
+begin
+
+  FMan:=TChinese.create;
+
+  FMan.SayHello;
+
+  FMan.Free;
+
+end;

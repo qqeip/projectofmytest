@@ -1,0 +1,77 @@
+SysUtils.Abort;  中断事务；
+
+delphi事务处理 收藏
+当一组语句构成一个事务处理时，如果一个语句没有执行成功，则所有的语句都不成功。如果你需要更新多个表中的数据，你不希望对一个表的操作失败，而对其它表的操作成功了。这时所有事务处理是有用的。 
+例如，假设某个时间有人在你的站点上买了东西，有关的交易信息存储在两个表中 。一个表用来保存买者的信用卡信息，另一个表包含了要买的商品的信息。 
+现在，假如有一个人正试图从你的站点上买东西。他的信用卡号码已经输入了第一个表中。但是，就在这时，发生了意外情况，一道闪电击中了你的服务器，使第二个表没有被更新。在这种情况下，当然最后是两个表都没有被更新过。你当然不想收这个人的钱去买他不想买的东西。使用事务处理，你可以防止第二个表没有被更新而第一个表被更新的情况出现： 
+<% 
+Set MyConn=Sever.CreateObject("ADODB.Connection") 
+MyConn.Open "FILEDSN=d:Program Files 
+　　　　　　 Common FilesODBCData SourcesMyData.dsn" 
+MyConn.BeginTrans 
+MyConn.Execute "INSERT CreditCard (CCNum) VALUES ('5555-55-444-44-4444')" 
+MyConn.Execute "INSERT Shipping (Address) VALUES('Paris,France')" 
+MyConn.CommitTrans 
+MyConn.Close 
+%> 
+在这个例子中，用BeginTrans方法和CommitTrans方法来标记事务处理的开始和结束。在BeginTrans方法被调用之后，CommitTRans方法被调用之前，不管出现什么错误，两个表都不会被更新。 
+你也可以恢复一个事务处理的操作（操作作废）。要做到这一点，应使用RollBackTrans方法。考虑如下的脚本： 
+
+<% 
+Set MyConn=Sever.CreateObject("ADODB.Connection") 
+MyConn.Open "FILEDSN=d:Program Files 
+　　　　　　 Common FilesODBCData SourcesMyData.dsn" 
+MyConn.BeginTrans 
+MyConn.Execute "INSERT CreditCard (CCNum) VALUES ('5555-55-444-44-4444')" 
+MyConn.Execute "INSERT Shipping (Address) VALUES('Paris,France')" 
+IF WEEKDAYNAME(WEEKDAY(DATE))="Sunday" THEN 
+　　MyConn.RollBackTrans 
+ELSE 
+　　MyConn.CommitTrans 
+END IF 
+MyConn.Close 
+%> 
+
+在这个例子中，使用了RollBackTrans方法，如果是星期天，就取消事务处理所做的操作。在星期天两个表都不能被更新。
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++
+=======================================
++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+1、 数据库只把记录的键值放入结果数据集中 
+2、 ADO Cursor Engine存取客户需要的记录 
+3、 OLE Provider再根据结果数据集中的键值字段到数据库中存取相应的数据 
+4、 根据键值找到的数据再放入结果数据集中事务管理功能：在使用ADO处理多个数据表的主从架构应用程式中，一定要记得激活事务管理的功能以保护更新的数据。 
+1、 激活事务管理功能： 
+Procedure ADODataSetBeforePost (Dataset: Dataset); 
+Begin   
+If (not ADOConnection.InTransaction) then 
+ADOConnection.BeginTrans; 
+End; 
+2、 在数据成功更新之后确定事务： 
+Procedure ADODataSetAfterPost (Dataset: Dataset); 
+Begin   
+If (ADOConnection.InTransaction) then 
+ADOConnection.CommitTrans; 
+End; 
+3、 最后，当更新数据发生错误时取消事务，以便正确释放系统资源： 
+Procedure ADODataSetPostError (Dataset: Dataset; E: EdatabaseError; var Action: TDataAction); 
+Begin   
+ADOConnection.RollbackTrans;         
+Action: =daAbort; 
+End; 
+RecordSet 的页面定位功能：例如 学生表中有1000笔数据，当页面的大小[PageSize]为10笔数据时，那么整个数据表就被分割成100个不同的页面[PageCount]。因此程式员指定的页面号码[AbsolutePage]为2，就能存取到11-20笔的数据。 
+AbsolutePage:改动当前Page的位置，设定这个属性能存取特定Page中的数据。这是个可擦写的属性。        PageCount:数据表中所有的记录数除以PageSize后得到的页数。这是个只读属性。        PageSize:指定没一个数据页中包含的数据笔数。这是个可擦写的属性。 RecordSet 的UpdateCriteria动态属性：        
+AdCriteriaKey:只在SQL命令的Where子句中使用键值字段值来寻找原来的记录。     AdCriteriaAllCols: 只在SQL命令的Where子句中使用所有字段值来寻找原来的记录。 AdCriteriaUpCols: 在SQL命令的Where子句中使用键值字段值及所有被修改字段值来寻找原来的记录。这是ADO使用的默认的设定。 
+AdCriteriaTimeStamp: 在SQL命令的Where子句中使用键值字段值及数据表中字段类型为TimeStamp的字段来寻找原来的记录。何谓客户端Cursor、服务器端Cursor？        
+ADO的CursorLocation分为两种：一种是客户端Cursor，另一种是服务器端Cursor。那么何谓CursorLocation呢？简单的说就是当客户端应用程式存取了一些数据之后，这些数据存储在什么地方？如果这些暂时的数据是存储在客户端的ADO驱动程式内存中，由客户端ADO引擎管理，这就称为客户端Cursor。相反，如果这些暂时的数据是存储在后端的数据库中，由后端数据库本身管理，就称为服务器端Cursor。        
+结论：使用Client-Side Cursor，再加上少量多次的存取方式，那么你的应用系统会非常有效率。 LockType：对于数据存取行为的影响大于对ADO执行效率的影响。其主要影响数据源服务器怎么锁定资源，及锁定资源的数量。 ReadOnly:只读锁，在使用Locate方法搜寻数据时，使用ReadOnly类型的LockType执行效率最高。 Optimistic:乐观锁 BatchOptimistic:批处理锁 Pessimistic:悲观锁        结论：在分布式多层应用系统或Internet/Intranet及电子商务中，不要使用Pessimistic的LockType，因为这不仅没有意义而且会损失执行效率。更严重的后果会造成系统死锁或发生数据不正确的情形。其次是在调用Locate方法搜寻数据时一般采用Client-Side Cursor、CacheSize的大小大约在100-1000之间、LockType采用Optimistic或BatchOptimistic。以达到最佳效率。 CacheSize： 1、 增加CacheSize能增加ADO应用程式的执行效率，因为这能减少网络的RoundTrips。 2、 增加CacheSize也增加了启动数据表的时间，但增加ADO应用程式的执行效率。 3、 当CacheSize接近1000时，ADO应用程式的执行效率在时间/空间比方面似乎是非常好的设定。 ExecuteOptions：        EoAsyncExecute:以异步的方式来执行命令。        EoAsyncFetch:当ADO存取了CacheSize指定的数据后，再以异步的方式存取其他的数据。 EoAsyncFetchNonBlocking:ADO以异步的方式执行命令，而且不会阻碍应用程式的执行。相对效率较高。 EoAsyncNoRecords:执行不会回传结果数据集的存储过程或命令。如果被执行的存储过程或命令回传的所有数据都会被丢弃。结论：当ADO执行完Action Query之后，会以事件的方式通知客户端应用程式。 OnFetchProgress:以异步存取数据时，会定时触发这个事件处理程式。 OnFetchComplete:当异步存取的数据完全存取完毕后，会触发这个事件处理程式。 Prepared和存储过程：        Prepared属性值会影响数据源在执行这些组件的Action Query时是否先编译这些SQL命令。如果Prepared属性值为True时，数据源只要编译一次即可重复执行这个存储过程。而不必在没一次这些组件提出SQL命令时都编译一次SQL命令为存储过程，再执行。排序数据: ADO数据集.SORT:=’字名  排序,字名 排序……’    (排序有   ASC DESC) ADO处理错误ERRORS(称错误集合对象) ……….PostError(..)….   Var Adoerrors:errors; Adoerror:error; Icount:integer; Begin    Adoerrors:=adoconn.errors;    For icount:=0 to adoerrors.count-1 do Begin   Adoerror:=adoerrors.item[icount];   Adoerror.number[source.description,helpfile.sqlstate]; End; End; ….. try…….except    result:=false;    raise; 
+
+
