@@ -309,5 +309,6 @@ object FormEditUser: TFormEditUser
     Caption = #21462#28040
     ModalResult = 2
     TabOrder = 2
+    OnClick = btnCancelClick
   end
 end

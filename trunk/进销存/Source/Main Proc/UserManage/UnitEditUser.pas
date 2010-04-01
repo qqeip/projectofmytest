@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ComCtrls, UnitUserManager;
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, UnitUserManager, ADODB;
 
 type
   TEditUserMode = (eumAdd, eumEdit);
@@ -47,8 +47,10 @@ type
     CHKLogOut: TCheckBox;
     procedure cbbUserLevelChange(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
   private
     { Private declarations }
+    AdoEdit: TAdoquery;
   public
     { Public declarations }
     class function Execute(aUser: TUser; aOperate: TEditUserMode): Boolean;
@@ -59,6 +61,8 @@ var
 
 implementation
 
+uses UnitDataModule;
+
 
 {$R *.dfm}
 
@@ -68,10 +72,11 @@ class function TFormEditUser.Execute(aUser: TUser; aOperate: TEditUserMode): Boo
 var
   iIndex: Integer;
   Dlg: TFormEditUser;
-  aRights: string;
+  aRights, lSqlStr: string;
 begin
   Result:= False;
   Dlg := TFormEditUser.Create(nil);
+  Dlg.AdoEdit:= TADOQuery.Create(Dlg);
   try
     case aOperate of
       eumAdd: Dlg.caption:= '新增操作员';
@@ -186,6 +191,23 @@ begin
       aUser.PassWord:= Dlg.lbledtPassword.Text;
       aUser.UserType:= Dlg.cbbUserLevel.ItemIndex;
       aUser.UserRights:= aRights;
+      case aOperate of
+        eumAdd: lSqlStr:= 'insert intto user(UserName,UserPWD,UserType,UserRights) values(:Name,:PWD,:Type,:Rights)';
+        eumEdit: lSqlStr:= 'update User Set UserName=:Name,UserPWD=:PWD,UserType=:Type,UserRights=:Rights' +
+                           ' where UserID=' + IntToStr(aUser.UserID);
+      end;
+      with Dlg.AdoEdit do
+      begin
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= lSqlStr;
+        Parameters.ParamByName('Name').Value:= Dlg.lbledtUserName.Text;
+        Parameters.ParamByName('PWD').Value:= Dlg.lbledtPassword.Text;
+        Parameters.ParamByName('Type').Value:= Dlg.cbbUserLevel.ItemIndex;
+        Parameters.ParamByName('Rights').Value:= aRights;
+        ExecSQL;
+      end;
     end;
   finally
     FreeAndNil(Dlg);
@@ -262,6 +284,11 @@ begin
     Exit;
   end;
   ModalResult := mrOk;
+end;
+
+procedure TFormEditUser.btnCancelClick(Sender: TObject);
+begin
+  Close;
 end;
 
 end.
