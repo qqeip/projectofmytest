@@ -16,6 +16,7 @@ type
   public
     { Public declarations }
     function LocateUser(aUserName, aUserPWD: string): Boolean;
+    function ChangePWD(aNewPWD: string): Boolean;
   end;
 
 var
@@ -67,6 +68,20 @@ begin
       result:= True;
     end;
     Active:= False;
+  end;
+end;
+
+function TDM.ChangePWD(aNewPWD: string): Boolean;
+begin
+  result:= False;
+  with ADOQuery do
+  begin
+    Active:= False;
+    SQL.Clear;
+    SQL.Text:= 'update user set UserPWD=''' + aNewPWD +
+               ''' where UserID=' + IntToStr(CurUser.UserID);
+    ExecSQL;
+    Result:= True;
   end;
 end;
 

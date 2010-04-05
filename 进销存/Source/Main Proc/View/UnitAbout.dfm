@@ -161,7 +161,7 @@ object FormAbout: TFormAbout
     Width = 112
     Height = 22
     AutoSize = False
-    Caption = '  '#26126'       '#26480
+    Caption = '  '#26126'  '#26480
     Font.Charset = GB2312_CHARSET
     Font.Color = 4194432
     Font.Height = -21
@@ -173,10 +173,10 @@ object FormAbout: TFormAbout
   object Label2: TLabel
     Left = 18
     Top = 60
-    Width = 86
+    Width = 93
     Height = 18
     AutoSize = False
-    Caption = '    '#36827#38144#23384
+    Caption = '  '#36827#38144#23384
     Font.Charset = GB2312_CHARSET
     Font.Color = clPurple
     Font.Height = -17
