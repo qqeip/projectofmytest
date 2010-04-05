@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, ComCtrls, UnitUserManager, ADODB;
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, UnitUserManager, ADODB, DB;
 
 type
   TEditUserMode = (eumAdd, eumEdit);
@@ -187,14 +187,18 @@ begin
         aRights := aRights + 'S';
       if Dlg.CHKLogOut.Checked then
         aRights := aRights + 'T';
-      aUser.UserName:= Dlg.lbledtUserName.Text;
-      aUser.PassWord:= Dlg.lbledtPassword.Text;
-      aUser.UserType:= Dlg.cbbUserLevel.ItemIndex;
-      aUser.UserRights:= aRights;
+
       case aOperate of
-        eumAdd: lSqlStr:= 'insert intto user(UserName,UserPWD,UserType,UserRights) values(:Name,:PWD,:Type,:Rights)';
-        eumEdit: lSqlStr:= 'update User Set UserName=:Name,UserPWD=:PWD,UserType=:Type,UserRights=:Rights' +
-                           ' where UserID=' + IntToStr(aUser.UserID);
+        eumAdd: lSqlStr:= 'insert into User(UserName,UserPWD,UserType,UserRights) values(:Name,:PWD,:Type,:Rights)';
+        eumEdit:
+          begin
+            aUser.UserName:= Dlg.lbledtUserName.Text;
+            aUser.PassWord:= Dlg.lbledtPassword.Text;
+            aUser.UserType:= Dlg.cbbUserLevel.ItemIndex;
+            aUser.UserRights:= aRights;
+            lSqlStr:= 'update User Set UserName=:Name,UserPWD=:PWD,UserType=:Type,UserRights=:Rights' +
+                      ' where UserID=' + IntToStr(aUser.UserID);
+          end;
       end;
       with Dlg.AdoEdit do
       begin
@@ -202,6 +206,12 @@ begin
         Connection:= DM.ADOConnection;
         SQL.Clear;
         SQL.Text:= lSqlStr;
+        Parameters.ParamByName('Name').DataType:= ftString;
+        Parameters.ParamByName('Name').Direction:=pdInput;
+        Parameters.ParamByName('PWD').DataType:= ftString;
+        Parameters.ParamByName('Type').DataType:= ftInteger;
+        Parameters.ParamByName('Rights').DataType:= ftString;
+
         Parameters.ParamByName('Name').Value:= Dlg.lbledtUserName.Text;
         Parameters.ParamByName('PWD').Value:= Dlg.lbledtPassword.Text;
         Parameters.ParamByName('Type').Value:= Dlg.cbbUserLevel.ItemIndex;

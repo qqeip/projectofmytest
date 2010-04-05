@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, ComCtrls, StdCtrls, ADODB;
+  Dialogs, Buttons, ComCtrls, StdCtrls, ADODB, UnitUserManager;
 
 type
   TFormUserManage = class(TForm)
@@ -28,6 +28,7 @@ type
 
     procedure ClearListView;
     procedure GetUserInfo;
+    procedure ListViewAddNode(aUser: Tuser; aUserRightsStr: string);
   public
     { Public declarations }
   end;
@@ -37,7 +38,7 @@ var
 
 implementation
 
-uses UnitUserManager, UnitDataModule, UnitPublicResourceManager,
+uses UnitDataModule, UnitPublicResourceManager,
   UnitEditUser;
 
 {$R *.dfm}
@@ -69,7 +70,10 @@ begin
   with TFormEditUser.create(nil) do
   begin
     try
-      ShowModal;
+      if TFormEditUser.Execute(nil, eumAdd) then
+      begin
+        GetUserInfo;
+      end;
     finally
       Free;
     end;
@@ -87,7 +91,7 @@ begin
       Exit;
     if TFormEditUser.Execute(TUser(lListItem.Data), eumEdit) then
     begin
-      ShowMessage(TUser(lListItem.Data).UserName);
+      GetUserInfo;
     end;
   end;
 end;
@@ -137,7 +141,6 @@ end;
 procedure TFormUserManage.GetUserInfo;
 var
   lUser: TUser;
-  lNewListItem: TListItem;
   lUserRightsStr: string;
 begin
   ClearListView;
@@ -161,13 +164,20 @@ begin
         0: lUserRightsStr:= '管理员';
         1: lUserRightsStr:= '营业员';
       end; 
-      lNewListItem:= ListUser.Items.Add;
-      lNewListItem.Data:= lUser;
-      lNewListItem.Caption:= lUser.UserName;
-      lNewListItem.SubItems.Add(lUserRightsStr);
+      ListViewAddNode(lUser, lUserRightsStr);
       Next;
     end;
   end;
+end;
+
+procedure TFormUserManage.ListViewAddNode(aUser: Tuser; aUserRightsStr: string);
+var
+  lNewListItem: TListItem;
+begin
+  lNewListItem:= ListUser.Items.Add;
+  lNewListItem.Data:= aUser;
+  lNewListItem.Caption:= aUser.UserName;
+  lNewListItem.SubItems.Add(aUserRightsStr);
 end;
 
 end.
