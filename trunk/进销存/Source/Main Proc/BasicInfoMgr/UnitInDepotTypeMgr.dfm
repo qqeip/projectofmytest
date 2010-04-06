@@ -615,26 +615,34 @@ object FormInDepotTypeMgr: TFormInDepotTypeMgr
     Width = 526
     Height = 94
     Align = alBottom
-    Caption = #20179#24211#20449#24687#35774#32622
+    Caption = #20837#24211#31867#22411#35774#32622
     TabOrder = 1
     object Label1: TLabel
       Left = 27
-      Top = 31
-      Width = 89
+      Top = 30
+      Width = 80
       Height = 13
       AutoSize = False
-      Caption = #20837#24211#31867#22411#21517#31216#65306
+      Caption = #20837#24211#31867#22411#32534#21495#65306
     end
     object Label2: TLabel
       Left = 27
       Top = 56
-      Width = 89
+      Width = 80
       Height = 13
       AutoSize = False
       Caption = #20837#24211#31867#22411#35828#26126#65306
     end
-    object EdtInDepotTypeName: TEdit
-      Left = 117
+    object Label3: TLabel
+      Left = 251
+      Top = 30
+      Width = 80
+      Height = 13
+      AutoSize = False
+      Caption = #20837#24211#31867#22411#21517#31216#65306
+    end
+    object EdtInDepotTypeID: TEdit
+      Left = 112
       Top = 28
       Width = 121
       Height = 19
@@ -643,9 +651,18 @@ object FormInDepotTypeMgr: TFormInDepotTypeMgr
       TabOrder = 0
     end
     object EdtInDepotTypeComment: TEdit
-      Left = 117
+      Left = 112
       Top = 53
       Width = 371
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 2
+    end
+    object EdtInDepotTypeName: TEdit
+      Left = 336
+      Top = 28
+      Width = 147
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
@@ -658,7 +675,7 @@ object FormInDepotTypeMgr: TFormInDepotTypeMgr
     Width = 526
     Height = 196
     Align = alClient
-    Caption = #20179#24211#35814#32454#20449#24687
+    Caption = #20837#24211#31867#22411#20449#24687
     TabOrder = 2
     object cxGridInDepotType: TcxGrid
       Left = 2

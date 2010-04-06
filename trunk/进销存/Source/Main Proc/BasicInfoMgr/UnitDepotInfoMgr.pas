@@ -22,10 +22,12 @@ type
     Btn_Delete: TSpeedButton;
     Btn_Close: TSpeedButton;
     DataSourceDepot: TDataSource;
-    Label1: TLabel;
+    LabelDepotID: TLabel;
     Label2: TLabel;
     EdtDepotName: TEdit;
     EdtDepotComment: TEdit;
+    EdtDepotID: TEdit;
+    LabelDepotName: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
@@ -85,7 +87,7 @@ end;
 
 procedure TFormDepotInfoMgr.AddcxGridViewField;
 begin
-  AddViewField(cxGridDepotDBTableView1,'DEPOTID','内部编号');
+  AddViewField(cxGridDepotDBTableView1,'DEPOTID','仓库编号');
   AddViewField(cxGridDepotDBTableView1,'DEPOTNAME','仓库名称');
   AddViewField(cxGridDepotDBTableView1,'COMMENT','仓库说明', 378);
 end;
@@ -97,7 +99,7 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'select * from depot';
+    SQL.Text:= 'select * from depot order by depotid';
     Active:= True;
     DataSourceDepot.DataSet:= AdoDepotQuery;
   end;
@@ -105,9 +107,20 @@ end;
 
 procedure TFormDepotInfoMgr.Btn_AddClick(Sender: TObject);
 begin
+  if EdtDepotID.Text='' then
+  begin
+    Application.MessageBox('仓库编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtDepotName.Text='' then
   begin
-    Application.MessageBox('仓库名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('仓库名称不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
+  if IsExistID('DEPOTID', 'DEPOT', EdtDepotID.Text) then
+  begin
+    Application.MessageBox('仓库编号已存在！','提示',MB_OK+64);
+    Exit;
   end;
 //  wit·h AdoDepotEdit do
 //  begin
@@ -122,6 +135,7 @@ begin
   try
     IsRecordChanged:= True;
     AdoDepotQuery.Append;
+    AdoDepotQuery.FieldByName('DEPOTID').AsInteger:= StrToInt(EdtDepotID.Text);
     AdoDepotQuery.FieldByName('DEPOTNAME').AsString:= EdtDepotName.Text;
     AdoDepotQuery.FieldByName('COMMENT').AsString:= EdtDepotComment.Text;
     AdoDepotQuery.Post;
@@ -134,13 +148,27 @@ end;
 
 procedure TFormDepotInfoMgr.Btn_ModifyClick(Sender: TObject);
 begin
+  if EdtDepotID.Text='' then
+  begin
+    Application.MessageBox('仓库编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtDepotName.Text='' then
   begin
-    Application.MessageBox('仓库名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('仓库名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if EdtDepotID.Text<> AdoDepotQuery.fieldbyname('DEPOTID').AsString then
+    if IsExistID('DEPOTID', 'DEPOT', EdtDepotID.Text) then
+    begin
+      Application.MessageBox('仓库编号已存在！','提示',MB_OK+64);
+      Exit;
+    end;
+
   try
     IsRecordChanged:= True;
     AdoDepotQuery.Edit;
+    AdoDepotQuery.FieldByName('DEPOTID').AsString:= EdtDepotID.Text;
     AdoDepotQuery.FieldByName('DEPOTNAME').AsString:= EdtDepotName.Text;
     AdoDepotQuery.FieldByName('COMMENT').AsString:= EdtDepotComment.Text;
     AdoDepotQuery.Post;
@@ -174,6 +202,7 @@ procedure TFormDepotInfoMgr.cxGridDepotDBTableView1FocusedRecordChanged(
   ANewItemRecordFocusingChanged: Boolean);
 begin
   if IsRecordChanged then Exit;
+  EdtDepotID.Text:= AdoDepotQuery.fieldbyname('DEPOTID').AsString;
   EdtDepotName.Text:= AdoDepotQuery.fieldbyname('DEPOTNAME').AsString;
   EdtDepotComment.Text:= AdoDepotQuery.fieldbyname('COMMENT').AsString;
 end;

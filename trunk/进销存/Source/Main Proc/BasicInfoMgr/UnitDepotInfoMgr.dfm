@@ -55,13 +55,13 @@ object FormDepotInfoMgr: TFormDepotInfoMgr
     Align = alBottom
     Caption = #20179#24211#20449#24687#35774#32622
     TabOrder = 1
-    object Label1: TLabel
+    object LabelDepotID: TLabel
       Left = 40
-      Top = 32
+      Top = 31
       Width = 70
       Height = 13
       AutoSize = False
-      Caption = #20179#24211#21517#31216#65306
+      Caption = #20179#24211#32534#21495#65306
     end
     object Label2: TLabel
       Left = 40
@@ -71,14 +71,22 @@ object FormDepotInfoMgr: TFormDepotInfoMgr
       AutoSize = False
       Caption = #20179#24211#35828#26126#65306
     end
+    object LabelDepotName: TLabel
+      Left = 288
+      Top = 31
+      Width = 70
+      Height = 13
+      AutoSize = False
+      Caption = #20179#24211#21517#31216#65306
+    end
     object EdtDepotName: TEdit
-      Left = 110
+      Left = 360
       Top = 28
       Width = 121
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 0
+      TabOrder = 1
     end
     object EdtDepotComment: TEdit
       Left = 110
@@ -87,7 +95,16 @@ object FormDepotInfoMgr: TFormDepotInfoMgr
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 1
+      TabOrder = 2
+    end
+    object EdtDepotID: TEdit
+      Left = 110
+      Top = 28
+      Width = 121
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 0
     end
   end
   object Panel1: TPanel

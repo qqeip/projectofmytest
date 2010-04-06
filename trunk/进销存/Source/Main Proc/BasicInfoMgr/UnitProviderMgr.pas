@@ -14,7 +14,7 @@ type
     GroupBox2: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
-    EdtProviderName: TEdit;
+    EdtProviderID: TEdit;
     EdtProviderComment: TEdit;
     Panel1: TPanel;
     Btn_Add: TSpeedButton;
@@ -26,6 +26,8 @@ type
     cxGridProviderDBTableView1: TcxGridDBTableView;
     cxGridProviderLevel1: TcxGridLevel;
     DataSourceProvider: TDataSource;
+    Label3: TLabel;
+    EdtProviderName: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -85,9 +87,9 @@ end;
 
 procedure TFormProviderMgr.AddcxGridViewField;
 begin
-  AddViewField(cxGridProviderDBTableView1,'ProviderID','内部编号');
+  AddViewField(cxGridProviderDBTableView1,'ProviderID','供货商编号',85);
   AddViewField(cxGridProviderDBTableView1,'ProviderName','供货商名称', 85);
-  AddViewField(cxGridProviderDBTableView1,'COMMENT','供货商说明', 358);
+  AddViewField(cxGridProviderDBTableView1,'COMMENT','供货商说明', 338);
 end;
 
 procedure TFormProviderMgr.LoadProviderInfo;
@@ -97,7 +99,7 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'select * from Provider';
+    SQL.Text:= 'select * from Provider order by ProviderID';
     Active:= True;
     DataSourceProvider.DataSet:= AdoDepotQuery;
   end;
@@ -105,13 +107,25 @@ end;
 
 procedure TFormProviderMgr.Btn_AddClick(Sender: TObject);
 begin
-if EdtProviderName.Text='' then
+  if EdtProviderID.Text='' then
   begin
-    Application.MessageBox('供货商名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('供货商编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
+  if EdtProviderName.Text='' then
+  begin
+    Application.MessageBox('供货商名称不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
+  if IsExistID('ProviderID', 'Provider', EdtProviderID.Text) then
+  begin
+    Application.MessageBox('供货商编号已存在！','提示',MB_OK+64);
+    Exit;
   end;
   try
     IsRecordChanged:= True;
     AdoDepotQuery.Append;
+    AdoDepotQuery.FieldByName('ProviderID').AsString:= EdtProviderID.Text;
     AdoDepotQuery.FieldByName('ProviderName').AsString:= EdtProviderName.Text;
     AdoDepotQuery.FieldByName('COMMENT').AsString:= EdtProviderComment.Text;
     AdoDepotQuery.Post;
@@ -124,13 +138,27 @@ end;
 
 procedure TFormProviderMgr.Btn_ModifyClick(Sender: TObject);
 begin
+  if EdtProviderID.Text='' then
+  begin
+    Application.MessageBox('供货商编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtProviderName.Text='' then
   begin
-    Application.MessageBox('供货商名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('供货商名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if EdtProviderID.Text<> AdoDepotQuery.fieldbyname('ProviderID').AsString then
+    if IsExistID('ProviderID', 'Provider', EdtProviderID.Text) then
+    begin
+      Application.MessageBox('供货商编号已存在！','提示',MB_OK+64);
+      Exit;
+    end;
+
   try
     IsRecordChanged:= True;
     AdoDepotQuery.Edit;
+    AdoDepotQuery.FieldByName('ProviderID').AsString:= EdtProviderID.Text;
     AdoDepotQuery.FieldByName('ProviderName').AsString:= EdtProviderName.Text;
     AdoDepotQuery.FieldByName('COMMENT').AsString:= EdtProviderComment.Text;
     AdoDepotQuery.Post;
@@ -164,6 +192,7 @@ procedure TFormProviderMgr.cxGridProviderDBTableView1FocusedRecordChanged(
   ANewItemRecordFocusingChanged: Boolean);
 begin
   if IsRecordChanged then Exit;
+  EdtProviderID.Text:= AdoDepotQuery.fieldbyname('ProviderID').AsString;
   EdtProviderName.Text:= AdoDepotQuery.fieldbyname('ProviderName').AsString;
   EdtProviderComment.Text:= AdoDepotQuery.fieldbyname('COMMENT').AsString;
 end;

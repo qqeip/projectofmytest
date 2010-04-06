@@ -38,6 +38,8 @@ type
     EdtMeasureUnit: TEdit;
     EdtSize: TEdit;
     DataSourceGoods: TDataSource;
+    Label8: TLabel;
+    EdtGoodsID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -98,7 +100,7 @@ end;
 
 procedure TFormGoodsMgr.AddcxGridViewField;
 begin
-  AddViewField(cxGridGoodsDBTableView1,'GoodsID','内部编号');
+  AddViewField(cxGridGoodsDBTableView1,'GoodsID','商品编号');
   AddViewField(cxGridGoodsDBTableView1,'BarCode','条形编码');
   AddViewField(cxGridGoodsDBTableView1,'GoodsName','商品名称');
   AddViewField(cxGridGoodsDBTableView1,'MeasureUnit','计量单位');
@@ -116,7 +118,8 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'SELECT Goods.*, Provider.ProviderName FROM Goods INNER JOIN Provider ON Provider.ProviderID=Goods.ProviderID';
+    SQL.Text:= 'SELECT Goods.*, Provider.ProviderName FROM Goods INNER JOIN Provider ON Provider.ProviderID=Goods.ProviderID' +
+               ' order by GoodsID';
     Active:= True;
     DataSourceGoods.DataSet:= AdoQuery;
   end;
@@ -124,10 +127,22 @@ end;
 
 procedure TFormGoodsMgr.Btn_AddClick(Sender: TObject);
 begin
+  if EdtGoodsID.Text='' then
+  begin
+    Application.MessageBox('商品编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtGoodsName.Text='' then
   begin
-    Application.MessageBox('商品名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('商品名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if IsExistID('GoodsID', 'Goods', EdtGoodsID.Text) then
+  begin
+    Application.MessageBox('商品编号已存在！','提示',MB_OK+64);
+    Exit;
+  end;
+  
   try
     IsRecordChanged:= True;
     with AdoEdit do
@@ -136,8 +151,10 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       SQL.Text:= 'insert into Goods(' +
-                 'BarCode, GoodsName, CostPrice,SalePrice, ProducingArea, ProviderID,MeasureUnit,GoodsSize)' +
-                 'values(:BarCode,:Name,:CostPrice,:SalePrice,:ProducingArea,:ProviderID,:MeasureUnit,:GoodsSize)';
+                 'GoodsID,BarCode, GoodsName, CostPrice,SalePrice, ProducingArea, ProviderID,MeasureUnit,GoodsSize)' +
+                 'values(:ID,:BarCode,:Name,:CostPrice,:SalePrice,:ProducingArea,:ProviderID,:MeasureUnit,:GoodsSize)';
+      Parameters.ParamByName('ID').DataType:= ftInteger;
+      Parameters.ParamByName('ID').Direction:=pdInput;
       Parameters.ParamByName('BarCode').DataType:= ftString;
       Parameters.ParamByName('BarCode').Direction:=pdInput;
       Parameters.ParamByName('Name').DataType:=ftString;
@@ -148,6 +165,7 @@ begin
       Parameters.ParamByName('MeasureUnit').DataType:= ftString;
       Parameters.ParamByName('GoodsSize').DataType:= ftString;
 
+      Parameters.ParamByName('ID').Value:= StrToInt(EdtGoodsID.Text);
       Parameters.ParamByName('BarCode').Value:= EdtBarCode.Text;
       Parameters.ParamByName('Name').Value:=EdtGoodsName.Text;
       Parameters.ParamByName('CostPrice').Value:= StrToFloat(EdtCostPrice.Text);
@@ -170,10 +188,23 @@ procedure TFormGoodsMgr.Btn_ModifyClick(Sender: TObject);
 var
   lSqlStr: string;
 begin
+  if EdtGoodsID.Text='' then
+  begin
+    Application.MessageBox('商品编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtGoodsName.Text='' then
   begin
-    Application.MessageBox('商品名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('商品名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if EdtGoodsID.Text<> AdoQuery.fieldbyname('GoodsID').AsString then
+    if IsExistID('GoodsID', 'Goods', EdtGoodsID.Text) then
+    begin
+      Application.MessageBox('商品编号已存在！','提示',MB_OK+64);
+      Exit;
+    end;
+    
   try
     IsRecordChanged:= True;
     with AdoEdit do
@@ -182,6 +213,7 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       lSqlStr := 'update Goods Set ' +
+                 'GoodsID=' + EdtGoodsID.Text + ',' +
                  'BarCode=''' + EdtBarCode.Text + ''',' +
                  'GoodsName=''' + EdtGoodsName.Text + ''',' +
                  'CostPrice=' + EdtCostPrice.Text + ',' +
@@ -238,6 +270,7 @@ begin
   if IsRecordChanged then Exit;
   with AdoQuery do
   begin
+    EdtGoodsID.Text:= FieldByName('GoodsID').AsString;
     EdtBarCode.Text:= FieldByName('BarCode').AsString;
     EdtGoodsName.Text:= FieldByName('GoodsName').AsString;
     EdtCostPrice.Text:= FieldByName('CostPrice').AsString;

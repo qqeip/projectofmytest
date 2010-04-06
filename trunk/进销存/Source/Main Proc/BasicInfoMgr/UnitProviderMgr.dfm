@@ -24,26 +24,34 @@ object FormProviderMgr: TFormProviderMgr
     Width = 526
     Height = 94
     Align = alBottom
-    Caption = #20250#21592#31867#22411#20449#24687#35774#32622
+    Caption = #20379#36135#21830#20449#24687#35774#32622
     TabOrder = 0
     object Label1: TLabel
       Left = 32
-      Top = 32
-      Width = 100
+      Top = 31
+      Width = 80
       Height = 13
       AutoSize = False
-      Caption = #20250#21592#31867#22411#21517#31216#65306
+      Caption = #20379#36135#21830#32534#21495#65306
     end
     object Label2: TLabel
       Left = 32
       Top = 56
-      Width = 100
+      Width = 80
       Height = 13
       AutoSize = False
-      Caption = #20250#21592#31867#22411#35828#26126#65306
+      Caption = #20379#36135#21830#35828#26126#65306
     end
-    object EdtProviderName: TEdit
-      Left = 129
+    object Label3: TLabel
+      Left = 280
+      Top = 31
+      Width = 80
+      Height = 13
+      AutoSize = False
+      Caption = #20379#36135#21830#21517#31216#65306
+    end
+    object EdtProviderID: TEdit
+      Left = 117
       Top = 28
       Width = 121
       Height = 19
@@ -52,9 +60,18 @@ object FormProviderMgr: TFormProviderMgr
       TabOrder = 0
     end
     object EdtProviderComment: TEdit
-      Left = 129
+      Left = 117
       Top = 53
-      Width = 371
+      Width = 370
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 2
+    end
+    object EdtProviderName: TEdit
+      Left = 366
+      Top = 28
+      Width = 121
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
@@ -659,7 +676,7 @@ object FormProviderMgr: TFormProviderMgr
     Width = 526
     Height = 196
     Align = alClient
-    Caption = #20250#21592#31867#22411#35814#32454#20449#24687
+    Caption = #20379#36135#21830#35814#32454#20449#24687
     TabOrder = 2
     object cxGridProvider: TcxGrid
       Left = 2
