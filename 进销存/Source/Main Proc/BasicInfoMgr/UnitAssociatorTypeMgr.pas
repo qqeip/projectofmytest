@@ -17,15 +17,21 @@ type
     Btn_Delete: TSpeedButton;
     Btn_Close: TSpeedButton;
     GroupBox2: TGroupBox;
-    Label1: TLabel;
+    LabelAssociatorTypeID: TLabel;
     Label2: TLabel;
-    EdtAssociatorTypeName: TEdit;
+    EdtAssociatorTypeID: TEdit;
     EdtAssociatorTypeComment: TEdit;
     GroupBox1: TGroupBox;
     cxGridAssociatorType: TcxGrid;
     cxGridAssociatorTypeDBTableView1: TcxGridDBTableView;
     cxGridAssociatorTypeLevel1: TcxGridLevel;
     DataSourceAssociatorType: TDataSource;
+    EdtAssociatorTypeName: TEdit;
+    LabelAssociatorTypeName: TLabel;
+    Label1: TLabel;
+    EdtDiscount: TEdit;
+    Label3: TLabel;
+    EdtIntegralRuler: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -40,7 +46,7 @@ type
       ANewItemRecordFocusingChanged: Boolean);
   private
     { Private declarations }
-    AdoDepotQuery: TAdoquery;
+    AdoQuery: TAdoquery;
     FCxGridHelper : TCxGridSet;
     IsRecordChanged: Boolean;
 
@@ -61,7 +67,7 @@ uses UnitDataModule, UnitPublic;
 
 procedure TFormAssociatorTypeMgr.FormCreate(Sender: TObject);
 begin
-  AdoDepotQuery:= TADOQuery.Create(Self);
+  AdoQuery:= TADOQuery.Create(Self);
   FCxGridHelper:=TCxGridSet.Create;
   FCxGridHelper.SetGridStyle(cxGridAssociatorType,true,false,true);
 end;
@@ -85,36 +91,52 @@ end;
 
 procedure TFormAssociatorTypeMgr.AddcxGridViewField;
 begin
-  AddViewField(cxGridAssociatorTypeDBTableView1,'AssociatorTypeID','内部编号');
+  AddViewField(cxGridAssociatorTypeDBTableView1,'AssociatorTypeID','会员类型编号',85);
   AddViewField(cxGridAssociatorTypeDBTableView1,'AssociatorTypeName','会员类型名称', 85);
-  AddViewField(cxGridAssociatorTypeDBTableView1,'COMMENT','会员类型说明', 358);
+  AddViewField(cxGridAssociatorTypeDBTableView1,'Discount','享受折扣');
+  AddViewField(cxGridAssociatorTypeDBTableView1,'IntegralRuler','积分规则');
+  AddViewField(cxGridAssociatorTypeDBTableView1,'COMMENT','会员类型说明', 208);
 end;
 
 procedure TFormAssociatorTypeMgr.LoadAssociatorTypeInfo;
 begin
-  with AdoDepotQuery do
+  with AdoQuery do
   begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'select * from AssociatorType';
+    SQL.Text:= 'select * from AssociatorType order by AssociatorTypeID';
     Active:= True;
-    DataSourceAssociatorType.DataSet:= AdoDepotQuery;
+    DataSourceAssociatorType.DataSet:= AdoQuery;
   end;
 end;
 
 procedure TFormAssociatorTypeMgr.Btn_AddClick(Sender: TObject);
 begin
+  if EdtAssociatorTypeID.Text='' then
+  begin
+    Application.MessageBox('会员类型编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtAssociatorTypeName.Text='' then
   begin
-    Application.MessageBox('会员类型名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('会员类型名称不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
+  if IsExistID('AssociatorTypeID', 'AssociatorType', EdtAssociatorTypeID.Text) then
+  begin
+    Application.MessageBox('会员类型编号已存在！','提示',MB_OK+64);
+    Exit;
   end;
   try
     IsRecordChanged:= True;
-    AdoDepotQuery.Append;
-    AdoDepotQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
-    AdoDepotQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
-    AdoDepotQuery.Post;
+    AdoQuery.Append;
+    AdoQuery.FieldByName('AssociatorTypeID').AsString:= EdtAssociatorTypeID.Text;
+    AdoQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
+    AdoQuery.FieldByName('Discount').AsString:= EdtDiscount.Text;
+    AdoQuery.FieldByName('IntegralRuler').AsInteger:= StrToInt(EdtIntegralRuler.Text);
+    AdoQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
+    AdoQuery.Post;
     IsRecordChanged:= False;
     Application.MessageBox('新增成功！','提示',MB_OK+64);
   except
@@ -124,16 +146,31 @@ end;
 
 procedure TFormAssociatorTypeMgr.Btn_ModifyClick(Sender: TObject);
 begin
+  if EdtAssociatorTypeID.Text='' then
+  begin
+    Application.MessageBox('会员类型编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtAssociatorTypeName.Text='' then
   begin
-    Application.MessageBox('会员类型名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('会员类型名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if EdtAssociatorTypeID.Text<> AdoQuery.fieldbyname('AssociatorTypeID').AsString then
+    if IsExistID('AssociatorTypeID', 'AssociatorType', EdtAssociatorTypeID.Text) then
+    begin
+      Application.MessageBox('仓库编号已存在！','提示',MB_OK+64);
+      Exit;
+    end;
   try
     IsRecordChanged:= True;
-    AdoDepotQuery.Edit;
-    AdoDepotQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
-    AdoDepotQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
-    AdoDepotQuery.Post;
+    AdoQuery.Edit;
+    AdoQuery.FieldByName('AssociatorTypeID').AsString:= EdtAssociatorTypeID.Text;
+    AdoQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
+    AdoQuery.FieldByName('Discount').AsString:= EdtDiscount.Text;
+    AdoQuery.FieldByName('IntegralRuler').AsInteger:= StrToInt(EdtIntegralRuler.Text);
+    AdoQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
+    AdoQuery.Post;
     IsRecordChanged:= False;
     Application.MessageBox('修改成功！','提示',MB_OK+64);
   except
@@ -145,7 +182,7 @@ procedure TFormAssociatorTypeMgr.Btn_DeleteClick(Sender: TObject);
 begin
   try
     IsRecordChanged:= True;
-    AdoDepotQuery.Delete;
+    AdoQuery.Delete;
     IsRecordChanged:= False;
     Application.MessageBox('删除成功！','提示',MB_OK+64);
   except
@@ -164,8 +201,11 @@ procedure TFormAssociatorTypeMgr.cxGridAssociatorTypeDBTableView1FocusedRecordCh
   ANewItemRecordFocusingChanged: Boolean);
 begin
   if IsRecordChanged then Exit;
-  EdtAssociatorTypeName.Text:= AdoDepotQuery.fieldbyname('AssociatorTypeName').AsString;
-  EdtAssociatorTypeComment.Text:= AdoDepotQuery.fieldbyname('COMMENT').AsString;
+  EdtAssociatorTypeID.Text:= AdoQuery.fieldbyname('AssociatorTypeID').AsString;
+  EdtAssociatorTypeName.Text:= AdoQuery.fieldbyname('AssociatorTypeName').AsString;
+  EdtDiscount.Text:= AdoQuery.FieldByName('Discount').AsString;
+  EdtIntegralRuler.Text:= IntToStr(AdoQuery.FieldByName('IntegralRuler').AsInteger);
+  EdtAssociatorTypeComment.Text:= AdoQuery.fieldbyname('COMMENT').AsString;
 end;
 
 end.

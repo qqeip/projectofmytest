@@ -617,25 +617,49 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     Align = alBottom
     Caption = #20250#21592#31867#22411#20449#24687#35774#32622
     TabOrder = 1
-    object Label1: TLabel
-      Left = 32
-      Top = 32
-      Width = 100
+    object LabelAssociatorTypeID: TLabel
+      Left = 29
+      Top = 21
+      Width = 80
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31867#22411#21517#31216#65306
     end
     object Label2: TLabel
-      Left = 32
-      Top = 56
-      Width = 100
+      Left = 29
+      Top = 69
+      Width = 80
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31867#22411#35828#26126#65306
     end
-    object EdtAssociatorTypeName: TEdit
-      Left = 129
-      Top = 28
+    object LabelAssociatorTypeName: TLabel
+      Left = 268
+      Top = 21
+      Width = 80
+      Height = 13
+      AutoSize = False
+      Caption = #20250#21592#31867#22411#21517#31216#65306
+    end
+    object Label1: TLabel
+      Left = 29
+      Top = 45
+      Width = 80
+      Height = 13
+      AutoSize = False
+      Caption = #20250#21592#20139#21463#25240#25187#65306
+    end
+    object Label3: TLabel
+      Left = 268
+      Top = 45
+      Width = 80
+      Height = 13
+      AutoSize = False
+      Caption = #20250#21592#31215#20998#35268#21017#65306
+    end
+    object EdtAssociatorTypeID: TEdit
+      Left = 116
+      Top = 18
       Width = 121
       Height = 19
       Ctl3D = False
@@ -643,13 +667,43 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       TabOrder = 0
     end
     object EdtAssociatorTypeComment: TEdit
-      Left = 129
-      Top = 53
-      Width = 371
+      Left = 116
+      Top = 66
+      Width = 361
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 4
+    end
+    object EdtAssociatorTypeName: TEdit
+      Left = 356
+      Top = 18
+      Width = 121
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
+    end
+    object EdtDiscount: TEdit
+      Left = 116
+      Top = 42
+      Width = 121
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 2
+    end
+    object EdtIntegralRuler: TEdit
+      Left = 356
+      Top = 42
+      Width = 121
+      Height = 19
+      Hint = #28385'100'#20803#31215#22810#23569#31215#20998
+      Ctl3D = False
+      ParentCtl3D = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
     end
   end
   object GroupBox1: TGroupBox

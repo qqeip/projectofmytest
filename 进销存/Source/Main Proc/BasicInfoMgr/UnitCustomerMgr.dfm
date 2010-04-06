@@ -26,197 +26,214 @@ object FormCustomerMgr: TFormCustomerMgr
     Caption = #23458#25143#20449#24687#35774#32622
     TabOrder = 0
     object Label1: TLabel
-      Left = 28
+      Left = 203
       Top = 22
-      Width = 65
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #23458#25143#21517#31216#65306
     end
     object Label2: TLabel
       Left = 28
-      Top = 48
-      Width = 65
+      Top = 47
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31867#22411#65306
     end
     object Label3: TLabel
-      Left = 206
-      Top = 22
-      Width = 65
+      Left = 203
+      Top = 47
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #24615'    '#21035#65306
     end
     object Label4: TLabel
-      Left = 385
-      Top = 22
-      Width = 65
+      Left = 379
+      Top = 47
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #29983'    '#26085#65306
     end
     object Label5: TLabel
-      Left = 28
+      Left = 203
       Top = 74
-      Width = 65
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #20844#21496#30005#35805#65306
     end
     object Label6: TLabel
-      Left = 206
+      Left = 379
       Top = 74
-      Width = 65
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #22266#23450#30005#35805#65306
     end
     object Label7: TLabel
-      Left = 385
-      Top = 48
-      Width = 65
+      Left = 28
+      Top = 74
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #25163#26426#21495#30721#65306
     end
-    object Label8: TLabel
-      Left = 385
-      Top = 74
-      Width = 65
-      Height = 13
-      AutoSize = False
-      Caption = 'Email'#65306
-    end
     object Label10: TLabel
-      Left = 300
-      Top = 100
+      Left = 379
+      Top = 99
       Width = 65
       Height = 13
       AutoSize = False
       Caption = #23478#24237#20303#22336#65306
     end
     object Label9: TLabel
-      Left = 28
-      Top = 100
-      Width = 65
+      Left = 203
+      Top = 99
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #20844#21496#22320#22336#65306
     end
     object Label11: TLabel
-      Left = 206
-      Top = 48
-      Width = 65
+      Left = 379
+      Top = 22
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #23458#25143#31215#20998#65306
     end
+    object Label8: TLabel
+      Left = 28
+      Top = 99
+      Width = 60
+      Height = 13
+      AutoSize = False
+      Caption = 'Email'#65306
+    end
+    object Label12: TLabel
+      Left = 28
+      Top = 22
+      Width = 60
+      Height = 13
+      AutoSize = False
+      Caption = #23458#25143#32534#21495#65306
+    end
     object EdtCustomerName: TEdit
-      Left = 97
+      Left = 265
       Top = 19
-      Width = 90
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 0
+      TabOrder = 1
     end
     object CBCustomerSex: TComboBox
-      Left = 275
-      Top = 19
-      Width = 90
+      Left = 265
+      Top = 44
+      Width = 100
       Height = 21
       Style = csDropDownList
       ItemHeight = 13
       ItemIndex = 0
-      TabOrder = 1
+      TabOrder = 4
       Text = #30007
       Items.Strings = (
         #30007
         #22899)
     end
     object DTPCustomerBirthday: TDateTimePicker
-      Left = 455
-      Top = 19
-      Width = 90
+      Left = 443
+      Top = 44
+      Width = 100
       Height = 21
       Date = 40260.968971527780000000
       Format = 'yyyy-MM-dd'
       Time = 40260.968971527780000000
-      TabOrder = 2
+      TabOrder = 5
     end
     object CBAssociatorType: TComboBox
-      Left = 97
+      Left = 90
       Top = 44
-      Width = 90
+      Width = 100
       Height = 21
       Style = csDropDownList
       ItemHeight = 13
       TabOrder = 3
     end
     object EdtOfficePhone: TEdit
-      Left = 97
+      Left = 265
       Top = 71
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 4
-    end
-    object EdtFamilyPhone: TEdit
-      Left = 275
-      Top = 71
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 5
-    end
-    object EdtMobilePhone: TEdit
-      Left = 455
-      Top = 44
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 6
-    end
-    object EdtEmail: TEdit
-      Left = 455
-      Top = 71
-      Width = 90
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 7
     end
-    object EdtFamilyAddress: TEdit
-      Left = 375
-      Top = 96
-      Width = 170
+    object EdtFamilyPhone: TEdit
+      Left = 443
+      Top = 71
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 8
     end
-    object EdtOfficeAddress: TEdit
-      Left = 97
+    object EdtMobilePhone: TEdit
+      Left = 90
+      Top = 71
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 6
+    end
+    object EdtFamilyAddress: TEdit
+      Left = 443
       Top = 96
-      Width = 170
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 11
+    end
+    object EdtOfficeAddress: TEdit
+      Left = 265
+      Top = 96
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 10
+    end
+    object EdtCustomerIntegral: TEdit
+      Left = 443
+      Top = 19
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 2
+    end
+    object EdtEmail: TEdit
+      Left = 90
+      Top = 96
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 9
     end
-    object EdtCustomerIntegral: TEdit
-      Left = 275
-      Top = 44
-      Width = 90
+    object EdtCustomerID: TEdit
+      Left = 90
+      Top = 19
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 10
+      TabOrder = 0
     end
   end
   object Panel1: TPanel

@@ -19,13 +19,15 @@ type
     GroupBox2: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
-    EdtInDepotTypeName: TEdit;
+    EdtInDepotTypeID: TEdit;
     EdtInDepotTypeComment: TEdit;
     GroupBox1: TGroupBox;
     cxGridInDepotType: TcxGrid;
     cxGridInDepotTypeDBTableView1: TcxGridDBTableView;
     cxGridInDepotTypeLevel1: TcxGridLevel;
     DataSourceInDepotType: TDataSource;
+    Label3: TLabel;
+    EdtInDepotTypeName: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -77,9 +79,9 @@ end;
 
 procedure TFormInDepotTypeMgr.AddcxGridViewField;
 begin
-  AddViewField(cxGridInDepotTypeDBTableView1,'InDepotTypeID','内部编号');
+  AddViewField(cxGridInDepotTypeDBTableView1,'InDepotTypeID','入库类型编号',85);
   AddViewField(cxGridInDepotTypeDBTableView1,'InDepotTypeNAME','入库类型名称', 85);
-  AddViewField(cxGridInDepotTypeDBTableView1,'COMMENT','入库类型说明', 358);
+  AddViewField(cxGridInDepotTypeDBTableView1,'COMMENT','入库类型说明', 338);
 end;
 
 procedure TFormInDepotTypeMgr.LoadInDepotTypeInfo;
@@ -89,7 +91,7 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'select * from InDepotType';
+    SQL.Text:= 'select * from InDepotType order by InDepotTypeID';
     Active:= True;
     DataSourceInDepotType.DataSet:= AdoQuery;
   end;
@@ -97,13 +99,26 @@ end;
 
 procedure TFormInDepotTypeMgr.Btn_AddClick(Sender: TObject);
 begin
+  if EdtInDepotTypeID.Text='' then
+  begin
+    Application.MessageBox('入库类型编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtInDepotTypeName.Text='' then
   begin
-    Application.MessageBox('入库类型名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('入库类型名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if IsExistID('InDepotTypeID', 'InDepotType', EdtInDepotTypeID.Text) then
+  begin
+    Application.MessageBox('入库类型编号已存在！','提示',MB_OK+64);
+    Exit;
+  end;
+
   try
     IsRecordChanged:= True;
     AdoQuery.Append;
+    AdoQuery.FieldByName('INDEPOTTYPEID').AsString:= EdtInDepotTypeID.Text;
     AdoQuery.FieldByName('INDEPOTTYPENAME').AsString:= EdtInDepotTypeName.Text;
     AdoQuery.FieldByName('COMMENT').AsString:= EdtInDepotTypeComment.Text;
     AdoQuery.Post;
@@ -116,13 +131,27 @@ end;
 
 procedure TFormInDepotTypeMgr.Btn_ModifyClick(Sender: TObject);
 begin
+  if EdtInDepotTypeID.Text='' then
+  begin
+    Application.MessageBox('入库类型编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtInDepotTypeName.Text='' then
   begin
-    Application.MessageBox('入库类型名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('入库类型名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if EdtInDepotTypeID.Text<> AdoQuery.fieldbyname('InDepotTypeID').AsString then
+    if IsExistID('InDepotTypeID', 'InDepotType', EdtInDepotTypeID.Text) then
+    begin
+      Application.MessageBox('入库类型编号已存在！','提示',MB_OK+64);
+      Exit;
+    end;
+
   try
     IsRecordChanged:= True;
     AdoQuery.Edit;
+    AdoQuery.FieldByName('INDEPOTTYPEID').AsString:= EdtInDepotTypeID.Text;
     AdoQuery.FieldByName('INDEPOTTYPENAME').AsString:= EdtInDepotTypeName.Text;
     AdoQuery.FieldByName('COMMENT').AsString:= EdtInDepotTypeComment.Text;
     AdoQuery.Post;
@@ -156,6 +185,7 @@ procedure TFormInDepotTypeMgr.cxGridInDepotTypeDBTableView1FocusedRecordChanged(
   ANewItemRecordFocusingChanged: Boolean);
 begin
   if IsRecordChanged then Exit;
+  EdtInDepotTypeID.Text:= AdoQuery.fieldbyname('InDepotTypeID').AsString;
   EdtInDepotTypeName.Text:= AdoQuery.fieldbyname('InDepotTypeName').AsString;
   EdtInDepotTypeComment.Text:= AdoQuery.fieldbyname('COMMENT').AsString;
 end;

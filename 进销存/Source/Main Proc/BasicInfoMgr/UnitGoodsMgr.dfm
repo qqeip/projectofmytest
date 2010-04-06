@@ -618,142 +618,159 @@ object FormGoodsMgr: TFormGoodsMgr
     Caption = #23458#25143#20449#24687#35774#32622
     TabOrder = 1
     object Label1: TLabel
-      Left = 28
+      Left = 200
       Top = 22
-      Width = 65
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #21830#21697#21517#31216#65306
     end
     object Label2: TLabel
       Left = 28
-      Top = 48
-      Width = 65
+      Top = 47
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #26465#24418#32534#30721#65306
     end
     object Label3: TLabel
-      Left = 206
-      Top = 22
-      Width = 65
+      Left = 200
+      Top = 47
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #35745#37327#21333#20301#65306
     end
     object Label4: TLabel
-      Left = 385
-      Top = 22
-      Width = 65
+      Left = 376
+      Top = 47
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #35268#26684#22411#21495#65306
     end
     object Label5: TLabel
       Left = 28
-      Top = 74
-      Width = 65
+      Top = 73
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #25104#26412#20215#26684#65306
     end
     object Label6: TLabel
-      Left = 206
-      Top = 74
-      Width = 65
+      Left = 200
+      Top = 73
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #38144#21806#20215#26684#65306
     end
     object Label7: TLabel
-      Left = 385
-      Top = 48
-      Width = 65
+      Left = 376
+      Top = 73
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #21830#21697#20135#22320#65306
     end
     object Label11: TLabel
-      Left = 206
-      Top = 48
-      Width = 65
+      Left = 376
+      Top = 22
+      Width = 60
       Height = 13
       AutoSize = False
       Caption = #20027#20379#36135#21830#65306
     end
+    object Label8: TLabel
+      Left = 28
+      Top = 22
+      Width = 60
+      Height = 13
+      AutoSize = False
+      Caption = #21830#21697#32534#21495#65306
+    end
     object EdtGoodsName: TEdit
-      Left = 97
+      Left = 263
       Top = 19
-      Width = 90
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 0
+      TabOrder = 1
     end
     object CBProvider: TComboBox
-      Left = 279
-      Top = 45
-      Width = 90
+      Left = 446
+      Top = 19
+      Width = 100
       Height = 21
       Style = csDropDownList
       Ctl3D = False
       ItemHeight = 13
       ParentCtl3D = False
-      TabOrder = 1
-    end
-    object EdtCostPrice: TEdit
-      Left = 97
-      Top = 70
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
       TabOrder = 2
     end
-    object EdtSalePrice: TEdit
-      Left = 279
+    object EdtCostPrice: TEdit
+      Left = 89
       Top = 70
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 3
-    end
-    object EdtProduceArea: TEdit
-      Left = 455
-      Top = 45
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 4
-    end
-    object EdtBarCode: TEdit
-      Left = 97
-      Top = 45
-      Width = 90
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 5
-    end
-    object EdtMeasureUnit: TEdit
-      Left = 279
-      Top = 19
-      Width = 90
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 6
     end
-    object EdtSize: TEdit
-      Left = 455
-      Top = 19
-      Width = 90
+    object EdtSalePrice: TEdit
+      Left = 263
+      Top = 70
+      Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 7
+    end
+    object EdtProduceArea: TEdit
+      Left = 446
+      Top = 70
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 8
+    end
+    object EdtBarCode: TEdit
+      Left = 89
+      Top = 44
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 3
+    end
+    object EdtMeasureUnit: TEdit
+      Left = 263
+      Top = 44
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 4
+    end
+    object EdtSize: TEdit
+      Left = 446
+      Top = 44
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 5
+    end
+    object EdtGoodsID: TEdit
+      Left = 89
+      Top = 19
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 0
     end
   end
   object GroupBox1: TGroupBox

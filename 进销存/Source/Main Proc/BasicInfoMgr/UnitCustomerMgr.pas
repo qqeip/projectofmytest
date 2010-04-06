@@ -37,14 +37,16 @@ type
     EdtFamilyPhone: TEdit;
     Label7: TLabel;
     EdtMobilePhone: TEdit;
-    Label8: TLabel;
-    EdtEmail: TEdit;
     Label10: TLabel;
     EdtFamilyAddress: TEdit;
     Label9: TLabel;
     EdtOfficeAddress: TEdit;
     Label11: TLabel;
     EdtCustomerIntegral: TEdit;
+    Label8: TLabel;
+    EdtEmail: TEdit;
+    Label12: TLabel;
+    EdtCustomerID: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -106,18 +108,18 @@ end;
 
 procedure TFormCustomerMgr.AddcxGridViewField;
 begin
-  AddViewField(cxGridCustomerDBTableView1,'CustomerID','内部编号');
+  AddViewField(cxGridCustomerDBTableView1,'CustomerID','客户编号');
   AddViewField(cxGridCustomerDBTableView1,'CustomerName','客户名称');
-  AddViewField(cxGridCustomerDBTableView1,'CustomerSexName','性别');
-  AddViewField(cxGridCustomerDBTableView1,'CustomerBirthday','客户生日');
-  AddViewField(cxGridCustomerDBTableView1,'AssociatorTypeName','会员类型');
   AddViewField(cxGridCustomerDBTableView1,'CustomerIntegral','客户积分');
+  AddViewField(cxGridCustomerDBTableView1,'AssociatorTypeName','会员类型');
+  AddViewField(cxGridCustomerDBTableView1,'CustomerSexName','性别');
+  AddViewField(cxGridCustomerDBTableView1,'CustomerBirthday','客户生日'); 
   AddViewField(cxGridCustomerDBTableView1,'CustomerOfficePhone','公司电话');
   AddViewField(cxGridCustomerDBTableView1,'CustomerFamilyPhone','固定电话');
   AddViewField(cxGridCustomerDBTableView1,'CustomerMobilePhone','手机号');
+  AddViewField(cxGridCustomerDBTableView1,'CustomerEmail','Email');
   AddViewField(cxGridCustomerDBTableView1,'CustomerFamilyAddress','家庭住址');
   AddViewField(cxGridCustomerDBTableView1,'CustomerOfficeAddress','公司地址');
-  AddViewField(cxGridCustomerDBTableView1,'CustomerEmail','Email');
 end;
 
 procedure TFormCustomerMgr.LoadCustomerInfo;
@@ -129,7 +131,8 @@ begin
     SQL.Clear;
     SQL.Text:= 'select a.*,b.AssociatorTypeName, IIf(CustomerSex=0,''男'',iif(CustomerSex=1,''女'')) AS CustomerSexName' +
                ' from Customer a,AssociatorType b' +
-               ' where a.CustomerAssociatorTypeID=b.AssociatorTypeID';
+               ' where a.CustomerAssociatorTypeID=b.AssociatorTypeID' +
+               ' order by a.CustomerID';
     Active:= True;
     DataSourceCustomer.DataSet:= AdoQuery;
   end;
@@ -137,9 +140,20 @@ end;
 
 procedure TFormCustomerMgr.Btn_AddClick(Sender: TObject);
 begin
+  if EdtCustomerID.Text='' then
+  begin
+    Application.MessageBox('客户编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtCustomerName.Text='' then
   begin
-    Application.MessageBox('客户名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('客户名称不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
+  if IsExistID('CustomerID', 'Customer', EdtCustomerID.Text) then
+  begin
+    Application.MessageBox('客户编号已存在！','提示',MB_OK+64);
+    Exit;
   end;
   try
     IsRecordChanged:= True;
@@ -149,11 +163,13 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       SQL.Text:= 'insert into Customer(' +
-                 'CustomerName, CustomerSex, CustomerBirthday, CustomerAssociatorTypeID, ' +
+                 'CustomerID,CustomerName, CustomerSex, CustomerBirthday, CustomerAssociatorTypeID, ' +
                  'CustomerIntegral, CustomerOfficePhone, CustomerFamilyPhone, CustomerMobilePhone, ' +
                  'CustomerFamilyAddress, CustomerOfficeAddress, CustomerEmail) ' +
-                 'values(:name,:sex,:firthday,:associatortypeid,:integral,:officephone,:familyphone,' +
+                 'values(:ID,:name,:sex,:firthday,:associatortypeid,:integral,:officephone,:familyphone,' +
                  ':mobilephone,:familyaddress,:officeaddress,:email)';
+      Parameters.ParamByName('ID').DataType:= ftInteger;
+      Parameters.ParamByName('ID').Direction:=pdInput;
       Parameters.ParamByName('name').DataType:= ftString;
       Parameters.ParamByName('name').Direction:=pdInput;
       Parameters.ParamByName('sex').DataType:= ftInteger;
@@ -167,6 +183,7 @@ begin
       Parameters.ParamByName('officeaddress').DataType:= ftString;
       Parameters.ParamByName('email').DataType:= ftString;
 
+      Parameters.ParamByName('ID').Value:= StrToInt(EdtCustomerID.Text);
       Parameters.ParamByName('name').Value:= EdtCustomerName.Text;
       Parameters.ParamByName('sex').Value:= CBCustomerSex.ItemIndex;
       Parameters.ParamByName('firthday').Value:= DTPCustomerBirthday.Date;
@@ -192,10 +209,23 @@ procedure TFormCustomerMgr.Btn_ModifyClick(Sender: TObject);
 var
   lSqlStr: string;
 begin
+  if EdtCustomerID.Text='' then
+  begin
+    Application.MessageBox('客户编号不能为空！','提示',MB_OK+64);
+    Exit;
+  end;
   if EdtCustomerName.Text='' then
   begin
-    Application.MessageBox('客户名称不能为空！','提示',MB_OK+64)
+    Application.MessageBox('客户名称不能为空！','提示',MB_OK+64);
+    Exit;
   end;
+  if EdtCustomerID.Text<> AdoQuery.fieldbyname('CustomerID').AsString then
+    if IsExistID('CustomerID', 'Customer', EdtCustomerID.Text) then
+    begin
+      Application.MessageBox('客户编号已存在！','提示',MB_OK+64);
+      Exit;
+    end;
+
   try
     IsRecordChanged:= True;
     with AdoEdit do
@@ -204,6 +234,7 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       lSqlStr := 'update Customer set ' +
+                 'CustomerID=' + EdtCustomerID.Text + ',' + 
                  'CustomerName=''' + EdtCustomerName.Text + ''',' +
                  'CustomerSex=' + IntToStr(CBCustomerSex.ItemIndex) + ',' +
                  'CustomerBirthday=cdate(''' + DateToStr(DTPCustomerBirthday.Date) + '''),' +
@@ -263,6 +294,7 @@ begin
   if IsRecordChanged then Exit;
   with AdoQuery do
   begin
+    EdtCustomerID.Text:=FieldByName('CustomerID').AsString;
     EdtCustomerName.Text:=FieldByName('CustomerName').AsString;
     CBCustomerSex.ItemIndex:= FieldByName('CustomerSex').AsInteger;
     DTPCustomerBirthday.Date:= FieldByName('CustomerBirthday').AsDateTime;
