@@ -19,7 +19,8 @@ type
   procedure ClearTStrings(List: TStrings);
   function GetItemCode(DicName:string;Items:TStrings):integer;  //Combbox读取对象ID
   procedure SetItemCode(aTableName, aFieldID, aFieldName, aWhere: string; DicCodeItems:TStrings);
-
+  function IsExistID(aFieldID, aTableName, aFieldValue: string): Boolean; //添加、修改操作时-判断编号是否已存在
+  function GetID(aFieldID, aTableName: string): Integer;     //获取ID
   
 implementation
 
@@ -107,5 +108,51 @@ end;
     end;
   end;
 
+  function IsExistID(aFieldID, aTableName, aFieldValue: string): Boolean; //添加、修改操作时-判断编号是否已存在
+  var
+    lAdoQuery: TAdoQuery;
+  begin
+    Result:= False;
+    lAdoQuery:= TAdoQuery.Create(nil);
+    try
+      with lAdoQuery do
+      begin
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT * from ' + aTableName + ' where ' + aFieldID + '=' + aFieldValue;
+        Active:= True;
+        if RecordCount=0 then
+          Result:= False
+        else
+          Result:= True;
+        Close;
+      end;
+    finally
+      lAdoQuery.Free;
+    end;
+  end;
+
+  function GetID(aFieldID, aTableName: string): Integer;     //获取ID
+  var
+    lAdoQuery: TAdoQuery;
+  begin
+    Result:= -1;
+    lAdoQuery:= TAdoQuery.Create(nil);
+    try
+      with lAdoQuery do
+      begin
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT Max(' + aFieldID + ') AS NEWID from ' + aTableName;
+        Active:= True;
+        Result:= FieldByName('NEWID').AsInteger + 1;
+        Close;
+      end;
+    finally
+      lAdoQuery.Free;
+    end;
+  end;
 
 end.
