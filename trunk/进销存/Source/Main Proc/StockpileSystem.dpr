@@ -20,7 +20,9 @@ uses
   UnitInDepotTypeMgr in 'BasicInfoMgr\UnitInDepotTypeMgr.pas' {FormInDepotTypeMgr},
   UnitOutDepotTypeMgr in 'BasicInfoMgr\UnitOutDepotTypeMgr.pas' {FormOutDepotTypeMgr},
   UnitEditUser in 'UserManage\UnitEditUser.pas' {FormEditUser},
-  UnitUserManage in 'UserManage\UnitUserManage.pas' {FormUserManage};
+  UnitUserManage in 'UserManage\UnitUserManage.pas' {FormUserManage},
+  UnitChangePWD in 'UserManage\UnitChangePWD.pas' {FormChangePWD},
+  UnitLockSystem in 'View\UnitLockSystem.pas' {FormLockSystem};
 
 {$R *.res}
 var
