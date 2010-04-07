@@ -7,7 +7,7 @@ uses
   Dialogs, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxEdit, DB, cxDBData, Buttons, cxGridLevel, cxClasses,
   cxControls, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, ExtCtrls, StdCtrls, CxGridUnit, ADODB;
+  cxGridDBTableView, cxGrid, ExtCtrls, StdCtrls, CxGridUnit, ADODB, Clipbrd;
 
 type
   TFormDepotInfoMgr = class(TForm)
@@ -40,6 +40,9 @@ type
       Sender: TcxCustomGridTableView; APrevFocusedRecord,
       AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure EdtDepotIDKeyPress(Sender: TObject; var Key: Char);
+    procedure EdtDepotIDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     AdoDepotQuery: TAdoquery;
@@ -205,6 +208,21 @@ begin
   EdtDepotID.Text:= AdoDepotQuery.fieldbyname('DEPOTID').AsString;
   EdtDepotName.Text:= AdoDepotQuery.fieldbyname('DEPOTNAME').AsString;
   EdtDepotComment.Text:= AdoDepotQuery.fieldbyname('COMMENT').AsString;
+end;
+
+procedure TFormDepotInfoMgr.EdtDepotIDKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  InPutChar(Key);
+end;
+
+procedure TFormDepotInfoMgr.EdtDepotIDKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if shift = [ssctrl] then
+    case key of
+      ord('V'): EdtDepotID.Text:= EdtDepotID.Text + Clipboard.asText;
+    end;
 end;
 
 end.

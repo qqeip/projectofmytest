@@ -118,7 +118,7 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'SELECT Goods.*, Provider.ProviderName FROM Goods INNER JOIN Provider ON Provider.ProviderID=Goods.ProviderID' +
+    SQL.Text:= 'SELECT Goods.*, Provider.ProviderName FROM Goods LEFT JOIN Provider ON Provider.ProviderID=Goods.ProviderID' +
                ' order by GoodsID';
     Active:= True;
     DataSourceGoods.DataSet:= AdoQuery;
@@ -141,6 +141,10 @@ begin
   begin
     Application.MessageBox('商品编号已存在！','提示',MB_OK+64);
     Exit;
+  end;
+  if CBProvider.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请选择供货商！','提示',MB_OK+64);
   end;
   
   try
