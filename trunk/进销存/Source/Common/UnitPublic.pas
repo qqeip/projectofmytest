@@ -21,6 +21,7 @@ type
   procedure SetItemCode(aTableName, aFieldID, aFieldName, aWhere: string; DicCodeItems:TStrings);
   function IsExistID(aFieldID, aTableName, aFieldValue: string): Boolean; //添加、修改操作时-判断编号是否已存在
   function GetID(aFieldID, aTableName: string): Integer;     //获取ID
+  procedure InPutChar(var key: Char); //输入框只允许输入【0..9,.】不允许输入字母
   
 implementation
 
@@ -152,6 +153,14 @@ end;
       end;
     finally
       lAdoQuery.Free;
+    end;
+  end;
+
+  procedure InPutChar(var key: Char);
+  begin
+    if not (key in ['0'..'9',#8,#13,#38,#40]) then
+    begin
+      Key := #0;
     end;
   end;
 
