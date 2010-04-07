@@ -40,7 +40,6 @@ type
     ToolBtnInDepot: TToolButton;
     ToolButton2: TToolButton;
     ImageList1: TImageList;
-    Panel1: TPanel;
     ToolBtnOutDepot: TToolButton;
     ToolBtnExit: TToolButton;
     MenuDataAnalyse: TMenuItem;
@@ -88,6 +87,8 @@ type
     procedure NMaxClick(Sender: TObject);
     procedure NMinClick(Sender: TObject);
     procedure NCloseClick(Sender: TObject);
+    procedure FormTabChange(Sender: TObject; NewTab: Integer;
+      var AllowChange: Boolean);
   private
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
@@ -711,6 +712,12 @@ begin
 
   if FormTab.TabIndex>-1 then
   TForm(FormTab.Tabs.Objects[FormTab.TabIndex]).Show;
+end;
+
+procedure TFormMain.FormTabChange(Sender: TObject; NewTab: Integer;
+  var AllowChange: Boolean);
+begin
+  TForm(FormTab.Tabs.Objects[NewTab]).Show;
 end;
 
 end.

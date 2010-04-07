@@ -91,14 +91,6 @@ object FormMain: TFormMain
       OnClick = ToolBtnExitClick
     end
   end
-  object Panel1: TPanel
-    Left = 0
-    Top = 36
-    Width = 862
-    Height = 372
-    Align = alClient
-    TabOrder = 2
-  end
   object FormTab: TTabSet
     Left = 0
     Top = 408
@@ -112,6 +104,7 @@ object FormMain: TFormMain
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     PopupMenu = PopupMenuTab
+    OnChange = FormTabChange
   end
   object MainMenu1: TMainMenu
     Left = 112
