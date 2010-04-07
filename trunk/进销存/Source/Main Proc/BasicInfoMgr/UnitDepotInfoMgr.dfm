@@ -105,6 +105,8 @@ object FormDepotInfoMgr: TFormDepotInfoMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
+      OnKeyDown = EdtDepotIDKeyDown
+      OnKeyPress = EdtDepotIDKeyPress
     end
   end
   object Panel1: TPanel
