@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, WinSkinData, cxGraphics, ImgList, ComCtrls, ToolWin,
-  cxControls, dxStatusBar, ExtCtrls, ShellAPI;
+  cxControls, dxStatusBar, ExtCtrls, ShellAPI, Tabs;
 
 type
   TFormMain = class(TForm)
@@ -37,17 +37,23 @@ type
     NOutDepotTypeMgr: TMenuItem;
     SystemStatusBar: TdxStatusBar;
     ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
+    ToolBtnInDepot: TToolButton;
     ToolButton2: TToolButton;
     ImageList1: TImageList;
     Panel1: TPanel;
-    ToolButton3: TToolButton;
+    ToolBtnOutDepot: TToolButton;
     ToolBtnExit: TToolButton;
     MenuDataAnalyse: TMenuItem;
     NCustomAnalyse: TMenuItem;
     NBalanceAnalyse: TMenuItem;
     NRepertoryAnalyse: TMenuItem;
     SkinData: TSkinData;
+    FormTab: TTabSet;
+    PopupMenuTab: TPopupMenu;
+    NRestore: TMenuItem;
+    NMax: TMenuItem;
+    NMin: TMenuItem;
+    NClose: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -76,8 +82,17 @@ type
     procedure NUserChangePassClick(Sender: TObject);
     procedure NSystemLockClick(Sender: TObject);
     procedure NLogOutClick(Sender: TObject);
+    procedure ToolBtnInDepotClick(Sender: TObject);
+    procedure ToolBtnOutDepotClick(Sender: TObject);
+    procedure NRestoreClick(Sender: TObject);
+    procedure NMaxClick(Sender: TObject);
+    procedure NMinClick(Sender: TObject);
+    procedure NCloseClick(Sender: TObject);
   private
     procedure CheckUserRights(aRights: string);
+    procedure AddToTab(aForm: TForm);
+    procedure SetTabIndex(Form: TForm);
+    procedure RemoveForm(aForm: TForm);
 //    procedure LockSystem(aEnabled: Boolean);
     { Private declarations }
   public
@@ -107,7 +122,7 @@ uses UnitLogIn, UnitPublicResourceManager, UnitResource,
      UnitUserManager, UnitAbout, UnitDataModule, UnitDepotInfoMgr,
   UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
-  UnitChangePWD, UnitLockSystem;
+  UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr;
 
 {$R *.dfm}
 
@@ -426,7 +441,15 @@ end;
 
 procedure TFormMain.NInDepotMgrClick(Sender: TObject);
 begin
-//
+  if not assigned(FormInDepotMgr) then
+  begin
+    FormInDepotMgr:=TFormInDepotMgr.Create(self);
+    AddToTab(FormInDepotMgr);
+  end
+  else
+    SetTabIndex(FormInDepotMgr);
+  FormInDepotMgr.WindowState:=wsMaximized;
+  FormInDepotMgr.Show;
 end;
 
 procedure TFormMain.NInDepotStatClick(Sender: TObject);
@@ -436,7 +459,15 @@ end;
 
 procedure TFormMain.NOutDepotMgrClick(Sender: TObject);
 begin
-//
+  if not assigned(FormOutDepotMgr) then
+  begin
+    FormOutDepotMgr:=TFormOutDepotMgr.Create(self);
+    AddToTab(FormOutDepotMgr);
+  end
+  else
+    SetTabIndex(FormOutDepotMgr);
+  FormOutDepotMgr.WindowState:=wsMaximized;
+  FormOutDepotMgr.Show;
 end;
 
 procedure TFormMain.NOutDepotStatClick(Sender: TObject);
@@ -588,6 +619,98 @@ begin
       Free;
     end;
   end;
+end;
+
+procedure TFormMain.AddToTab(aForm: TForm);
+begin
+  if FormTab.Tabs.IndexOf(aForm.Caption)<>-1 then
+  begin
+    FormTab.TabIndex := FormTab.Tabs.IndexOf(aForm.Caption);
+    Exit;
+  end;
+  FormTab.Tabs.AddObject(aForm.Caption,aForm);
+  FormTab.TabIndex:=FormTab.Tabs.IndexOf(aForm.Caption);
+end;
+
+procedure TFormMain.SetTabIndex(Form: TForm);
+begin
+  FormTab.TabIndex := FormTab.Tabs.IndexOf(Form.Caption);
+end;
+
+procedure TFormMain.RemoveForm(aForm: TForm);
+var
+  i:integer;
+begin
+  for i:=0 to FormTab.Tabs.Count-1 do
+  begin
+    if FormTab.Tabs.Objects[i]= aForm then
+    begin
+      FormTab.Tabs.Objects[i].Free;
+      FormTab.Tabs.Delete(i);
+      break;
+    end;
+  end;
+end;
+
+procedure TFormMain.ToolBtnInDepotClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormMain.ToolBtnOutDepotClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormMain.NRestoreClick(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to Self.MDIChildCount-1 do
+  if Self.MDIChildren[i].Caption=FormTab.tabs.Strings[FormTab.TabIndex] then
+  begin
+    Self.MDIChildren[i].WindowState:=wsnormal;
+    break;
+  end;
+end;
+
+procedure TFormMain.NMaxClick(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption=FormTab.tabs.Strings[FormTab.TabIndex] then
+    begin
+       Self.MDIChildren[i].WindowState:=wsMaximized;
+       break;
+    end;
+end;
+
+procedure TFormMain.NMinClick(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption=FormTab.tabs.Strings[FormTab.TabIndex] then
+    begin
+     Self.MDIChildren[i].WindowState:=wsMinimized;
+     break;
+    end;
+end;
+
+procedure TFormMain.NCloseClick(Sender: TObject);
+var
+  i : integer;
+begin
+  for i := 0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption = FormTab.Tabs.Strings[FormTab.TabIndex] then
+    begin
+      RemoveForm(Self.MDIChildren[i]);
+      Break;
+    end;
+
+  if FormTab.TabIndex>-1 then
+  TForm(FormTab.Tabs.Objects[FormTab.TabIndex]).Show;
 end;
 
 end.

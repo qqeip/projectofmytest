@@ -22,7 +22,9 @@ uses
   UnitEditUser in 'UserManage\UnitEditUser.pas' {FormEditUser},
   UnitUserManage in 'UserManage\UnitUserManage.pas' {FormUserManage},
   UnitChangePWD in 'UserManage\UnitChangePWD.pas' {FormChangePWD},
-  UnitLockSystem in 'View\UnitLockSystem.pas' {FormLockSystem};
+  UnitLockSystem in 'View\UnitLockSystem.pas' {FormLockSystem},
+  UnitInDepotMgr in 'RepertoryManage\UnitInDepotMgr.pas' {FormInDepotMgr},
+  UnitOutDepotMgr in 'RepertoryManage\UnitOutDepotMgr.pas' {FormOutDepotMgr};
 
 {$R *.res}
 var
