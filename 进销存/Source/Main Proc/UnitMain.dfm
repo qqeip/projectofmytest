@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Height = 36
     AutoSize = True
     ButtonHeight = 36
-    ButtonWidth = 65
+    ButtonWidth = 55
     Caption = 'ToolBar1'
     EdgeInner = esNone
     EdgeOuter = esNone
@@ -61,20 +61,22 @@ object FormMain: TFormMain
     Images = ImageList1
     ShowCaptions = True
     TabOrder = 1
-    object ToolButton1: TToolButton
+    object ToolBtnInDepot: TToolButton
       Left = 0
       Top = 0
-      Caption = 'ToolButton1'
+      Caption = #20837#24211#31649#29702
       ImageIndex = 0
+      OnClick = ToolBtnInDepotClick
     end
-    object ToolButton3: TToolButton
-      Left = 65
+    object ToolBtnOutDepot: TToolButton
+      Left = 55
       Top = 0
-      Caption = 'ToolButton3'
+      Caption = #20986#24211#31649#29702
       ImageIndex = 1
+      OnClick = ToolBtnOutDepotClick
     end
     object ToolButton2: TToolButton
-      Left = 130
+      Left = 110
       Top = 0
       Width = 8
       Caption = 'ToolButton2'
@@ -82,7 +84,7 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object ToolBtnExit: TToolButton
-      Left = 138
+      Left = 118
       Top = 0
       Caption = 'Exit'
       ImageIndex = 1
@@ -93,9 +95,23 @@ object FormMain: TFormMain
     Left = 0
     Top = 36
     Width = 862
-    Height = 390
+    Height = 372
     Align = alClient
     TabOrder = 2
+  end
+  object FormTab: TTabSet
+    Left = 0
+    Top = 408
+    Width = 862
+    Height = 18
+    Align = alBottom
+    BackgroundColor = clSkyBlue
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    PopupMenu = PopupMenuTab
   end
   object MainMenu1: TMainMenu
     Left = 112
@@ -8225,5 +8241,25 @@ object FormMain: TFormMain
       13B0F8A9A09AC55D62450FD3A95D7A44E8D53DF786CAC1228FB70F11D2C6B48C
       EA58F6765C43ACFB90A3B9B999DD4A6C266A9AA33F67ED69EA77B81B1B1F4EF8
       BE}
+  end
+  object PopupMenuTab: TPopupMenu
+    Left = 112
+    Top = 175
+    object NRestore: TMenuItem
+      Caption = #24674#22797
+      OnClick = NRestoreClick
+    end
+    object NMax: TMenuItem
+      Caption = #26368#22823#21270
+      OnClick = NMaxClick
+    end
+    object NMin: TMenuItem
+      Caption = #26368#23567#21270
+      OnClick = NMinClick
+    end
+    object NClose: TMenuItem
+      Caption = #20851#38381
+      OnClick = NCloseClick
+    end
   end
 end
