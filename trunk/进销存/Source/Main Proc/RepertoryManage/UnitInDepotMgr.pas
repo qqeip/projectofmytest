@@ -17,20 +17,30 @@ type
     Btn_Delete: TSpeedButton;
     Btn_Close: TSpeedButton;
     GroupBox2: TGroupBox;
-    LabelDepotID: TLabel;
     Label2: TLabel;
-    LabelDepotName: TLabel;
-    EdtDepotName: TEdit;
     EdtDepotComment: TEdit;
-    EdtDepotID: TEdit;
     GroupBox1: TGroupBox;
     cxGridDepot: TcxGrid;
     cxGridDepotDBTableView1: TcxGridDBTableView;
     cxGridDepotLevel1: TcxGridLevel;
+    Label1: TLabel;
+    CBAssociatorType: TComboBox;
+    Label3: TLabel;
+    ComboBox1: TComboBox;
+    Label4: TLabel;
+    ComboBox2: TComboBox;
+    Btn_Print: TSpeedButton;
+    Btn_Calc: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
+    procedure Btn_AddClick(Sender: TObject);
+    procedure Btn_ModifyClick(Sender: TObject);
+    procedure Btn_DeleteClick(Sender: TObject);
+    procedure Btn_PrintClick(Sender: TObject);
+    procedure Btn_CalcClick(Sender: TObject);
+    procedure Btn_CloseClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,6 +51,8 @@ var
   FormInDepotMgr: TFormInDepotMgr;
 
 implementation
+
+uses UnitMain;
 
 {$R *.dfm}
 
@@ -57,12 +69,43 @@ end;
 procedure TFormInDepotMgr.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-//
+  FormMain.RemoveForm(FormInDepotMgr);
+  Action:= caFree;
 end;
 
 procedure TFormInDepotMgr.FormDestroy(Sender: TObject);
 begin
   FormInDepotMgr:= nil;
+end;
+
+procedure TFormInDepotMgr.Btn_AddClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormInDepotMgr.Btn_ModifyClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormInDepotMgr.Btn_DeleteClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormInDepotMgr.Btn_PrintClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormInDepotMgr.Btn_CalcClick(Sender: TObject);
+begin
+  winexec('calc.exe',sw_normal);
+end;
+
+procedure TFormInDepotMgr.Btn_CloseClick(Sender: TObject);
+begin
+  Close;
 end;
 
 end.
