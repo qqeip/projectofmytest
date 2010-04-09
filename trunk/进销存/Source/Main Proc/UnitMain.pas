@@ -93,12 +93,12 @@ type
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
     procedure SetTabIndex(Form: TForm);
-    procedure RemoveForm(aForm: TForm);
 //    procedure LockSystem(aEnabled: Boolean);
     { Private declarations }
   public
     { Public declarations }
     procedure CreateODBC;
+    procedure RemoveForm(aForm: TForm);
   end;
 
 var
