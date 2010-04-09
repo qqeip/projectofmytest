@@ -3979,8 +3979,9 @@ Discount-折扣 IntegralRuler-积分规则</a:Comment>
 <a:Code>CreateTime</a:Code>
 <a:CreationDate>1268227854</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1268228454</a:ModificationDate>
-<a:Modifier>Administrator</a:Modifier>
+<a:ModificationDate>1270776762</a:ModificationDate>
+<a:Modifier>1</a:Modifier>
+<a:DataType>DATETIME</a:DataType>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
 <o:Column Id="o112">
@@ -3989,8 +3990,9 @@ Discount-折扣 IntegralRuler-积分规则</a:Comment>
 <a:Code>ModifyTime</a:Code>
 <a:CreationDate>1268227854</a:CreationDate>
 <a:Creator>Administrator</a:Creator>
-<a:ModificationDate>1268228454</a:ModificationDate>
-<a:Modifier>Administrator</a:Modifier>
+<a:ModificationDate>1270776762</a:ModificationDate>
+<a:Modifier>1</a:Modifier>
+<a:DataType>DATETIME</a:DataType>
 <a:Mandatory>1</a:Mandatory>
 </o:Column>
 </c:Columns>
