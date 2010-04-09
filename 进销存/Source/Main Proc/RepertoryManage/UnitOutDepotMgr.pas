@@ -12,10 +12,6 @@ uses
 type
   TFormOutDepotMgr = class(TForm)
     Panel1: TPanel;
-    Btn_Add: TSpeedButton;
-    Btn_Modify: TSpeedButton;
-    Btn_Delete: TSpeedButton;
-    Btn_Close: TSpeedButton;
     GroupBox2: TGroupBox;
     LabelDepotID: TLabel;
     Label2: TLabel;
@@ -27,10 +23,18 @@ type
     cxGridDepot: TcxGrid;
     cxGridDepotDBTableView1: TcxGridDBTableView;
     cxGridDepotLevel1: TcxGridLevel;
+    Btn_Add: TSpeedButton;
+    Btn_Modify: TSpeedButton;
+    Btn_Delete: TSpeedButton;
+    Btn_Close: TSpeedButton;
+    Btn_Print: TSpeedButton;
+    Btn_Calc: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
+    procedure Btn_AddClick(Sender: TObject);
+    procedure Btn_ModifyClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,6 +45,8 @@ var
   FormOutDepotMgr: TFormOutDepotMgr;
 
 implementation
+
+uses UnitMain;
 
 {$R *.dfm}
 
@@ -57,12 +63,23 @@ end;
 procedure TFormOutDepotMgr.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-//
+  FormMain.RemoveForm(FormOutDepotMgr);
+  Action:= caFree;
 end;
 
 procedure TFormOutDepotMgr.FormDestroy(Sender: TObject);
 begin
   FormOutDepotMgr:= nil;
+end;
+
+procedure TFormOutDepotMgr.Btn_AddClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormOutDepotMgr.Btn_ModifyClick(Sender: TObject);
+begin
+//
 end;
 
 end.
