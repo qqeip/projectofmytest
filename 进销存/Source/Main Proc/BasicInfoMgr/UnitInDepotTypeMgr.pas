@@ -147,6 +147,11 @@ begin
       Application.MessageBox('入库类型编号已存在！','提示',MB_OK+64);
       Exit;
     end;
+  if AdoQuery.fieldbyname('Kind').AsInteger=0 then
+  begin
+    Application.MessageBox('系统默认入库类型,不可修改！','提示',MB_OK+64);
+    Exit;
+  end;
 
   try
     IsRecordChanged:= True;
@@ -165,6 +170,11 @@ end;
 procedure TFormInDepotTypeMgr.Btn_DeleteClick(Sender: TObject);
 begin
   try
+    if AdoQuery.fieldbyname('Kind').AsInteger=0 then
+    begin
+      Application.MessageBox('系统默认入库类型,不可修改！','提示',MB_OK+64);
+      Exit;
+    end;
     IsRecordChanged:= True;
     AdoQuery.Delete;
     IsRecordChanged:= False;
