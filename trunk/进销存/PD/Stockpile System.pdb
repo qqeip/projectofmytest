@@ -2703,7 +2703,7 @@ CARD 0 Microsoft Sans Serif,8,N</a:FontList>
 <a:CenterTextOffset>(11, 7)</a:CenterTextOffset>
 <a:SourceTextOffset>(-1590, 174)</a:SourceTextOffset>
 <a:DestinationTextOffset>(1591, -173)</a:DestinationTextOffset>
-<a:Rect>((-16087,-14670), (-5267,-2225))</a:Rect>
+<a:Rect>((-16088,-14670), (-5267,-2225))</a:Rect>
 <a:ListOfPoints>((-14031,-2225),(-5267,-14670))</a:ListOfPoints>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>16711680</a:LineColor>
@@ -2749,7 +2749,7 @@ CARD 0 Microsoft Sans Serif,8,N</a:FontList>
 <a:CenterTextOffset>(3, 3)</a:CenterTextOffset>
 <a:SourceTextOffset>(855, 582)</a:SourceTextOffset>
 <a:DestinationTextOffset>(-854, -582)</a:DestinationTextOffset>
-<a:Rect>((-5930,-11191), (1494,3074))</a:Rect>
+<a:Rect>((-5931,-11191), (1493,3074))</a:Rect>
 <a:ListOfPoints>((-3153,3074),(-952,-11191))</a:ListOfPoints>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>16711680</a:LineColor>
