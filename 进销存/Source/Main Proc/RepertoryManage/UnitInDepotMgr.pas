@@ -7,7 +7,7 @@ uses
   Dialogs, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls;
+  cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls, CxGridUnit, ADODB;
 
 type
   TFormInDepotMgr = class(TForm)
@@ -17,20 +17,21 @@ type
     Btn_Delete: TSpeedButton;
     Btn_Close: TSpeedButton;
     GroupBox2: TGroupBox;
-    Label2: TLabel;
-    EdtDepotComment: TEdit;
     GroupBox1: TGroupBox;
-    cxGridDepot: TcxGrid;
-    cxGridDepotDBTableView1: TcxGridDBTableView;
-    cxGridDepotLevel1: TcxGridLevel;
+    cxGridInDepot: TcxGrid;
+    cxGridInDepotDBTableView1: TcxGridDBTableView;
+    cxGridInDepotLevel1: TcxGridLevel;
     Label1: TLabel;
-    CBAssociatorType: TComboBox;
+    CbbDepot: TComboBox;
     Label3: TLabel;
-    ComboBox1: TComboBox;
+    CbbGoodsType: TComboBox;
     Label4: TLabel;
-    ComboBox2: TComboBox;
+    CbbInDepotType: TComboBox;
     Btn_Print: TSpeedButton;
     Btn_Calc: TSpeedButton;
+    Label2: TLabel;
+    EdtNum: TEdit;
+    DataSourceInDeopt: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -41,8 +42,19 @@ type
     procedure Btn_PrintClick(Sender: TObject);
     procedure Btn_CalcClick(Sender: TObject);
     procedure Btn_CloseClick(Sender: TObject);
+    procedure EdtNumKeyPress(Sender: TObject; var Key: Char);
+    procedure cxGridInDepotDBTableView1FocusedRecordChanged(
+      Sender: TcxCustomGridTableView; APrevFocusedRecord,
+      AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
   private
     { Private declarations }
+    AdoQuery, AdoEdit: TAdoquery;
+    FCxGridHelper : TCxGridSet;
+    IsRecordChanged: Boolean;
+
+    procedure AddcxGridViewField;
+    procedure LoadInDepotInfo;
   public
     { Public declarations }
   end;
@@ -52,25 +64,32 @@ var
 
 implementation
 
-uses UnitMain;
+uses UnitMain, UnitPublic, UnitDataModule, UnitPublicResourceManager;
 
 {$R *.dfm}
 
 procedure TFormInDepotMgr.FormCreate(Sender: TObject);
 begin
-//
+  AdoQuery:= TADOQuery.Create(Self);
+  AdoEdit:= TADOQuery.Create(Self);
+  FCxGridHelper:=TCxGridSet.Create;
+  FCxGridHelper.SetGridStyle(cxGridInDepot,true,false,true);
+  SetItemCode('Depot', 'DepotID', 'DepotName', '', CbbDepot.Items);
+  SetItemCode('Goods', 'GoodsID', 'GoodsName', '', CbbGoodsType.Items);
+  SetItemCode('InDepotType', 'InDepotTypeID', 'InDepotTypeName', ' where InDepotTypeID<>1004', CbbInDepotType.Items);
 end;
 
 procedure TFormInDepotMgr.FormShow(Sender: TObject);
 begin
-//
+  AddcxGridViewField;
+  LoadInDepotInfo;
 end;
 
 procedure TFormInDepotMgr.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   FormMain.RemoveForm(FormInDepotMgr);
-  Action:= caFree;
+//  Action:= caFree;
 end;
 
 procedure TFormInDepotMgr.FormDestroy(Sender: TObject);
@@ -80,17 +99,178 @@ end;
 
 procedure TFormInDepotMgr.Btn_AddClick(Sender: TObject);
 begin
-//
+  if CbbDepot.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择入库仓库！','提示',MB_OK+64);
+    Exit;
+  end;
+  if CbbGoodsType.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择商品类型！','提示',MB_OK+64);
+    Exit;
+  end;
+  if CbbInDepotType.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择入库类型！','提示',MB_OK+64);
+    Exit;
+  end;
+  try
+    IsRecordChanged:= True;
+    with AdoEdit do
+    begin
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'insert into InDepot(' +
+                 'DepotID,GoodsID, UserID, InDepotTypeID, InDepotNum, CreateTime) ' +
+                 'values(' +
+                 IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
+                 IntToStr(CurUser.UserID) + ',' +
+                 IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items)) + ',' +
+                 EdtNum.Text + ',' +
+                 'cdate(''' + DateTimeToStr(Now) + ''')' +
+                 ')';
+
+      {SQL.Text:= 'insert into InDepot(' +
+                 'DepotID,GoodsID, UserID, InDepotTypeID, InDepotNum, CreateTime) ' +
+                 'values(:DepotID,:GoodsID,:UserID,:InDepotTypeID,:InDepotNum,:CreateTime)';
+      Parameters.ParamByName('DepotID').DataType:= ftInteger;
+      Parameters.ParamByName('DepotID').Direction:=pdInput;
+      Parameters.ParamByName('GoodsID').DataType:= ftInteger;
+      Parameters.ParamByName('UserID').DataType:= ftInteger;
+      Parameters.ParamByName('InDepotTypeID').DataType:= ftInteger;
+      Parameters.ParamByName('InDepotNum').DataType:= ftString;
+      Parameters.ParamByName('CreateTime').DataType:= ftDateTime;
+
+      Parameters.ParamByName('DepotID').Value:= GetItemCode(CbbDepot.Text, CbbDepot.Items);
+      Parameters.ParamByName('GoodsID').Value:= GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items);
+      Parameters.ParamByName('UserID').Value:= CurUser.UserID;
+      Parameters.ParamByName('InDepotTypeID').Value:= GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items);
+      Parameters.ParamByName('InDepotNum').Value:= StrToInt(EdtNum.Text);
+      Parameters.ParamByName('CreateTime').Value:= Now; }
+      ExecSQL;
+    end;
+    IsRecordChanged:= False;
+    LoadInDepotInfo;
+    Application.MessageBox('新增成功！','提示',MB_OK+64);
+  except
+    Application.MessageBox('新增失败！','提示',MB_OK+64);
+  end;
 end;
 
 procedure TFormInDepotMgr.Btn_ModifyClick(Sender: TObject);
 begin
-//
+  if CbbDepot.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择入库仓库！','提示',MB_OK+64);
+    Exit;
+  end;
+  if CbbGoodsType.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择商品类型！','提示',MB_OK+64);
+    Exit;
+  end;
+  if CbbInDepotType.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择入库类型！','提示',MB_OK+64);
+    Exit;
+  end;
+  if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
+  try
+    IsRecordChanged:= True;
+    DM.ADOConnection.BeginTrans;
+    with AdoEdit do
+    begin
+      //修改前往历史表插记录
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'insert into InDepotHistory(' +
+                 'Old_DepotID, Old_GoodsID, Old_UserID, Old_InDepotTypeID, Old_InDepotNum,'+
+                 'New_DepotID, New_GoodsID, New_UserID, New_InDepotTypeID, New_InDepotNum,' +
+                 'OperateType, CreateTime) ' +
+                 'values(' +
+                 AdoQuery.FieldByName('DepotID').AsString + ',' +
+                 AdoQuery.FieldByName('GoodsID').AsString + ',' +
+                 AdoQuery.FieldByName('UserID').AsString + ',' +
+                 AdoQuery.FieldByName('InDepotTypeID').AsString + ',' +
+                 AdoQuery.FieldByName('InDepotNum').AsString + ',' +
+                 IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
+                 IntToStr(CurUser.UserID) + ',' +
+                 IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items)) + ',' +
+                 EdtNum.Text + ',' +
+                 '1,' +
+                 'cdate(''' + DateTimeToStr(Now) + '''))';
+      ExecSQL;
+      //保留历史后再修改
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'update InDepot set ' +
+                 'DepotID=' + IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items)) + ',' +
+                 'GoodsID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
+                 'UserID=' + IntToStr(CurUser.UserID) + ',' +
+                 'InDepotTypeID=' + IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items)) + ',' +
+                 'InDepotNum=' + EdtNum.Text + ',' +
+                 'ModifyTime=cdate(''' + DateTimeToStr(Now) + ''')' +
+                 ' where ID=' + AdoQuery.FieldByName('ID').AsString;
+      ExecSQL;
+    end;
+    IsRecordChanged:= False;
+    LoadInDepotInfo;
+    DM.ADOConnection.CommitTrans;
+    Application.MessageBox('修改成功！','提示',MB_OK+64);
+  except
+    DM.ADOConnection.RollbackTrans;
+    Application.MessageBox('修改失败！','提示',MB_OK+64);
+  end;
 end;
 
 procedure TFormInDepotMgr.Btn_DeleteClick(Sender: TObject);
+var
+  lSqlStr: string;
 begin
-//
+  if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
+  try
+    DM.ADOConnection.BeginTrans;
+    IsRecordChanged:= True;
+    with AdoEdit do
+    begin
+      //删除前往历史表插记录
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'insert into InDepotHistory(' +
+                 'Old_DepotID, Old_GoodsID, Old_UserID, Old_InDepotTypeID, Old_InDepotNum,'+
+                 'New_DepotID, New_GoodsID, New_UserID, New_InDepotTypeID, New_InDepotNum,' +
+                 'OperateType, CreateTime) ' +
+                 'values(' +
+                 AdoQuery.FieldByName('DepotID').AsString + ',' +
+                 AdoQuery.FieldByName('GoodsID').AsString + ',' +
+                 AdoQuery.FieldByName('UserID').AsString + ',' +
+                 AdoQuery.FieldByName('InDepotTypeID').AsString + ',' +
+                 AdoQuery.FieldByName('InDepotNum').AsString + ',' +
+                 '-1,-1,' +IntToStr(CurUser.UserID) + ',-1,-1,2,' +
+                 'cdate(''' + DateTimeToStr(Now) + '''))';
+      ExecSQL;
+      //保留历史后再删除
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      lSqlStr:= 'delete from InDepot where ID=' + AdoQuery.FieldByName('ID').AsString;
+      SQL.Add(lSqlStr);
+      ExecSQL;
+    end;
+    IsRecordChanged:= False;
+    LoadInDepotInfo;
+    DM.ADOConnection.CommitTrans;
+    Application.MessageBox('删除成功！','提示',MB_OK+64);
+  except
+    DM.ADOConnection.RollbackTrans;
+    Application.MessageBox('删除失败！','提示',MB_OK+64);
+  end;
 end;
 
 procedure TFormInDepotMgr.Btn_PrintClick(Sender: TObject);
@@ -105,7 +285,65 @@ end;
 
 procedure TFormInDepotMgr.Btn_CloseClick(Sender: TObject);
 begin
-  Close;
+  FormMain.RemoveForm(FormInDepotMgr);
+end;
+
+procedure TFormInDepotMgr.AddcxGridViewField;
+begin
+  AddViewField(cxGridInDepotDBTableView1,'DepotName','仓库名称',100);
+  AddViewField(cxGridInDepotDBTableView1,'GoodsName','商品名称',200);
+  AddViewField(cxGridInDepotDBTableView1,'InDepotTypeName','入库类型');
+  AddViewField(cxGridInDepotDBTableView1,'InDepotNum','入库数量');
+  AddViewField(cxGridInDepotDBTableView1,'CostPrice','成本单价');
+  AddViewField(cxGridInDepotDBTableView1,'SalePrice','销售单价');
+  AddViewField(cxGridInDepotDBTableView1,'Cost','成本价');
+  AddViewField(cxGridInDepotDBTableView1,'Sale','销售价');
+  AddViewField(cxGridInDepotDBTableView1,'CreateTime','入库时间',100);
+  AddViewField(cxGridInDepotDBTableView1,'ModifyTime','修改时间',100);
+end;
+
+procedure TFormInDepotMgr.LoadInDepotInfo;
+begin
+  with AdoQuery do
+  begin
+    Connection:= DM.ADOConnection;
+    Active:= False;
+    SQL.Clear;
+//    SQL.Text:= 'SELECT InDepot.*, Depot.DepotName, Goods.GoodsName, InDepotType.InDepotTypeName,User.UserName ' +
+//               ' FROM (((InDepot LEFT JOIN Depot ON Depot.DepotID=InDepot.DepotID) ' +
+//               ' LEFT JOIN Goods ON Goods.GoodsID=InDepot.GoodsID) ' +
+//               ' LEFT JOIN InDepotType ON InDepotType.InDepotTypeID=InDepot.InDepotTypeID) ' +
+//               ' LEFT JOIN User ON Depot.UserID=User.UserID';
+    SQL.Text:= 'SELECT InDepot.*, Depot.DepotName, Goods.GoodsName, InDepotType.InDepotTypeName, User.UserName,' +
+               ' Goods.CostPrice, Goods.SalePrice,' +
+               ' (Goods.CostPrice*InDepot.InDepotNum) AS Cost, (Goods.SalePrice*InDepot.InDepotNum) AS Sale ' +
+               ' FROM (((InDepot LEFT JOIN Depot ON InDepot.DepotID=Depot.DepotID) ' +
+               ' LEFT JOIN Goods ON InDepot.GoodsID=Goods.GoodsID) ' +
+               ' INNER JOIN [User] ON InDepot.UserID=User.UserID) ' +
+               ' INNER JOIN InDepotType ON InDepot.InDepotTypeID=InDepotType.InDepotTypeID';
+    Active:= True;
+    DataSourceInDeopt.DataSet:= AdoQuery;
+  end;
+end;
+
+procedure TFormInDepotMgr.EdtNumKeyPress(Sender: TObject; var Key: Char);
+begin
+  InPutChar(Key);
+end;
+
+procedure TFormInDepotMgr.cxGridInDepotDBTableView1FocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord;
+  ANewItemRecordFocusingChanged: Boolean);
+begin
+  if IsRecordChanged then Exit;
+  with AdoQuery do
+  begin
+    CbbDepot.ItemIndex:= CbbDepot.Items.IndexOf(FieldByName('DepotName').AsString);
+    CbbGoodsType.ItemIndex:= CbbGoodsType.Items.IndexOf(FieldByName('GoodsName').AsString);
+    CbbInDepotType.ItemIndex:= CbbInDepotType.Items.IndexOf(FieldByName('InDepotTypeName').AsString);
+    EdtNum.Text:= FieldByName('InDepotNum').AsString;
+  end;
 end;
 
 end.

@@ -620,31 +620,40 @@ object FormOutDepotTypeMgr: TFormOutDepotTypeMgr
     TabOrder = 1
     object Label1: TLabel
       Left = 32
-      Top = 30
-      Width = 80
+      Top = 19
+      Width = 90
       Height = 13
       AutoSize = False
-      Caption = #20986#24211#31867#22411#21517#31216#65306
+      Caption = #20986#24211#31867#22411#32534#21495#65306
     end
     object Label2: TLabel
       Left = 32
-      Top = 56
-      Width = 80
+      Top = 69
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20986#24211#31867#22411#35828#26126#65306
     end
     object Label3: TLabel
-      Left = 256
-      Top = 30
-      Width = 80
+      Left = 32
+      Top = 44
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20986#24211#31867#22411#21517#31216#65306
     end
+    object Label4: TLabel
+      Left = 276
+      Top = 19
+      Width = 90
+      Height = 13
+      AutoSize = False
+      Caption = #20986#24211#31867#22411#23450#20041#65306
+      Enabled = False
+    end
     object EdtOutDepotTypeID: TEdit
-      Left = 118
-      Top = 28
+      Left = 123
+      Top = 16
       Width = 121
       Height = 19
       Ctl3D = False
@@ -652,8 +661,8 @@ object FormOutDepotTypeMgr: TFormOutDepotTypeMgr
       TabOrder = 0
     end
     object EdtOutDepotTypeComment: TEdit
-      Left = 118
-      Top = 53
+      Left = 123
+      Top = 66
       Width = 370
       Height = 19
       Ctl3D = False
@@ -661,13 +670,23 @@ object FormOutDepotTypeMgr: TFormOutDepotTypeMgr
       TabOrder = 2
     end
     object EdtOutDepotTypeName: TEdit
-      Left = 343
-      Top = 28
-      Width = 145
+      Left = 123
+      Top = 41
+      Width = 370
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
+    end
+    object EdtKind: TEdit
+      Left = 368
+      Top = 16
+      Width = 125
+      Height = 19
+      Ctl3D = False
+      Enabled = False
+      ParentCtl3D = False
+      TabOrder = 3
     end
   end
   object GroupBox1: TGroupBox

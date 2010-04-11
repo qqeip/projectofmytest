@@ -35,6 +35,10 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure Btn_AddClick(Sender: TObject);
     procedure Btn_ModifyClick(Sender: TObject);
+    procedure Btn_DeleteClick(Sender: TObject);
+    procedure Btn_PrintClick(Sender: TObject);
+    procedure Btn_CalcClick(Sender: TObject);
+    procedure Btn_CloseClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,7 +68,7 @@ procedure TFormOutDepotMgr.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   FormMain.RemoveForm(FormOutDepotMgr);
-  Action:= caFree;
+//  Action:= caFree;
 end;
 
 procedure TFormOutDepotMgr.FormDestroy(Sender: TObject);
@@ -80,6 +84,26 @@ end;
 procedure TFormOutDepotMgr.Btn_ModifyClick(Sender: TObject);
 begin
 //
+end;
+
+procedure TFormOutDepotMgr.Btn_DeleteClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormOutDepotMgr.Btn_PrintClick(Sender: TObject);
+begin
+//
+end;
+
+procedure TFormOutDepotMgr.Btn_CalcClick(Sender: TObject);
+begin
+  winexec('calc.exe',sw_normal);
+end;
+
+procedure TFormOutDepotMgr.Btn_CloseClick(Sender: TObject);
+begin
+  FormMain.RemoveForm(FormOutDepotMgr);
 end;
 
 end.
