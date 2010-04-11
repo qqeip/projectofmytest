@@ -28,6 +28,8 @@ type
     DataSourceInDepotType: TDataSource;
     Label3: TLabel;
     EdtInDepotTypeName: TEdit;
+    Label4: TLabel;
+    EdtKind: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -120,6 +122,7 @@ begin
     AdoQuery.Append;
     AdoQuery.FieldByName('INDEPOTTYPEID').AsString:= EdtInDepotTypeID.Text;
     AdoQuery.FieldByName('INDEPOTTYPENAME').AsString:= EdtInDepotTypeName.Text;
+    AdoQuery.FieldByName('KIND').AsInteger:= 1;
     AdoQuery.FieldByName('COMMENT').AsString:= EdtInDepotTypeComment.Text;
     AdoQuery.Post;
     IsRecordChanged:= False;
@@ -197,6 +200,10 @@ begin
   if IsRecordChanged then Exit;
   EdtInDepotTypeID.Text:= AdoQuery.fieldbyname('InDepotTypeID').AsString;
   EdtInDepotTypeName.Text:= AdoQuery.fieldbyname('InDepotTypeName').AsString;
+  if AdoQuery.fieldbyname('Kind').AsInteger=0 then
+    EdtKind.Text:= '系统定义类型'
+  else
+    EdtKind.Text:= '用户自定义类型';
   EdtInDepotTypeComment.Text:= AdoQuery.fieldbyname('COMMENT').AsString;
 end;
 

@@ -619,54 +619,73 @@ object FormInDepotTypeMgr: TFormInDepotTypeMgr
     TabOrder = 1
     object Label1: TLabel
       Left = 27
-      Top = 30
-      Width = 80
+      Top = 18
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20837#24211#31867#22411#32534#21495#65306
     end
     object Label2: TLabel
       Left = 27
-      Top = 56
-      Width = 80
+      Top = 68
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20837#24211#31867#22411#35828#26126#65306
     end
     object Label3: TLabel
-      Left = 251
-      Top = 30
-      Width = 80
+      Left = 27
+      Top = 43
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20837#24211#31867#22411#21517#31216#65306
     end
+    object Label4: TLabel
+      Left = 271
+      Top = 18
+      Width = 90
+      Height = 13
+      AutoSize = False
+      Caption = #20837#24211#31867#22411#23450#20041#65306
+      Enabled = False
+    end
     object EdtInDepotTypeID: TEdit
-      Left = 112
-      Top = 28
-      Width = 121
+      Left = 118
+      Top = 15
+      Width = 125
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
     end
     object EdtInDepotTypeComment: TEdit
-      Left = 112
-      Top = 53
-      Width = 371
+      Left = 118
+      Top = 65
+      Width = 370
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 2
     end
     object EdtInDepotTypeName: TEdit
-      Left = 336
-      Top = 28
-      Width = 147
+      Left = 118
+      Top = 40
+      Width = 370
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
+    end
+    object EdtKind: TEdit
+      Left = 363
+      Top = 15
+      Width = 125
+      Height = 19
+      Ctl3D = False
+      Enabled = False
+      ParentCtl3D = False
+      TabOrder = 3
     end
   end
   object GroupBox1: TGroupBox

@@ -609,6 +609,7 @@ object FormInDepotMgr: TFormInDepotMgr
         ECDFD9EBDED7EADCD4EADBD4E8D8D0E6D5CCE4D2C9E3D0C6E0CCC1DEC8BCDCC4
         B7D9BFB2D7BBADD3B6A7D0B09FCDAB99CAA693C6A08CC39A85BF947EBD9079BA
         8B73B8886FB6846BB48267B27E64B27C6200}
+      Visible = False
       OnClick = Btn_CloseClick
     end
     object Btn_Print: TSpeedButton
@@ -906,22 +907,14 @@ object FormInDepotMgr: TFormInDepotMgr
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 312
+    Top = 347
     Width = 862
-    Height = 101
+    Height = 66
     Align = alBottom
     Caption = #20837#24211#20449#24687#35774#32622
     TabOrder = 1
-    object Label2: TLabel
-      Left = 40
-      Top = 62
-      Width = 70
-      Height = 13
-      AutoSize = False
-      Caption = #20179#24211#35828#26126#65306
-    end
     object Label1: TLabel
-      Left = 40
+      Left = 22
       Top = 29
       Width = 60
       Height = 13
@@ -929,7 +922,7 @@ object FormInDepotMgr: TFormInDepotMgr
       Caption = #20837#24211#20179#24211#65306
     end
     object Label3: TLabel
-      Left = 269
+      Left = 228
       Top = 29
       Width = 60
       Height = 13
@@ -937,75 +930,88 @@ object FormInDepotMgr: TFormInDepotMgr
       Caption = #21830#21697#31867#22411#65306
     end
     object Label4: TLabel
-      Left = 493
+      Left = 436
       Top = 29
       Width = 60
       Height = 13
       AutoSize = False
       Caption = #20837#24211#31867#22411#65306
     end
-    object EdtDepotComment: TEdit
-      Left = 110
-      Top = 59
-      Width = 371
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
+    object Label2: TLabel
+      Left = 645
+      Top = 29
+      Width = 60
+      Height = 13
+      AutoSize = False
+      Caption = #20837#24211#25968#37327#65306
+    end
+    object CbbDepot: TComboBox
+      Left = 85
+      Top = 26
+      Width = 130
+      Height = 21
+      Style = csDropDownList
+      ItemHeight = 13
       TabOrder = 0
     end
-    object CBAssociatorType: TComboBox
-      Left = 100
+    object CbbGoodsType: TComboBox
+      Left = 291
       Top = 26
-      Width = 150
+      Width = 130
       Height = 21
       Style = csDropDownList
       ItemHeight = 13
       TabOrder = 1
     end
-    object ComboBox1: TComboBox
-      Left = 329
+    object CbbInDepotType: TComboBox
+      Left = 500
       Top = 26
-      Width = 150
+      Width = 130
       Height = 21
       Style = csDropDownList
       ItemHeight = 13
       TabOrder = 2
     end
-    object ComboBox2: TComboBox
-      Left = 554
+    object EdtNum: TEdit
+      Left = 712
       Top = 26
-      Width = 150
+      Width = 130
       Height = 21
-      Style = csDropDownList
-      ItemHeight = 13
       TabOrder = 3
+      OnKeyPress = EdtNumKeyPress
     end
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
     Width = 862
-    Height = 312
+    Height = 347
     Align = alClient
     Caption = #20837#24211#35814#32454#20449#24687
     TabOrder = 2
-    object cxGridDepot: TcxGrid
+    object cxGridInDepot: TcxGrid
       Left = 2
       Top = 15
       Width = 858
-      Height = 295
+      Height = 330
       Align = alClient
       TabOrder = 0
-      object cxGridDepotDBTableView1: TcxGridDBTableView
+      object cxGridInDepotDBTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
+        OnFocusedRecordChanged = cxGridInDepotDBTableView1FocusedRecordChanged
+        DataController.DataSource = DataSourceInDeopt
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsView.GroupByBox = False
       end
-      object cxGridDepotLevel1: TcxGridLevel
-        GridView = cxGridDepotDBTableView1
+      object cxGridInDepotLevel1: TcxGridLevel
+        GridView = cxGridInDepotDBTableView1
       end
     end
+  end
+  object DataSourceInDeopt: TDataSource
+    Left = 440
+    Top = 272
   end
 end
