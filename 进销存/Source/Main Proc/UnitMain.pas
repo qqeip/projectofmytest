@@ -123,7 +123,8 @@ uses UnitLogIn, UnitPublicResourceManager, UnitResource,
      UnitUserManager, UnitAbout, UnitDataModule, UnitDepotInfoMgr,
   UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
-  UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr;
+  UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr,
+  UnitInDepotStat;
 
 {$R *.dfm}
 
@@ -455,7 +456,15 @@ end;
 
 procedure TFormMain.NInDepotStatClick(Sender: TObject);
 begin
-//
+  if not assigned(FormInDepotStat) then
+  begin
+    FormInDepotStat:=TFormInDepotStat.Create(self);
+    AddToTab(FormInDepotStat);
+  end
+  else
+    SetTabIndex(FormInDepotStat);
+  FormInDepotStat.WindowState:=wsMaximized;
+  FormInDepotStat.Show;
 end;
 
 procedure TFormMain.NOutDepotMgrClick(Sender: TObject);
