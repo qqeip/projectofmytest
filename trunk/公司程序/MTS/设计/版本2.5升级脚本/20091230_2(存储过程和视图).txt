@@ -1,0 +1,741 @@
+create or replace view building_info_view as
+select
+a.buildingid,
+a.buildingno,
+a.buildingname,
+a.address,
+a.longitude,
+a.latitude,
+a.floorcount,
+a.buildingarea,
+decode(nettype,1,'PHS',2,'WLAN',3,'WLAN+PHS',4,'CDMA',5,'PHS+CDMA',6,'WLAN+CDMA',7,'WLAN+PHS+CDMA','') AS nettypename,
+c.dicname as factoryname,
+d.dicname as connecttypename,
+e.dicname as buildingtypename,
+f.id as suburbid,
+f.name as suburbname,
+g.id as areaid,
+g.name as areaname,
+h.id as cityid,
+h.name as cityname,
+i.dicname as agentcompanyname
+from building_info a
+left join dic_code_info c on a.factory=c.diccode and c.dictype =3
+left join dic_code_info d on a.connecttype=d.diccode and d.dictype=4
+left join dic_code_info e on a.buildingtype=e.diccode and e.dictype=2
+inner join area_info f on a.areaid=f.id and f.layer=3
+inner join area_info g on f.top_id=g.id and g.layer=2
+inner join area_info h on g.top_id=h.id and h.layer=1
+left join dic_code_info i on a.agentcompany=i.diccode and i.dictype=33;
+/
+create or replace view alarm_master_online_view as
+select
+decode(a.readed,0,'N','UNABLED') as isChecked,
+a.alarmid, --告警编号,
+b.alarmcontentname, --告警内容,
+a.alarmcontentcode, --告警内容编号,
+g.dicname as alarmkindname,--------告警类型
+g.diccode as AlarmKindID,  --告警类型编号
+h.dicname as alarmlevelname,-------告警等级
+a.sendtime,----派障时间
+a.removetime,--排障时间
+a.collecttime,--建立时间
+c.mtuname, --MTU名称
+c.mtuno,   --MTU设备编号
+c.mtuaddr,-----------MTU位置
+c.call,--------------PHS号码
+--a.taskid, --任务号
+a.alarmcount, --告警累计次数
+d.buildingname, --室分点名称
+d.buildingid,-----室分点id
+d.address,--------室分点地址
+e.name as suburbname,--分局
+f.name as areaname,  --郊县
+k.name as cityname,  --地市
+a.readed,   --是否已经阅读
+decode(a.readed,1,'是','否') readedname,
+c.overlay,  --MTU覆盖区域
+a.flowtache,--告警状态 1:告警 2:派出 3:排除
+decode(a.flowtache,1,'告警',2,'派障',3,'消障','信息缺失') flowtachename,
+e.id as suburbid,--分局ID
+f.id as areaid,  --郊县id
+k.id as cityid,  --地市id
+b.limithour, --到期时限
+a.mtuid,
+m.contentcode assistantContentcode,  --辅助告警内容
+c.isprogram,
+decode(c.isprogram,1,'室内',0,'室外','未知') as isprogramname,
+c.mainlook_ap,
+o.apno as mainlook_apname,
+c.mainlook_phs,
+p.cs_id as mainlook_phsname,
+c.mainlook_cnet,
+q.cdmaname as mainlook_cnetname,
+q.pncode,
+c.reserve_pncode,
+q.address cdmaaddress,
+q.cdmatype,
+decode(q.cdmatype,1,'直放站',2,'RRU',3,'宏基站','未知') cdmatypename,
+d.factory,
+r.dicname factoryname,
+a.remark,
+s.dicname as agentcompanyname
+from alarm_master_online a
+left join mtu_alarm_content b on a.alarmcontentcode=b.alarmcontentcode
+left join dic_code_info g on b.alarmkind=g.diccode and g.dictype=11
+left join dic_code_info h on b.alarmlevel=h.diccode and h.dictype=10
+left join mtu_info c on a.mtuid=c.mtuid
+left join building_info d on c.buildingid=d.buildingid
+left join dic_code_info r on d.factory=r.diccode and r.dictype=3--集成厂家
+left join area_info e on c.suburb=e.id
+left join area_info f on e.top_id=f.id
+left join area_info k on f.top_id=k.id
+left join mtu_shield_list i on a.mtuid=i.mtuid and i.status=0
+--<<网管辅助告警
+left join cdma_info l on c.mainlook_cnet=l.cdmaid
+left join mtu_alarm_assistant_parased m on l.belong_bts=m.csid --归属基站编号=基站标识
+--网管辅助告警>>
+left join ap_info o on c.mainlook_ap=o.apid
+left join cs_info p on c.mainlook_phs=p.csid
+left join cdma_info q on c.mainlook_cnet=q.cdmaid
+left join dic_code_info s on d.agentcompany=s.diccode and s.dictype=33--代维公司
+where i.mtuid is null;
+/
+create or replace view alarm_master_history_view as
+select
+'N' as isChecked,
+a.alarmid, --告警编号,
+b.alarmcontentname, --告警内容,
+a.alarmcontentcode, --告警内容编号,
+g.dicname as alarmkindname,--------告警类型
+g.diccode as AlarmKindID,  --告警类型编号
+h.dicname as alarmlevelname,-------告警等级
+a.sendtime,--派障时间
+a.removetime,--排障时间
+a.collecttime,--建立时间
+c.mtuname, --MTU名称
+c.mtuno,   --MTU设备编号
+c.mtuaddr,-----------MTU位置
+c.call,--------------PHS号码
+--a.taskid, --任务号
+a.alarmcount, --告警累计次数
+d.buildingname, --室分点名称
+d.buildingid,   --室分点id
+d.address,--------室分点地址
+e.name as suburbname,--分局
+f.name as areaname,  --郊县
+k.name as cityname,  --地市
+a.readed,   --是否已经阅读
+decode(a.readed,1,'是','否') readedname,
+c.overlay,  --MTU覆盖区域
+a.flowtache,--告警状态 1:告警 2:派出 3:排除
+decode(a.flowtache,1,'告警',2,'派障',3,'消障','信息缺失') flowtachename,
+e.id as suburbid,--分局ID
+f.id as areaid,  --郊县id
+k.id as cityid,  --地市id
+b.limithour, --到期时限
+a.mtuid,
+m.contentcode assistantContentcode,  --辅助告警内容
+c.isprogram,
+decode(c.isprogram,1,'室内',0,'室外','未知') as isprogramname,
+c.mainlook_ap,
+o.apno as mainlook_apname,
+c.mainlook_phs,
+p.cs_id as mainlook_phsname,
+c.mainlook_cnet,
+q.cdmaname as mainlook_cnetname,
+q.pncode,
+c.reserve_pncode,
+q.address cdmaaddress,
+q.cdmatype,
+decode(q.cdmatype,1,'直放站',2,'RRU',3,'宏基站','未知') cdmatypename,
+d.factory,
+r.dicname factoryname,
+a.remark,
+s.dicname as agentcompanyname
+from alarm_master_history a
+left join mtu_alarm_content b on a.alarmcontentcode=b.alarmcontentcode
+left join dic_code_info g on b.alarmkind=g.diccode and g.dictype=11
+left join dic_code_info h on b.alarmlevel=h.diccode and h.dictype=10
+left join mtu_info c on a.mtuid=c.mtuid
+left join building_info d on c.buildingid=d.buildingid
+left join dic_code_info r on d.factory=r.diccode and r.dictype=3--集成厂家
+left join area_info e on c.suburb=e.id
+left join area_info f on e.top_id=f.id
+left join area_info k on f.top_id=k.id
+left join mtu_shield_list i on a.mtuid=i.mtuid and i.status=0
+--<<网管辅助告警
+left join cdma_info l on c.mainlook_cnet=l.cdmaid
+left join mtu_alarm_assistant_parased m on l.belong_bts=m.csid --归属基站编号=基站标识
+--网管辅助告警>>
+left join ap_info o on c.mainlook_ap=o.apid
+left join cs_info p on c.mainlook_phs=p.csid
+left join cdma_info q on c.mainlook_cnet=q.cdmaid
+left join dic_code_info s on d.agentcompany=s.diccode and s.dictype=33--代维公司
+where i.mtuid is null;
+/
+
+
+create or replace view alarm_drs_master_online_view as
+select
+decode(a.readed,0,'N','UNABLED') as isChecked,
+a.alarmid, --告警编号,
+b.alarmcontentname, --告警内容,
+a.alarmcontentcode, --告警内容编号,
+g.dicname as alarmkindname, --告警类型
+g.diccode as AlarmKindID,   --告警类型编号
+h.dicname as alarmlevelname,--告警等级
+a.sendtime,   --派障时间
+a.removetime, --排障时间
+a.collecttime,--建立时间
+b.limithour, --到期时限
+c.drsname,  --DRS名称
+c.drsno,    --DRS设备编号
+c.r_deviceid,
+c.cs,
+c.drstype,
+m.dicname as drstypename,  --DRS类型
+c.Drsmanu,
+n.dicname as drsmanuname,  --DRS厂家
+c.msc,      --DRS归属MSC
+c.bsc,      --DRS归属BSC
+c.cell,     --DRS归属扇区
+c.pn,       --DRS PN码
+c.Agentmanu,--代维公司
+c.Longitude,--经度
+c.Latitude,	--维度
+c.DRSADRESS,--地址
+c.drsphone, --电话号码
+--a.taskid, --任务号
+a.alarmcount, --告警累计次数
+d.buildingname, --室分点名称
+c.buildingid,-----室分点id
+d.address,--------室分点地址
+e.id as suburbid,--分局ID
+f.id as areaid,  --郊县id
+k.id as cityid,  --地市id
+e.name as suburbname,--分局名称
+f.name as areaname,  --郊县
+k.name as cityname,  --地市
+a.readed,   --是否已经阅读
+decode(a.readed,1,'是','否') readedname,
+a.flowtache,--告警状态 1:告警 2:派出 3:排除
+decode(a.flowtache,1,'告警',2,'派障',3,'消障','信息缺失') flowtachename,
+a.drsid,
+c.isprogram,--是否室分
+decode(c.isprogram,1,'室内',0,'室外','未知') as isprogramname,
+d.factory,
+r.dicname factoryname,
+a.remark,
+s.dicname as agentcompanyname
+from drs_alarm_online a
+left join drs_alarm_content b on a.alarmcontentcode=b.alarmcontentcode
+left join dic_code_info g on b.alarmkind=g.diccode and g.dictype=11
+left join dic_code_info h on b.alarmlevel=h.diccode and h.dictype=10
+left join drs_info c on a.drsid=c.drsid
+left join building_info d on c.buildingid=d.buildingid
+left join dic_code_info r on d.factory=r.diccode and r.dictype=3--集成厂家
+left join area_info e on c.suburb=e.id
+left join area_info f on e.top_id=f.id
+left join area_info k on f.top_id=k.id
+left join dic_code_info s on d.agentcompany=s.diccode and s.dictype=33--代维公司
+left join dic_code_info m on c.drstype=m.diccode and m.dictype=51 --直放站类型
+left join dic_code_info n on c.drsmanu=n.diccode and n.dictype=54 --直放站厂家;
+/
+
+create or replace view alarm_drs_master_history_view as
+select
+decode(a.readed,0,'N','UNABLED') as isChecked,
+a.alarmid, --告警编号,
+b.alarmcontentname, --告警内容,
+a.alarmcontentcode, --告警内容编号,
+g.dicname as alarmkindname, --告警类型
+g.diccode as AlarmKindID,   --告警类型编号
+h.dicname as alarmlevelname,--告警等级
+a.sendtime,   --派障时间
+a.removetime, --排障时间
+a.collecttime,--建立时间
+b.limithour, --到期时限
+c.drsname,  --DRS名称
+c.drsno,    --DRS设备编号
+c.r_deviceid,
+c.cs,
+c.drstype,
+m.dicname as drstypename,  --DRS类型
+c.Drsmanu,
+n.dicname as drsmanuname,  --DRS厂家
+c.msc,      --DRS归属MSC
+c.bsc,      --DRS归属BSC
+c.cell,     --DRS归属扇区
+c.pn,       --DRS PN码
+c.Agentmanu,--代维公司
+c.Longitude,--经度
+c.Latitude,  --维度
+c.DRSADRESS,--地址
+c.drsphone, --电话号码
+--a.taskid, --任务号
+a.alarmcount, --告警累计次数
+d.buildingname, --室分点名称
+c.buildingid,-----室分点id
+d.address,--------室分点地址
+e.id as suburbid,--分局ID
+f.id as areaid,  --郊县id
+k.id as cityid,  --地市id
+e.name as suburbname,--分局名称
+f.name as areaname,  --郊县
+k.name as cityname,  --地市
+a.readed,   --是否已经阅读
+decode(a.readed,1,'是','否') readedname,
+a.flowtache,--告警状态 1:告警 2:派出 3:排除
+decode(a.flowtache,1,'告警',2,'派障',3,'消障','信息缺失') flowtachename,
+a.drsid,
+c.isprogram,--是否室分
+decode(c.isprogram,1,'室内',0,'室外','未知') as isprogramname,
+d.factory,
+r.dicname factoryname,
+a.remark,
+s.dicname as agentcompanyname
+from drs_alarm_history a
+left join drs_alarm_content b on a.alarmcontentcode=b.alarmcontentcode
+left join dic_code_info g on b.alarmkind=g.diccode and g.dictype=11
+left join dic_code_info h on b.alarmlevel=h.diccode and h.dictype=10
+left join drs_info c on a.drsid=c.drsid
+left join building_info d on c.buildingid=d.buildingid
+left join dic_code_info r on d.factory=r.diccode and r.dictype=3--集成厂家
+left join area_info e on c.suburb=e.id
+left join area_info f on e.top_id=f.id
+left join area_info k on f.top_id=k.id
+left join dic_code_info s on d.agentcompany=s.diccode and s.dictype=33--代维公司
+left join dic_code_info m on c.drstype=m.diccode and m.dictype=51 --直放站类型
+left join dic_code_info n on c.drsmanu=n.diccode and n.dictype=54 --直放站厂家;
+/
+
+create or replace view drs_info_view as
+select
+a.drsid,
+a.drsno,
+a.r_deviceid,
+a.drsname,
+a.drstype,
+c.dicname as drstypename,
+a.drsmanu,
+d.dicname as drsmanuname,
+a.isprogram,
+decode(a.isprogram,1,'室分','室外') isprogramname,
+a.suburb as suburbid,
+e.name as suburbname,
+f.id as areaid,
+f.name as areaname,
+g.id as cityid,
+g.name as cityname,
+a.buildingid,
+h.buildingname,
+h.buildingno,
+a.cs,
+a.msc,
+a.bsc,
+a.cell,
+a.pn,
+a.agentmanu,
+a.longitude,
+a.latitude,
+a.drsadress,
+a.drsphone,
+nvl(b.drsstatus,1) drsstatus,
+decode(nvl(b.drsstatus,1),1,'未激活',2,'可服务',3,'告警',4,'离线',5,'锁定','未知') drsstatusname,
+b.updatetime1,
+b.updatetime2,
+nvl(b.alarmcounts,0) alarmcounts,
+b.updatetime3,
+b.updatetime4
+from drs_info a
+left join drs_statuslist b on a.drsid=b.drsid
+left join dic_code_info c on a.drstype=c.diccode and c.dictype=51--直放站设备类型
+left join dic_code_info d on a.drsmanu=d.diccode and d.dictype=54 --直放站厂家
+inner join area_info e on a.suburb=e.id and e.layer=3--分局
+inner join area_info f on e.top_id=f.id and f.layer=2
+inner join area_info g on f.top_id=g.id and g.layer=1
+left join building_info h on a.buildingid=h.buildingid--室分点;
+/
+
+create or replace view drs_info_view as
+select
+a.drsid,
+a.drsno,
+a.r_deviceid,
+a.drsname,
+a.drstype,
+c.dicname as drstypename,
+a.drsmanu,
+d.dicname as drsmanuname,
+a.isprogram,
+decode(a.isprogram,1,'室分','室外') isprogramname,
+a.suburb,
+e.name as suburbname,
+f.id as areaid,
+f.name as areaname,
+g.id as cityid,
+g.name as cityname,
+a.buildingid,
+h.buildingname,
+h.buildingno,
+a.cs,
+a.msc,
+a.bsc,
+a.cell,
+a.pn,
+a.agentmanu,
+a.longitude,
+a.latitude,
+a.drsadress,
+a.drsphone,
+nvl(b.drsstatus,1) drsstatus,
+decode(nvl(b.drsstatus,1),1,'未激活',2,'可服务',3,'告警',4,'离线',5,'锁定','未知') drsstatusname,
+b.updatetime1,
+b.updatetime2,
+nvl(b.alarmcounts,0) alarmcounts,
+b.updatetime3,
+b.updatetime4
+from drs_info a
+left join drs_statuslist b on a.drsid=b.drsid
+left join dic_code_info c on a.drstype=c.diccode and c.dictype=51--直放站设备类型
+left join dic_code_info d on a.drsmanu=d.diccode and d.dictype=54 --直放站厂家
+inner join area_info e on a.suburb=e.id and e.layer=3--分局
+inner join area_info f on e.top_id=f.id and f.layer=2
+inner join area_info g on f.top_id=g.id and g.layer=1
+left join building_info h on a.buildingid=h.buildingid--室分点;
+/
+
+create or replace view drs_alarmresult_view as
+select
+a.alarmid,--针对告警产生门限次的测试结果记录视图
+a.taskid,
+a.drsid,
+e.drsno,
+e.r_deviceid,
+e.drsname,
+b.comname,
+d.paramname,
+a.valueindex,
+decode(f.tranlatevalue,null,a.testresult,f.tranlatevalue) testresult,
+a.collecttime,
+a.execid,
+decode(a.isprocess,0,'初始化',1,'待处理',2,'正处理',3,'已处理',-99,'异常','未知') isprocess,
+c.name cityname,
+a.comid,
+a.paramid,
+a.cityid
+from drs_alarmresult a
+left join drs_command_define b on a.comid=b.comid
+left join area_info c on a.cityid=c.id and c.layer=1
+left join drs_param_define d on a.paramid=d.paramid
+left join drs_info e on a.drsid=e.drsid
+left join drs_testresult_translate f on a.comid=f.comid and a.paramid=f.paramid
+and a.testresult=to_char(f.orderindex);
+/
+
+create or replace view drs_comparam_default_view as
+select
+a.drsid,a.drsno,a.drsname,b.comid,b.paramid,
+decode(b.paramid,1,to_char(a.drstype),2,'0',24,a.drsno,25,to_char(a.r_deviceid),b.paramvalue) as paramvalue
+from drs_info a
+left join drs_comparam_default b on 1=1;
+/
+
+create or replace view drs_alarm_view as
+select
+a.alarmcontentcode ,
+a.alarmcontentname ,
+a.alarmkind,
+a.alarmlevel,
+a.alarmcondition,
+a.removecondition,
+a.alarmcount,
+a.removecount,
+decode(a.sendtype,0,'判断',1,'分析') as sendtype,
+a.comid,
+a.paramid,
+a.limithour,
+decode(a.ifineffect,1,'是',0,'否') as ifineffect,
+b.dicname as alarmkindname,
+c.dicname as alarmlevelname ,
+d.comname ,
+e.paramname
+from drs_alarm_content a
+left join dic_code_info b on a.alarmkind=b.diccode and b.dictype=11
+left join dic_code_info c on a.alarmlevel=c.diccode and c.dictype=10
+left join drs_command_define d on a.comid=d.comid
+left join drs_param_define e on a.paramid=e.paramid;
+/
+
+create or replace view drs_config_info_view as
+select
+a.drsid,
+a.drsno,
+a.r_deviceid,
+a.drsname,
+a.drstype,
+c.dicname as drstypename,
+a.drsmanu,
+d.dicname as drsmanuname,
+a.isprogram,
+decode(a.isprogram,1,'室分','室外') isprogramname,
+a.suburb as suburbid,
+e.name as suburbname,
+f.id as areaid,
+f.name as areaname,
+g.id as cityid,
+g.name as cityname,
+a.buildingid,
+h.buildingname,
+h.buildingno,
+a.cs,
+a.msc,
+a.bsc,
+a.cell,
+a.pn,
+a.agentmanu,
+a.longitude,
+a.latitude,
+a.drsadress,
+a.drsphone,
+nvl(b.drsstatus,1) drsstatus,
+decode(nvl(b.drsstatus,1),1,'未激活',2,'可服务',3,'告警',4,'离线',5,'锁定','未知') drsstatusname,
+b.updatetime1,
+b.updatetime2,
+nvl(b.alarmcounts,0) alarmcounts,
+b.updatetime3,
+b.updatetime4
+from drs_info a
+left join drs_statuslist b on a.drsid=b.drsid
+left join dic_code_info c on a.drstype=c.diccode and c.dictype=51--直放站设备类型
+left join dic_code_info d on a.drsmanu=d.diccode and d.dictype=54 --直放站厂家
+inner join area_info e on a.suburb=e.id and e.layer=3--分局
+inner join area_info f on e.top_id=f.id and f.layer=2
+inner join area_info g on f.top_id=g.id and g.layer=1
+left join building_info h on a.buildingid=h.buildingid--室分点;
+/
+create or replace view drs_config_com_his_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   d80.dicname respdrstypename,
+   c81.testresult respdrsno,
+   c82.testresult respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype
+ from drs_testtask_history t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d80 on d80.dictype=51 and d80.diccode=c80.testresult--直放站设备类型
+left join drs_testresult_online c81 on c81.cityid=t.cityid and c81.taskid=t.taskid and c81.paramid=81--直放站编号
+left join drs_testresult_online c82 on c82.cityid=t.cityid and c82.taskid=t.taskid and c82.paramid=82--直放站设备编号
+left join drs_testresult_online c83 on c83.cityid=t.cityid and c83.taskid=t.taskid and c83.paramid=83--应答标志
+left join dic_code_info d83 on d83.dictype=56 and d83.diccode=c83.testresult
+with read only;
+/
+create or replace view drs_config_com_on_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   d80.dicname respdrstypename,
+   c81.testresult respdrsno,
+   c82.testresult respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_online t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d80 on d80.dictype=51 and d80.diccode=c80.testresult--直放站设备类型
+left join drs_testresult_online c81 on c81.cityid=t.cityid and c81.taskid=t.taskid and c81.paramid=81--直放站编号
+left join drs_testresult_online c82 on c82.cityid=t.cityid and c82.taskid=t.taskid and c82.paramid=82--直放站设备编号
+left join drs_testresult_online c83 on c83.cityid=t.cityid and c83.taskid=t.taskid and c83.paramid=83--应答标志
+left join dic_code_info d83 on d83.dictype=56 and d83.diccode=c83.testresult
+union all
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   d80.dicname respdrstypename,
+   c81.testresult respdrsno,
+   c82.testresult respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   1 IsUserComOK
+ from drs_testtask_user t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d80 on d80.dictype=51 and d80.diccode=c80.testresult--直放站设备类型
+left join drs_testresult_online c81 on c81.cityid=t.cityid and c81.taskid=t.taskid and c81.paramid=81--直放站编号
+left join drs_testresult_online c82 on c82.cityid=t.cityid and c82.taskid=t.taskid and c82.paramid=82--直放站设备编号
+left join drs_testresult_online c83 on c83.cityid=t.cityid and c83.taskid=t.taskid and c83.paramid=83--应答标志
+left join dic_code_info d83 on d83.dictype=56 and d83.diccode=c83.testresult
+with read only;
+/
+create or replace view drs_config_comparam_his_view as
+select t.cityid,t.taskid, t.drsid,t.comid, a.paramid, b.paramname, a.paramvalue
+from drs_testtask_history t
+left join drs_testparam_online a on a.taskid=t.taskid
+left join drs_param_define b on b.paramid=a.paramid
+with read only;
+/
+create or replace view drs_config_comparam_on_view as
+select t.cityid,t.taskid, t.drsid,t.comid, a.paramid, b.paramname, a.paramvalue
+from drs_testtask_online t
+left join drs_testparam_online a on a.taskid=t.taskid
+left join drs_param_define b on b.paramid=a.paramid
+union all
+select t.cityid,t.taskid, t.drsid,t.comid, a.paramid, b.paramname, a.paramvalue
+from drs_testtask_user t
+left join drs_testparam_online a on a.taskid=t.taskid
+left join drs_param_define b on b.paramid=a.paramid
+with read only;
+/
+create or replace view drs_config_default_view as
+select t.drsid, t.drsno, t.r_deviceid, a.updatetime3, a.updatetime4,
+b1.paramvalue p0x31_01, b2.paramvalue p0x31_02, '0X01' p0x31_03,
+nvl(c1.paramvalue,0) p0x32_01, nvl(c2.paramvalue,0) p0x32_02, nvl(c3.paramvalue,0) p0x32_03, nvl(c4.paramvalue,0) p0x32_04,
+nvl(c5.paramvalue,0) p0x32_05, nvl(c6.paramvalue,0) p0x32_06, nvl(c7.paramvalue,0) p0x32_07, nvl(c8.paramvalue,0) p0x32_08,
+nvl(c9.paramvalue,0) p0x32_09, nvl(c10.paramvalue,0) p0x32_10, nvl(c11.paramvalue,0) p0x32_11, nvl(c12.paramvalue,0) p0x32_12,
+nvl(c13.paramvalue,0) p0x32_13, nvl(c14.paramvalue,0) p0x32_14, nvl(c15.paramvalue,0) p0x32_15, nvl(c16.paramvalue,0) p0x32_16,
+nvl(c17.paramvalue,0) p0x32_17, d1.paramvalue p0x33_01, d2.paramvalue p0x33_02, nvl(e1.paramvalue,0) p0x34_01,
+nvl(e2.paramvalue,0) p0x34_02, f1.paramvalue p0x35_01, f2.paramvalue p0x35_02, g1.paramvalue p0x36_01,
+g2.paramvalue p0x36_02 from drs_info t
+left join drs_statuslist a on a.drsid=t.drsid
+left join drs_comparam_default b1 on b1.comid=49 and b1.paramid=4   --31
+left join drs_comparam_default b2 on b2.comid=49 and b2.paramid=5   --31
+left join drs_comparam_default c1 on c1.comid=50 and c1.paramid=7   --32
+left join drs_comparam_default c2 on c2.comid=50 and c2.paramid=8   --32
+left join drs_comparam_default c3 on c3.comid=50 and c3.paramid=9   --32
+left join drs_comparam_default c4 on c4.comid=50 and c4.paramid=10   --32
+left join drs_comparam_default c5 on c5.comid=50 and c5.paramid=11   --32
+left join drs_comparam_default c6 on c6.comid=50 and c6.paramid=12   --32
+left join drs_comparam_default c7 on c7.comid=50 and c7.paramid=13   --32
+left join drs_comparam_default c8 on c8.comid=50 and c8.paramid=14   --32
+left join drs_comparam_default c9 on c9.comid=50 and c9.paramid=15   --32
+left join drs_comparam_default c10 on c10.comid=50 and c10.paramid=16   --32
+left join drs_comparam_default c11 on c11.comid=50 and c11.paramid=17   --32
+left join drs_comparam_default c12 on c12.comid=50 and c12.paramid=18   --32
+left join drs_comparam_default c13 on c13.comid=50 and c13.paramid=19   --32
+left join drs_comparam_default c14 on c14.comid=50 and c14.paramid=20   --32
+left join drs_comparam_default c15 on c15.comid=50 and c15.paramid=21   --32
+left join drs_comparam_default c16 on c16.comid=50 and c16.paramid=22   --32
+left join drs_comparam_default c17 on c17.comid=50 and c17.paramid=23   --32
+left join drs_comparam_default d1 on d1.comid=51 and d1.paramid=27   --33
+left join drs_comparam_default d2 on d2.comid=51 and d2.paramid=76   --33
+left join drs_comparam_default e1 on e1.comid=52 and e1.paramid=56   --34
+left join drs_comparam_default e2 on e2.comid=52 and e2.paramid=55   --34
+left join drs_comparam_default f1 on f1.comid=53 and f1.paramid=54   --35
+left join drs_comparam_default f2 on f2.comid=53 and f2.paramid=53   --35
+left join drs_comparam_default g1 on g1.comid=54 and g1.paramid=77   --36
+left join drs_comparam_default g2 on g2.comid=54 and g2.paramid=78   --36
+with read only;
+/
+create or replace view drs_config_info_view as
+select
+a.drsid,
+a.drsno,
+a.r_deviceid,
+a.drsname,
+a.drstype,
+c.dicname as drstypename,
+a.drsmanu,
+d.dicname as drsmanuname,
+a.isprogram,
+decode(a.isprogram,1,'室分','室外') isprogramname,
+a.suburb as suburbid,
+e.name as suburbname,
+f.id as areaid,
+f.name as areaname,
+g.id as cityid,
+g.name as cityname,
+a.buildingid,
+h.buildingname,
+h.buildingno,
+a.cs,
+a.msc,
+a.bsc,
+a.cell,
+a.pn,
+a.agentmanu,
+a.longitude,
+a.latitude,
+a.drsadress,
+a.drsphone,
+nvl(b.drsstatus,1) drsstatus,
+decode(nvl(b.drsstatus,1),1,'未激活',2,'可服务',3,'告警',4,'离线',5,'锁定','未知') drsstatusname,
+b.updatetime1,
+b.updatetime2,
+nvl(b.alarmcounts,0) alarmcounts,
+b.updatetime3,
+b.updatetime4
+from drs_info a
+left join drs_statuslist b on a.drsid=b.drsid
+left join dic_code_info c on a.drstype=c.diccode and c.dictype=51--直放站设备类型
+left join dic_code_info d on a.drsmanu=d.diccode and d.dictype=54 --直放站厂家
+inner join area_info e on a.suburb=e.id and e.layer=3--分局
+inner join area_info f on e.top_id=f.id and f.layer=2
+inner join area_info g on f.top_id=g.id and g.layer=1
+left join building_info h on a.buildingid=h.buildingid--室分点;
+/
+create or replace view drs_config_local_view as
+select t.drsid, t.drsno, t.r_deviceid, a.updatetime3, a.updatetime4,
+b1.paramvalue p0x31_01, b2.paramvalue p0x31_02, '0X01' p0x31_03,
+nvl(c1.paramvalue,0) p0x32_01, nvl(c2.paramvalue,0) p0x32_02, nvl(c3.paramvalue,0) p0x32_03, nvl(c4.paramvalue,0) p0x32_04,
+nvl(c5.paramvalue,0) p0x32_05, nvl(c6.paramvalue,0) p0x32_06, nvl(c7.paramvalue,0) p0x32_07, nvl(c8.paramvalue,0) p0x32_08,
+nvl(c9.paramvalue,0) p0x32_09, nvl(c10.paramvalue,0) p0x32_10, nvl(c11.paramvalue,0) p0x32_11, nvl(c12.paramvalue,0) p0x32_12,
+nvl(c13.paramvalue,0) p0x32_13, nvl(c14.paramvalue,0) p0x32_14, nvl(c15.paramvalue,0) p0x32_15, nvl(c16.paramvalue,0) p0x32_16,
+nvl(c17.paramvalue,0) p0x32_17, d1.paramvalue p0x33_01, d2.paramvalue p0x33_02, nvl(e1.paramvalue,0) p0x34_01,
+nvl(e2.paramvalue,0) p0x34_02, f1.paramvalue p0x35_01, f2.paramvalue p0x35_02, g1.paramvalue p0x36_01,
+g2.paramvalue p0x36_02 from drs_info t
+left join drs_statuslist a on a.drsid=t.drsid
+left join drs_paramsetup_local b1 on b1.drsid=t.drsid and b1.comid=49 and b1.paramid=4   --31
+left join drs_paramsetup_local b2 on b2.drsid=t.drsid and b2.comid=49 and b2.paramid=5   --31
+left join drs_paramsetup_local c1 on c1.drsid=t.drsid and c1.comid=50 and c1.paramid=7   --32
+left join drs_paramsetup_local c2 on c2.drsid=t.drsid and c2.comid=50 and c2.paramid=8   --32
+left join drs_paramsetup_local c3 on c3.drsid=t.drsid and c3.comid=50 and c3.paramid=9   --32
+left join drs_paramsetup_local c4 on c4.drsid=t.drsid and c4.comid=50 and c4.paramid=10   --32
+left join drs_paramsetup_local c5 on c5.drsid=t.drsid and c5.comid=50 and c5.paramid=11   --32
+left join drs_paramsetup_local c6 on c6.drsid=t.drsid and c6.comid=50 and c6.paramid=12   --32
+left join drs_paramsetup_local c7 on c7.drsid=t.drsid and c7.comid=50 and c7.paramid=13   --32
+left join drs_paramsetup_local c8 on c8.drsid=t.drsid and c8.comid=50 and c8.paramid=14   --32
+left join drs_paramsetup_local c9 on c9.drsid=t.drsid and c9.comid=50 and c9.paramid=15   --32
+left join drs_paramsetup_local c10 on c10.drsid=t.drsid and c10.comid=50 and c10.paramid=16   --32
+left join drs_paramsetup_local c11 on c11.drsid=t.drsid and c11.comid=50 and c11.paramid=17   --32
+left join drs_paramsetup_local c12 on c12.drsid=t.drsid and c12.comid=50 and c12.paramid=18   --32
+left join drs_paramsetup_local c13 on c13.drsid=t.drsid and c13.comid=50 and c13.paramid=19   --32
+left join drs_paramsetup_local c14 on c14.drsid=t.drsid and c14.comid=50 and c14.paramid=20   --32
+left join drs_paramsetup_local c15 on c15.drsid=t.drsid and c15.comid=50 and c15.paramid=21   --32
+left join drs_paramsetup_local c16 on c16.drsid=t.drsid and c16.comid=50 and c16.paramid=22   --32
+left join drs_paramsetup_local c17 on c17.drsid=t.drsid and c17.comid=50 and c17.paramid=23   --32
+left join drs_paramsetup_local d1 on d1.drsid=t.drsid and d1.comid=51 and d1.paramid=27   --33
+left join drs_paramsetup_local d2 on d2.drsid=t.drsid and d2.comid=51 and d2.paramid=76   --33
+left join drs_paramsetup_local e1 on e1.drsid=t.drsid and e1.comid=52 and e1.paramid=56   --34
+left join drs_paramsetup_local e2 on e2.drsid=t.drsid and e2.comid=52 and e2.paramid=55   --34
+left join drs_paramsetup_local f1 on f1.drsid=t.drsid and f1.comid=53 and f1.paramid=54   --35
+left join drs_paramsetup_local f2 on f2.drsid=t.drsid and f2.comid=53 and f2.paramid=53   --35
+left join drs_paramsetup_local g1 on g1.drsid=t.drsid and g1.comid=54 and g1.paramid=77   --36
+left join drs_paramsetup_local g2 on g2.drsid=t.drsid and g2.comid=54 and g2.paramid=78   --36
+with read only;
+/
+
+
+

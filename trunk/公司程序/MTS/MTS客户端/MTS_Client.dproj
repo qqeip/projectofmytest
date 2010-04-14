@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{b07c1862-9dd5-4109-8b2b-92cd00cd8bd9}</ProjectGuid>
+    <MainSource>MTS_Client.dpr</MainSource>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>MTS_Client.exe</DCC_DependencyCheckOutputName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Define>DEBUG</DCC_Define>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">2</VersionInfo><VersionInfo Name="MinorVer">5</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">1230</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2052</VersionInfo><VersionInfo Name="CodePage">936</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">杭州纬地</VersionInfoKeys><VersionInfoKeys Name="FileDescription"></VersionInfoKeys><VersionInfoKeys Name="FileVersion">2.5.0.1230</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName">室内分布自动监测系统</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">2.5.0.1230</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">MTS_Client.dpr</Source></Source><Excluded_Packages>
+      
+      
+      <Excluded_Packages Name="$(BDS)\bin\dcloffice2k100.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dclofficexp100.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+    </Excluded_Packages></Delphi.Personality><ModelSupport>False</ModelSupport></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="MTS_Client.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="0_框架文件\FrmChangePwd.pas">
+      <Form>FormChangePwd</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\FrmLogin.pas">
+      <Form>FormLogin</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\UnitDRSSearch.pas">
+      <Form>FormDRSSearch</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\UnitRingMgr.pas">
+      <Form>FormRingMgr</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\UnitRingPopupWindows.pas">
+      <Form>FormRingPopupWindows</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\UnitUserCustomSet.pas">
+      <Form>FormUserCustomSet</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\UntDBFunc.pas" />
+    <DCCReference Include="0_框架文件\UserPwd.pas">
+      <Form>FormUserPWD</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\Ut_Common.pas" />
+    <DCCReference Include="0_框架文件\Ut_DataModule.pas">
+      <Form>Dm_MTS</Form>
+      <DesignClass>TDataModule</DesignClass>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\Ut_MainForm.pas">
+      <Form>Fm_MainForm</Form>
+    </DCCReference>
+    <DCCReference Include="0_框架文件\Ut_MTSTreeHelper.pas" />
+    <DCCReference Include="0_框架文件\Ut_ServerSet.pas">
+      <Form>Fm_ServerSet</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\FrmSelectLayer.pas">
+      <Form>FormSelectLayer</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\LayerSvrUnit.pas" />
+    <DCCReference Include="1_告警管理\UnitAddAlarmInfo.pas">
+      <Form>FormAddAlarmInfo</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitAlarmMonitor.pas">
+      <Form>FormAlarmMonitor</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitAlarmWait.pas">
+      <Form>FormAlarmWait</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitBuildingParticular.pas">
+      <Form>FormBuildingParticular</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitDRSParticular.pas">
+      <Form>FormDRSParticular</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitMtuPlanSet.pas">
+      <Form>FormMtuPlanSet</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitSearchBuilding.pas">
+      <Form>FormSearchBuilding</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitTestParticular.pas">
+      <Form>FormTestParticular</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UnitWirelessParticular.pas">
+      <Form>FormWirelessParticular</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\UntAlarmTestModel.pas">
+      <Form>FrmAlarmTestModel</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\Ut_AlarmQuery.pas">
+      <Form>Fm_AlarmQuery</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\Ut_AlarmTest.pas">
+      <Form>Fm_AlarmTest</Form>
+    </DCCReference>
+    <DCCReference Include="1_告警管理\Ut_FloatInfo.pas">
+      <Form>Fm_FloatInfo</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\Frm_building_info.pas">
+      <Form>fm_building_info</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\UnitAPInfo.pas">
+      <Form>FormAPInfo</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\UnitCDMASource.pas">
+      <Form>FormCDMASource</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\UnitCSInfoMag.pas">
+      <Form>FormCSInfoMag</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\UnitLinkMachineInfo.pas">
+      <Form>FormLinkMachineInfo</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\UnitMTUINFO.pas">
+      <Form>FormMTUINFO</Form>
+    </DCCReference>
+    <DCCReference Include="2_资源管理\UnitSwitchInfo.pas">
+      <Form>FormSwitchInfo</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\UnitInputArea.pas">
+      <Form>FormInputArea</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\Ut_AlarmContent.pas">
+      <Form>Fm_AlarmContent</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\Ut_CityInfoManage.pas">
+      <Form>Fm_CityManager</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\Ut_DataDicMag.pas">
+      <Form>Fm_DataDicMag</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\Ut_TestParamSet.pas">
+      <Form>Fm_TestParamSet</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\Ut_UserInfoMag.pas">
+      <Form>Fm_UserInfoMag</Form>
+    </DCCReference>
+    <DCCReference Include="3_基础数据管理\Ut_UserPurview.pas">
+      <Form>Fm_UserPurview</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UnitAlarmContentModule.pas">
+      <Form>FormAlarmContentModule</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UnitBaseShowModal.pas">
+      <Form>FormBaseShowModal</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UnitDRSInfoMgr.pas">
+      <Form>FormDRSInfoMgr</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UnitDRSRoundSearch.pas">
+      <Form>FormDRSRoundSearch</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UnitDRSSingleAlarmSearch.pas">
+      <Form>FormDRSSingleAlarmSearch</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UnitDRS_Alarm_mgr.pas">
+      <Form>FormDRS_ALARM_Mgr</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\Unit_DRS_AlarmQuery.pas">
+      <Form>Form_DRS_AlarmQuery</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UntCommandParam.pas" />
+    <DCCReference Include="4_直放站模块\UntDRSComQuery.pas">
+      <Form>FrmDRSComQuery</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UntDRSConfig.pas">
+      <Form>FrmDRSConfig</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UntDRSConfigComQuery.pas">
+      <Form>FrmDRSConfigComQuery</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\UntDRSConfigParamSet.pas">
+      <Form>FrmDRSConfigParamSet</Form>
+    </DCCReference>
+    <DCCReference Include="4_直放站模块\WrmPLdrs_autotest_cmd.pas" />
+    <DCCReference Include="DBThreeStateTree.pas" />
+    <DCCReference Include="MTS_Server_TLB.pas" />
+    <DCCReference Include="UDevExpressToChinese.pas" />
+    <DCCReference Include="UnitGlobal.pas" />
+  </ItemGroup>
+</Project>

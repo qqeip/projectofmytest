@@ -1,0 +1,14 @@
+!table
+!version 450
+!charset WindowsSimpChinese
+
+Definition Table
+  Description "用户室分点图层"
+  Type Native charset "Neutral"
+  Fields 6
+    BUILDINGID char (20) ;
+    BUILDINGNO char (100) ;
+    BUILDINGNAME char (100) ;
+    ADDRESS char (200) ;
+    AREAID char (20) ;
+    ALARMSTATUS char (20) ;

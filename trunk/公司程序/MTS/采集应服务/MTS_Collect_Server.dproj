@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{cd161cc8-e019-4d2d-aff9-fd25769d0125}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+    <DCC_DependencyCheckOutputName>MTS_Collect_Server.exe</DCC_DependencyCheckOutputName>
+    <MainSource>MTS_Collect_Server.dpr</MainSource>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_DebugInformation>False</DCC_DebugInformation>
+    <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+    <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+    <DCC_Define>RELEASE</DCC_Define>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Version>7.0</Version>
+    <DCC_Define>DEBUG</DCC_Define>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Delphi.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">4</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">1</VersionInfo><VersionInfo Name="Build">120</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2052</VersionInfo><VersionInfo Name="CodePage">936</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">杭州纬地</VersionInfoKeys><VersionInfoKeys Name="FileDescription"></VersionInfoKeys><VersionInfoKeys Name="FileVersion">4.0.1.120</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName">室内分布自动监测系统</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">4.0.1.120</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Excluded_Packages>
+      
+      
+      <Excluded_Packages Name="$(BDS)\bin\dcloffice2k100.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+      <Excluded_Packages Name="$(BDS)\bin\dclofficexp100.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+    </Excluded_Packages><Source><Source Name="MainSource">MTS_Collect_Server.dpr</Source></Source></Delphi.Personality></BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
+  <ItemGroup>
+    <DelphiCompile Include="MTS_Collect_Server.dpr">
+      <MainSource>MainSource</MainSource>
+    </DelphiCompile>
+    <DCCReference Include="Log.pas" />
+    <DCCReference Include="MTS_Server_TLB.pas" />
+    <DCCReference Include="UnitAlarmCollect.pas" />
+    <DCCReference Include="UnitAlarmSend.pas" />
+    <DCCReference Include="UnitAutoTestListThread.pas" />
+    <DCCReference Include="UnitDRS_AlarmCollect.pas" />
+    <DCCReference Include="UnitDRS_AlarmSend.pas" />
+    <DCCReference Include="UnitDRS_AutoTestThread.pas" />
+    <DCCReference Include="UnitDRS_Math.pas" />
+    <DCCReference Include="UnitDRS_ResultParasThread.pas" />
+    <DCCReference Include="UnitDRS_ResultReviceThread.pas" />
+    <DCCReference Include="UnitDRS_TaskSendThread.pas" />
+    <DCCReference Include="UnitFunAnalyseThread.pas" />
+    <DCCReference Include="UnitRepeaterInfo.pas" />
+    <DCCReference Include="UnitResultParas.pas" />
+    <DCCReference Include="UnitTaskSendThread.pas" />
+    <DCCReference Include="UnitThreadCommon.pas" />
+    <DCCReference Include="UntCDMACollectThread.pas" />
+    <DCCReference Include="UntSMSClass.pas" />
+    <DCCReference Include="Ut_BaseThread.pas" />
+    <DCCReference Include="Ut_Common.pas" />
+    <DCCReference Include="Ut_Global.pas" />
+    <DCCReference Include="Ut_Main_Collect.pas">
+      <Form>Fm_Main_Collect</Form>
+    </DCCReference>
+    <DCCReference Include="Ut_MtuDataProcess.pas" />
+    <DCCReference Include="Ut_MtuInfo.PAS" />
+    <DCCReference Include="Ut_SystemSet.pas">
+      <Form>Fm_SystemSet</Form>
+    </DCCReference>
+    <DCCReference Include="Ut_TestResultSearch.pas">
+      <Form>Fm_TestResult</Form>
+    </DCCReference>
+  </ItemGroup>
+</Project>

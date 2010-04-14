@@ -1,0 +1,11 @@
+!table
+!version 450
+!charset WindowsSimpChinese
+
+Definition Table
+  Description "用户直放站图层"
+  Type Native charset "Neutral"
+  Fields 3
+    DRSID char (20) ;
+    DRSNAME char (100) ;
+    DRSSTATUS char (100) ;

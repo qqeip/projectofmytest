@@ -1,0 +1,1961 @@
+-- Add/modify columns 
+alter table BUILDING_INFO add AGENTCOMPANY NUMBER(10);
+-- Add comments to the columns 
+comment on column BUILDING_INFO.AGENTCOMPANY
+  is '代维公司';
+
+-- Create table
+create table ALARM_RINGREMIND_INFO
+(
+  CITYID     NUMBER(10) not null,
+  COMPANYID  NUMBER(10) not null,
+  ALARMLEVEL NUMBER(10) not null,
+  ISREMIND   NUMBER(10) not null,
+  REMARK     VARCHAR2(100),
+  UPDATETIME DATE,
+  REMINDTYPE NUMBER(10) not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table ALARM_RINGREMIND_INFO
+  is '告警响铃';
+-- Add comments to the columns 
+comment on column ALARM_RINGREMIND_INFO.COMPANYID
+  is '告警派发给的维护单位';
+comment on column ALARM_RINGREMIND_INFO.ALARMLEVEL
+  is '最高告警级别';
+comment on column ALARM_RINGREMIND_INFO.ISREMIND
+  is '是否提醒 0 不提示 1 提示';
+comment on column ALARM_RINGREMIND_INFO.UPDATETIME
+  is '更新时间';
+comment on column ALARM_RINGREMIND_INFO.REMINDTYPE
+  is '提示类型 1 派障 2 将超时';
+-- Create/Recreate primary, unique and foreign key constraints 
+
+
+
+-- Create table
+create table ALARM_SYS_FUNCTION_SET
+(
+  CODE      NUMBER(10) not null,
+  CONTENT   VARCHAR2(100) default '1' not null,
+  SETVALUE  VARCHAR2(100) not null,
+  KIND      NUMBER(10) not null,
+  KINDNOTE  VARCHAR2(100),
+  CITYID    NUMBER(10) not null,
+  CONDITION VARCHAR2(20)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table ALARM_SYS_FUNCTION_SET
+  is '系统参数表';
+-- Add comments to the columns 
+comment on column ALARM_SYS_FUNCTION_SET.CODE
+  is '参数编码';
+comment on column ALARM_SYS_FUNCTION_SET.CONTENT
+  is '附加条件值如设备等级';
+comment on column ALARM_SYS_FUNCTION_SET.SETVALUE
+  is '参数值';
+comment on column ALARM_SYS_FUNCTION_SET.KIND
+  is '参数类型';
+comment on column ALARM_SYS_FUNCTION_SET.KINDNOTE
+  is '备注';
+comment on column ALARM_SYS_FUNCTION_SET.CITYID
+  is '城市编号';
+comment on column ALARM_SYS_FUNCTION_SET.CONDITION
+  is '其他附属条件如告警等级';
+
+
+-- Create table
+create table DRS_TESTTASK_USER
+(
+  TASKID     NUMBER(10) not null,
+  CITYID     NUMBER(10) not null,
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  STATUS     NUMBER(2) not null,
+  TESTRESULT VARCHAR2(200),
+  ASKTIME    DATE not null,
+  SENDTIME   DATE,
+  RECTIME    DATE,
+  TASKLEVEL  NUMBER(2) not null,
+  USERID     NUMBER(10) not null,
+  MODELID    NUMBER(10),
+  ISPROCESS  NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTTASK_USER
+  is '直放站测试任务用户表';
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTTASKUSER on DRS_TESTTASK_USER (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_ALARM_CONTENT
+(
+  ALARMCONTENTCODE NUMBER(10) not null,
+  ALARMCONTENTNAME VARCHAR2(100),
+  ALARMKIND        NUMBER(10),
+  ALARMLEVEL       NUMBER(10),
+  ALARMCONDITION   VARCHAR2(100),
+  REMOVECONDITION  VARCHAR2(100),
+  ALARMCOUNT       NUMBER(10),
+  REMOVECOUNT      NUMBER(10),
+  SENDTYPE         NUMBER(10),
+  COMID            NUMBER(10),
+  PARAMID          NUMBER(10),
+  LIMITHOUR        NUMBER(10),
+  IFINEFFECT       NUMBER(10) default 1
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_ALARM_CONTENT
+  is '直放站告警内容表';
+-- Add comments to the columns 
+comment on column DRS_ALARM_CONTENT.ALARMCONTENTCODE
+  is '告警内容编号';
+comment on column DRS_ALARM_CONTENT.ALARMCONTENTNAME
+  is '告警内容名称';
+comment on column DRS_ALARM_CONTENT.ALARMKIND
+  is '告警类型';
+comment on column DRS_ALARM_CONTENT.ALARMLEVEL
+  is '告警等级';
+comment on column DRS_ALARM_CONTENT.ALARMCONDITION
+  is '告警产生条件';
+comment on column DRS_ALARM_CONTENT.REMOVECONDITION
+  is '告警排除条件';
+comment on column DRS_ALARM_CONTENT.ALARMCOUNT
+  is '告警产生累计次';
+comment on column DRS_ALARM_CONTENT.REMOVECOUNT
+  is '告警排除累计次';
+comment on column DRS_ALARM_CONTENT.SENDTYPE
+  is '处理类型 0:判断  1:分析';
+comment on column DRS_ALARM_CONTENT.COMID
+  is '告警来源命令号';
+comment on column DRS_ALARM_CONTENT.PARAMID
+  is '告警命令参数号';
+comment on column DRS_ALARM_CONTENT.LIMITHOUR
+  is '到期时间';
+comment on column DRS_ALARM_CONTENT.IFINEFFECT
+  is '是否有效';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_ALARM_CONTENT
+  add constraint PK_DRSALARMCONTENT primary key (ALARMCONTENTCODE)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_ALARM_HISTORY
+(
+  ALARMID          NUMBER(10) not null,
+  CITYID           NUMBER(10) not null,
+  DRSID            NUMBER(10) not null,
+  ALARMCONTENTCODE NUMBER(10) not null,
+  FLOWTACHE        NUMBER(10) not null,
+  SENDTIME         DATE,
+  REMOVETIME       DATE,
+  COLLECTTIME      DATE not null,
+  ALARMCOUNT       NUMBER(10) not null,
+  REMOVECOUNT      NUMBER(10) not null,
+  READED           NUMBER(10) default 0,
+  REMARK           VARCHAR2(500),
+  UPDATETIME       DATE
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_ALARM_HISTORY
+  is '直放站告警主表(历史)';
+-- Add comments to the columns 
+comment on column DRS_ALARM_HISTORY.ALARMID
+  is '告警编号';
+comment on column DRS_ALARM_HISTORY.DRSID
+  is 'MTU编号';
+comment on column DRS_ALARM_HISTORY.ALARMCONTENTCODE
+  is '告警内容编号';
+comment on column DRS_ALARM_HISTORY.FLOWTACHE
+  is '告警状态 1:告警 2:派出 3:排除';
+comment on column DRS_ALARM_HISTORY.SENDTIME
+  is '派障时间';
+comment on column DRS_ALARM_HISTORY.REMOVETIME
+  is '排障时间';
+comment on column DRS_ALARM_HISTORY.COLLECTTIME
+  is '采集时间';
+comment on column DRS_ALARM_HISTORY.ALARMCOUNT
+  is '告警累计值';
+comment on column DRS_ALARM_HISTORY.REMOVECOUNT
+  is '告警排除累计值';
+comment on column DRS_ALARM_HISTORY.READED
+  is '是否已阅';
+comment on column DRS_ALARM_HISTORY.REMARK
+  is '备注';
+comment on column DRS_ALARM_HISTORY.UPDATETIME
+  is '最后更新时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_ALARM_HISTORY
+  add constraint PK_ALARMHISTORY primary key (ALARMID, CITYID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_ALARMHISTORY on DRS_ALARM_HISTORY (CITYID, DRSID, ALARMCONTENTCODE)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_ALARM_ONLINE
+(
+  ALARMID          NUMBER(10) not null,
+  CITYID           NUMBER(10) not null,
+  DRSID            NUMBER(10) not null,
+  ALARMCONTENTCODE NUMBER(10) not null,
+  FLOWTACHE        NUMBER(10) not null,
+  SENDTIME         DATE,
+  REMOVETIME       DATE,
+  COLLECTTIME      DATE not null,
+  ALARMCOUNT       NUMBER(10) not null,
+  REMOVECOUNT      NUMBER(10) not null,
+  READED           NUMBER(10) default 0,
+  REMARK           VARCHAR2(500),
+  UPDATETIME       DATE
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_ALARM_ONLINE
+  is '直放站告警主表';
+-- Add comments to the columns 
+comment on column DRS_ALARM_ONLINE.ALARMID
+  is '告警编号';
+comment on column DRS_ALARM_ONLINE.DRSID
+  is 'MTU编号';
+comment on column DRS_ALARM_ONLINE.ALARMCONTENTCODE
+  is '告警内容编号';
+comment on column DRS_ALARM_ONLINE.FLOWTACHE
+  is '告警状态 1:告警 2:派出 3:排除';
+comment on column DRS_ALARM_ONLINE.SENDTIME
+  is '派障时间';
+comment on column DRS_ALARM_ONLINE.REMOVETIME
+  is '排障时间';
+comment on column DRS_ALARM_ONLINE.COLLECTTIME
+  is '采集时间';
+comment on column DRS_ALARM_ONLINE.ALARMCOUNT
+  is '告警累计值';
+comment on column DRS_ALARM_ONLINE.REMOVECOUNT
+  is '告警排除累计值';
+comment on column DRS_ALARM_ONLINE.READED
+  is '是否已阅';
+comment on column DRS_ALARM_ONLINE.REMARK
+  is '备注';
+comment on column DRS_ALARM_ONLINE.UPDATETIME
+  is '最后更新时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_ALARM_ONLINE
+  add constraint PK_ALARMONLINE primary key (ALARMID, CITYID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table DRS_ALARM_ONLINE
+  add constraint PK_ALARMONLINE2 unique (DRSID, ALARMCONTENTCODE, CITYID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_ALARMRESULT
+(
+  ID               NUMBER(10) not null,
+  ALARMID          NUMBER(10),
+  TASKID           NUMBER(10) not null,
+  DRSID            NUMBER(10) not null,
+  CITYID           NUMBER(10) not null,
+  COMID            NUMBER(10) not null,
+  PARAMID          NUMBER(10) not null,
+  VALUEINDEX       NUMBER(10) not null,
+  TESTRESULT       VARCHAR2(100),
+  COLLECTTIME      DATE not null,
+  EXECID           NUMBER(10),
+  ISPROCESS        NUMBER(10) default 0 not null,
+  ALARMCONTENTCODE NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_ALARMRESULT
+  is '产生告警的测试结果表';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_ALARMRESULT
+  add constraint PK_DRSALARMRESULT primary key (ID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_DRSALARMRESULT_ALARMID on DRS_ALARMRESULT (ALARMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSALARMRESULT_TASKID on DRS_ALARMRESULT (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_AUTOTEST_CMD
+(
+  ID            NUMBER(10) not null,
+  DRSID         NUMBER(10) not null,
+  COMID         NUMBER(10) not null,
+  ASKTIME       DATE,
+  TIME_INTERVAL NUMBER(10) not null,
+  CURR_CYCCOUNT NUMBER(10) not null,
+  CYCCOUNTS     NUMBER(10) not null,
+  OPERSTATUS    NUMBER(2) default 0 not null,
+  BEGINTIME     DATE,
+  ENDTIME       DATE,
+  PLANDATE      VARCHAR2(20),
+  MODELID       NUMBER(10),
+  IFPAUSE       NUMBER(2),
+  CREATETIME    DATE,
+  SUCC_CYCCOUNT NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_AUTOTEST_CMD
+  is '直放站自动测试列表';
+-- Add comments to the columns 
+comment on column DRS_AUTOTEST_CMD.ID
+  is '流水号';
+comment on column DRS_AUTOTEST_CMD.DRSID
+  is '直放站编号';
+comment on column DRS_AUTOTEST_CMD.COMID
+  is '命令编号';
+comment on column DRS_AUTOTEST_CMD.ASKTIME
+  is '上次访问时间';
+comment on column DRS_AUTOTEST_CMD.TIME_INTERVAL
+  is '执行间隔';
+comment on column DRS_AUTOTEST_CMD.CURR_CYCCOUNT
+  is '已执行次数';
+comment on column DRS_AUTOTEST_CMD.CYCCOUNTS
+  is '需执行次数';
+comment on column DRS_AUTOTEST_CMD.OPERSTATUS
+  is '该测试所处状态';
+comment on column DRS_AUTOTEST_CMD.BEGINTIME
+  is '允许测试时间';
+comment on column DRS_AUTOTEST_CMD.ENDTIME
+  is '允许测试时间';
+comment on column DRS_AUTOTEST_CMD.IFPAUSE
+  is '1 停 0 不停';
+comment on column DRS_AUTOTEST_CMD.SUCC_CYCCOUNT
+  is '成功执行次数';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_AUTOTEST_CMD
+  add constraint PK_DRSAUTOTESTCM primary key (ID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_DRSAUTOTESTCMD1 on DRS_AUTOTEST_CMD (DRSID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSAUTOTESTCMD2 on DRS_AUTOTEST_CMD (COMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSAUTOTESTCMD3 on DRS_AUTOTEST_CMD (ASKTIME)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_AUTOTEST_PARAM
+(
+  ID         NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_AUTOTEST_PARAM
+  is '直放站自动测试列表(参数)';
+-- Create/Recreate indexes 
+create index INDEX_DRSAUTOTESTPARAM1 on DRS_AUTOTEST_PARAM (ID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_COMMAND_DEFINE
+(
+  COMID      NUMBER(10) not null,
+  COMNAME    VARCHAR2(100),
+  IFINEFFECT NUMBER(10),
+  REMARK     VARCHAR2(100),
+  COMTYPE    NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_COMMAND_DEFINE
+  is '直放站命令申明表';
+-- Add comments to the columns 
+comment on column DRS_COMMAND_DEFINE.COMID
+  is '测试命令';
+comment on column DRS_COMMAND_DEFINE.COMNAME
+  is '命令名称';
+comment on column DRS_COMMAND_DEFINE.IFINEFFECT
+  is '是否有效';
+comment on column DRS_COMMAND_DEFINE.REMARK
+  is '备注';
+comment on column DRS_COMMAND_DEFINE.COMTYPE
+  is '命令类型 1:测试 2:结果反馈';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_COMMAND_DEFINE
+  add constraint PK_DRSCOMMANDDEFINE primary key (COMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_COMPARAM_CONFIG
+(
+  COMID     NUMBER(10),
+  PARAMID   NUMBER(10),
+  PARAMNAME VARCHAR2(100)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_COMPARAM_CONFIG
+  is '直放站命令参数对应表';
+
+
+-- Create table
+create table DRS_COMPARAM_DEFAULT
+(
+  COMID      NUMBER(10),
+  PARAMID    NUMBER(10),
+  PARAMVALUE VARCHAR2(100)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_COMPARAM_DEFAULT
+  is '直放站命令参数默认表';
+-- Create/Recreate indexes 
+create index INDEX_DRSCOMPARAMDEFAULT on DRS_COMPARAM_DEFAULT (COMID, PARAMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_DATA_COLLECT
+(
+  COLLECTID        NUMBER(10) not null,
+  ALARMCONTENTCODE NUMBER(10) not null,
+  CITYID           NUMBER(10),
+  TASKID           NUMBER(10) not null,
+  EXECID           NUMBER(10) not null,
+  DRSID            NUMBER(10) not null,
+  COMID            NUMBER(10),
+  PARAMID          NUMBER(10),
+  ISALARM          NUMBER(10),
+  COLLECTTIME      DATE,
+  ISPROCESS        NUMBER(10) default 0
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_DATA_COLLECT
+  is '直放站告警采集表';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_DATA_COLLECT
+  add constraint PK_DRSDATACOLLECT primary key (COLLECTID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_DRSDATACOLLECT1 on DRS_DATA_COLLECT (ALARMCONTENTCODE, DRSID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_INFO
+(
+  DRSID      NUMBER(10) not null,
+  DRSNO      VARCHAR2(20) not null,
+  R_DEVICEID NUMBER(10) not null,
+  DRSNAME    VARCHAR2(50) not null,
+  DRSTYPE    NUMBER(10) not null,
+  DRSMANU    NUMBER(10),
+  ISPROGRAM  NUMBER(10) not null,
+  SUBURB     NUMBER(10) not null,
+  BUILDINGID NUMBER(10) not null,
+  CS         VARCHAR2(20),
+  MSC        VARCHAR2(20),
+  BSC        VARCHAR2(20),
+  CELL       VARCHAR2(20),
+  PN         VARCHAR2(20),
+  AGENTMANU  VARCHAR2(20),
+  LONGITUDE  FLOAT,
+  LATITUDE   FLOAT,
+  DRSADRESS  VARCHAR2(100) not null,
+  DRSPHONE   VARCHAR2(20) not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_INFO
+  is '直放站资料维护表';
+-- Add comments to the columns 
+comment on column DRS_INFO.DRSNO
+  is '直放站编号';
+comment on column DRS_INFO.R_DEVICEID
+  is '关联设备编号';
+comment on column DRS_INFO.DRSNAME
+  is '直放站名称';
+comment on column DRS_INFO.DRSTYPE
+  is '直放站类型';
+comment on column DRS_INFO.DRSMANU
+  is '直放站厂家';
+comment on column DRS_INFO.ISPROGRAM
+  is '是否室分 1 室分 0 室外';
+comment on column DRS_INFO.SUBURB
+  is '所属分局';
+comment on column DRS_INFO.BUILDINGID
+  is '所属室分点';
+comment on column DRS_INFO.CS
+  is '归属基站';
+comment on column DRS_INFO.MSC
+  is '归属MSC';
+comment on column DRS_INFO.BSC
+  is '归属BSC';
+comment on column DRS_INFO.CELL
+  is '归属扇区';
+comment on column DRS_INFO.PN
+  is 'PN码';
+comment on column DRS_INFO.AGENTMANU
+  is '代维公司';
+comment on column DRS_INFO.LONGITUDE
+  is '经度';
+comment on column DRS_INFO.LATITUDE
+  is '维度';
+comment on column DRS_INFO.DRSADRESS
+  is '地址';
+comment on column DRS_INFO.DRSPHONE
+  is '电话号码';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_INFO
+  add constraint PK_DRSINFO primary key (DRSID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table DRS_INFO
+  add constraint PK_DRSINFO1 unique (DRSNO, R_DEVICEID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table DRS_INFO
+  add constraint PK_DRSINFO2 unique (DRSNAME)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_PARAM_DEFINE
+(
+  PARAMID    NUMBER(10) not null,
+  PARAMNAME  VARCHAR2(100),
+  IFINEFFECT NUMBER(10),
+  REMARK     VARCHAR2(200)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_PARAM_DEFINE
+  is '直放站参数申明表';
+-- Add comments to the columns 
+comment on column DRS_PARAM_DEFINE.PARAMID
+  is '参数编号';
+comment on column DRS_PARAM_DEFINE.PARAMNAME
+  is '参数名称';
+comment on column DRS_PARAM_DEFINE.IFINEFFECT
+  is '是否有效';
+comment on column DRS_PARAM_DEFINE.REMARK
+  is '备注';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_PARAM_DEFINE
+  add constraint PK_DRSPARAMDEFINE primary key (PARAMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_PARAMSETUP_LOCAL
+(
+  ID         NUMBER(10) not null,
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100),
+  UPDATETIME DATE
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_PARAMSETUP_LOCAL
+  is '直放站设备参数本地配置表';
+-- Add comments to the columns 
+comment on column DRS_PARAMSETUP_LOCAL.ID
+  is '流水号';
+comment on column DRS_PARAMSETUP_LOCAL.DRSID
+  is '直放站编号';
+comment on column DRS_PARAMSETUP_LOCAL.COMID
+  is '命令编号';
+comment on column DRS_PARAMSETUP_LOCAL.PARAMID
+  is '参数编号';
+comment on column DRS_PARAMSETUP_LOCAL.PARAMVALUE
+  is '参数值';
+comment on column DRS_PARAMSETUP_LOCAL.UPDATETIME
+  is '更新时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_PARAMSETUP_LOCAL
+  add constraint PK_DRSPARAMSETUPLOCAL primary key (ID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table DRS_PARAMSETUP_LOCAL
+  add constraint PK_DRSPARAMSETUPLOCAL1 unique (DRSID, COMID, PARAMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_PARAMSETUP_REMOTE
+(
+  ID         NUMBER(10) not null,
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100),
+  UPDATETIME DATE
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_PARAMSETUP_REMOTE
+  is '直放站设备参数远端配置表';
+-- Add comments to the columns 
+comment on column DRS_PARAMSETUP_REMOTE.ID
+  is '流水号';
+comment on column DRS_PARAMSETUP_REMOTE.DRSID
+  is '直放站编号';
+comment on column DRS_PARAMSETUP_REMOTE.COMID
+  is '命令编号';
+comment on column DRS_PARAMSETUP_REMOTE.PARAMID
+  is '参数编号';
+comment on column DRS_PARAMSETUP_REMOTE.PARAMVALUE
+  is '参数值';
+comment on column DRS_PARAMSETUP_REMOTE.UPDATETIME
+  is '更新时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_PARAMSETUP_REMOTE
+  add constraint PK_DRSPARAMSETUPREMOTE primary key (ID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table DRS_PARAMSETUP_REMOTE
+  add constraint PK_DRSPARAMSETUPREMOTE1 unique (DRSID, COMID, PARAMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+-- Create table
+create table DRS_PREPPARAM_SET
+(
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100),
+  CREATETIME DATE,
+  OPERATOR   NUMBER(10),
+  TASKID     NUMBER(10) not null,
+  ISSUCCESS  NUMBER(10) default 0 not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_PREPPARAM_SET
+  is '直放站设备参数预配置表';
+-- Add comments to the columns 
+comment on column DRS_PREPPARAM_SET.DRSID
+  is '直放站编号';
+comment on column DRS_PREPPARAM_SET.COMID
+  is '命令编号';
+comment on column DRS_PREPPARAM_SET.PARAMID
+  is '参数编号';
+comment on column DRS_PREPPARAM_SET.PARAMVALUE
+  is '参数值';
+comment on column DRS_PREPPARAM_SET.CREATETIME
+  is '创建时间';
+comment on column DRS_PREPPARAM_SET.OPERATOR
+  is '操作人';
+comment on column DRS_PREPPARAM_SET.TASKID
+  is '任务编号';
+comment on column DRS_PREPPARAM_SET.ISSUCCESS
+  is '是否成功 0 否 1 是';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_PREPPARAM_SET
+  add constraint PK_DRSPREPPARAMSET primary key (DRSID, COMID, PARAMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_DRSPREPPARAMSET1 on DRS_PREPPARAM_SET (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_PREPPARAM_SET_H
+(
+  BATCHID    NUMBER(14) not null,
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100),
+  CREATETIME DATE,
+  OPERATOR   NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_PREPPARAM_SET_H
+  is '直放站设备参数预配置表(历史)';
+-- Add comments to the columns 
+comment on column DRS_PREPPARAM_SET_H.BATCHID
+  is '批号';
+comment on column DRS_PREPPARAM_SET_H.DRSID
+  is '直放站编号';
+comment on column DRS_PREPPARAM_SET_H.COMID
+  is '命令编号';
+comment on column DRS_PREPPARAM_SET_H.PARAMID
+  is '参数编号';
+comment on column DRS_PREPPARAM_SET_H.PARAMVALUE
+  is '参数值';
+comment on column DRS_PREPPARAM_SET_H.CREATETIME
+  is '创建时间';
+comment on column DRS_PREPPARAM_SET_H.OPERATOR
+  is '操作人';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_PREPPARAM_SET_H
+  add constraint PK_DRSPREPPARAMSETH primary key (BATCHID, DRSID, COMID, PARAMID);
+-- Create/Recreate indexes 
+create index INDEX_DRSPREPPARAMSETH on DRS_PREPPARAM_SET_H (BATCHID, DRSID, COMID, PARAMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_STATUSLIST
+(
+  DRSID       NUMBER(10) not null,
+  DRSSTATUS   NUMBER(10),
+  UPDATETIME1 DATE,
+  UPDATETIME2 DATE,
+  ALARMCOUNTS NUMBER(10),
+  UPDATETIME3 DATE,
+  UPDATETIME4 DATE
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_STATUSLIST
+  is '直放站状态表';
+-- Add comments to the columns 
+comment on column DRS_STATUSLIST.DRSSTATUS
+  is '当前状态';
+comment on column DRS_STATUSLIST.UPDATETIME1
+  is '最后状态变更时间';
+comment on column DRS_STATUSLIST.UPDATETIME2
+  is '最后状态获取时间';
+comment on column DRS_STATUSLIST.ALARMCOUNTS
+  is '当前告警数';
+comment on column DRS_STATUSLIST.UPDATETIME3
+  is '最后配置时间';
+comment on column DRS_STATUSLIST.UPDATETIME4
+  is '最后配置更新时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_STATUSLIST
+  add constraint PK_DRSSTATUSLIST primary key (DRSID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TASKPROTECT_TIMER
+(
+  CITYID      NUMBER(10) not null,
+  TASKID      NUMBER(10) not null,
+  STARTTIME   DATE,
+  ENDTIME     DATE,
+  PROTECTTIME NUMBER(10),
+  DEVICETYPE  NUMBER(10) not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TASKPROTECT_TIMER
+  is '保护定时器';
+-- Add comments to the columns 
+comment on column DRS_TASKPROTECT_TIMER.STARTTIME
+  is '启动时间';
+comment on column DRS_TASKPROTECT_TIMER.ENDTIME
+  is '结束时间';
+comment on column DRS_TASKPROTECT_TIMER.PROTECTTIME
+  is '保护时间（秒）';
+comment on column DRS_TASKPROTECT_TIMER.DEVICETYPE
+  is '设备类型 1 mtu 2 repeater';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TASKPROTECT_TIMER
+  add constraint KEY_PROTECTTIMER primary key (CITYID, TASKID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TASKPROTECT_TIMER_H
+(
+  CITYID      NUMBER(10) not null,
+  TASKID      NUMBER(10) not null,
+  STARTTIME   DATE,
+  ENDTIME     DATE,
+  PROTECTTIME NUMBER(10),
+  DEVICETYPE  NUMBER(10) not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TASKPROTECT_TIMER_H
+  is '保护定时器';
+-- Add comments to the columns 
+comment on column DRS_TASKPROTECT_TIMER_H.STARTTIME
+  is '启动时间';
+comment on column DRS_TASKPROTECT_TIMER_H.ENDTIME
+  is '结束时间';
+comment on column DRS_TASKPROTECT_TIMER_H.PROTECTTIME
+  is '保护时间（秒）';
+comment on column DRS_TASKPROTECT_TIMER_H.DEVICETYPE
+  is '设备类型 1 mtu 2 repeater';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TASKPROTECT_TIMER_H
+  add constraint KEY_PROTECTTIMER_H primary key (CITYID, TASKID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTPARAM_HISTORY
+(
+  TASKID     NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTPARAM_HISTORY
+  is '直放站测试参数历史表';
+-- Create/Recreate indexes 
+create index INDEX_TESTPARAMHISTORY on DRS_TESTPARAM_HISTORY (TASKID, PARAMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTPARAM_ONLINE
+(
+  TASKID     NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTPARAM_ONLINE
+  is '直放站测试参数在线表';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TESTPARAM_ONLINE
+  add constraint PK_TESTPARAMONLINE primary key (TASKID, PARAMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTRESULT_BASE
+(
+  BASEID      NUMBER(10) not null,
+  TESTVALUE   VARCHAR2(1000) not null,
+  ISPROCESS   NUMBER(2) not null,
+  RECEIVEDATE DATE,
+  ENDDATE     DATE,
+  TASKID      NUMBER(10),
+  THREADFLAG  NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_BASE
+  is '直放站测试任务编码返回表';
+-- Add comments to the columns 
+comment on column DRS_TESTRESULT_BASE.BASEID
+  is '流水号';
+comment on column DRS_TESTRESULT_BASE.TESTVALUE
+  is '测试结果';
+comment on column DRS_TESTRESULT_BASE.RECEIVEDATE
+  is '接收时间';
+comment on column DRS_TESTRESULT_BASE.ENDDATE
+  is '结束时间';
+comment on column DRS_TESTRESULT_BASE.TASKID
+  is '对应的任务编号';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TESTRESULT_BASE
+  add constraint PK_DRSTESTRESULTBASE primary key (BASEID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTRESULTBASE1 on DRS_TESTRESULT_BASE (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTRESULT_BASE_H
+(
+  BASEID      NUMBER(10) not null,
+  TESTVALUE   VARCHAR2(1000) not null,
+  ISPROCESS   NUMBER(2) not null,
+  RECEIVEDATE DATE,
+  ENDDATE     DATE,
+  TASKID      NUMBER(10),
+  THREADFLAG  NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_BASE_H
+  is '直放站测试任务编码返回表(历史)';
+
+
+-- Create table
+create table DRS_TESTRESULT_HISTORY
+(
+  TASKID      NUMBER(10) not null,
+  CITYID      NUMBER(10) not null,
+  DRSID       NUMBER(10) not null,
+  COMID       NUMBER(10) not null,
+  PARAMID     NUMBER(10) not null,
+  VALUEINDEX  NUMBER(10) not null,
+  TESTRESULT  VARCHAR2(100),
+  COLLECTTIME DATE not null,
+  EXECID      NUMBER(10),
+  ISPROCESS   NUMBER(10) default 0 not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_HISTORY
+  is '直放站测试结果存放表(历史)';
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTRESULTHISTORY on DRS_TESTRESULT_HISTORY (DRSID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTHISTORY1 on DRS_TESTRESULT_HISTORY (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTHISTORY2 on DRS_TESTRESULT_HISTORY (COMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTHISTORY3 on DRS_TESTRESULT_HISTORY (PARAMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTRESULT_ONLINE
+(
+  TASKID      NUMBER(10) not null,
+  CITYID      NUMBER(10) not null,
+  DRSID       NUMBER(10) not null,
+  COMID       NUMBER(10) not null,
+  PARAMID     NUMBER(10) not null,
+  VALUEINDEX  NUMBER(10) not null,
+  TESTRESULT  VARCHAR2(100),
+  COLLECTTIME DATE not null,
+  EXECID      NUMBER(10),
+  ISPROCESS   NUMBER(10) default 0 not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_ONLINE
+  is '直放站测试结果存放表';
+-- Add comments to the columns 
+comment on column DRS_TESTRESULT_ONLINE.TASKID
+  is '测试任务';
+comment on column DRS_TESTRESULT_ONLINE.DRSID
+  is '直放站编号';
+comment on column DRS_TESTRESULT_ONLINE.COMID
+  is '命令编号';
+comment on column DRS_TESTRESULT_ONLINE.PARAMID
+  is '参数编号';
+comment on column DRS_TESTRESULT_ONLINE.TESTRESULT
+  is '测试结果';
+comment on column DRS_TESTRESULT_ONLINE.COLLECTTIME
+  is '入库时间';
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTRESULTONLINE on DRS_TESTRESULT_ONLINE (DRSID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTONLINE1 on DRS_TESTRESULT_ONLINE (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTONLINE2 on DRS_TESTRESULT_ONLINE (COMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTONLINE3 on DRS_TESTRESULT_ONLINE (PARAMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTRESULT_RECENT
+(
+  TASKID      NUMBER(10) not null,
+  CITYID      NUMBER(10) not null,
+  DRSID       NUMBER(10) not null,
+  COMID       NUMBER(10) not null,
+  PARAMID     NUMBER(10) not null,
+  VALUEINDEX  NUMBER(10) not null,
+  TESTRESULT  VARCHAR2(100),
+  COLLECTTIME DATE not null,
+  EXECID      NUMBER(10),
+  ISPROCESS   NUMBER(10) default 0 not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_RECENT
+  is '直放站最新测试结果';
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTRESULTRECENT on DRS_TESTRESULT_RECENT (DRSID, COMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTRESULT_TRANSLATE
+(
+  ID            NUMBER(10) not null,
+  COMID         NUMBER(10) not null,
+  PARAMID       NUMBER(10) not null,
+  ORDERINDEX    NUMBER(10) not null,
+  TRANLATEVALUE VARCHAR2(20),
+  REMARK        VARCHAR2(50)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_TRANSLATE
+  is '测试结果翻译';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TESTRESULT_TRANSLATE
+  add constraint PK_DRSTESTRESULTTRANSLATE primary key (ID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTTASK_HISTORY
+(
+  TASKID     NUMBER(10) not null,
+  CITYID     NUMBER(10) not null,
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  STATUS     NUMBER(2) not null,
+  TESTRESULT VARCHAR2(200),
+  ASKTIME    DATE not null,
+  SENDTIME   DATE,
+  RECTIME    DATE,
+  TASKLEVEL  NUMBER(2) not null,
+  USERID     NUMBER(10) not null,
+  MODELID    NUMBER(10),
+  ISPROCESS  NUMBER(10)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTTASK_HISTORY
+  is '直放站测试任务历时表';
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTTASKHISTORY on DRS_TESTTASK_HISTORY (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTTASK_ONLINE
+(
+  TASKID     NUMBER(10) not null,
+  CITYID     NUMBER(10) not null,
+  DRSID      NUMBER(10) not null,
+  COMID      NUMBER(10) not null,
+  STATUS     NUMBER(2) default 0 not null,
+  TESTRESULT VARCHAR2(200),
+  ASKTIME    DATE not null,
+  SENDTIME   DATE,
+  RECTIME    DATE,
+  TASKLEVEL  NUMBER(2) not null,
+  USERID     NUMBER(10) not null,
+  MODELID    NUMBER(10),
+  ISPROCESS  NUMBER(10) default 0
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTTASK_ONLINE
+  is '直放站测试任务在线表';
+-- Add comments to the columns 
+comment on column DRS_TESTTASK_ONLINE.TASKID
+  is '任务编号';
+comment on column DRS_TESTTASK_ONLINE.DRSID
+  is '直放站编号';
+comment on column DRS_TESTTASK_ONLINE.COMID
+  is '命令编号';
+comment on column DRS_TESTTASK_ONLINE.STATUS
+  is '任务状态';
+comment on column DRS_TESTTASK_ONLINE.TESTRESULT
+  is '测试结果';
+comment on column DRS_TESTTASK_ONLINE.ASKTIME
+  is '创建时间';
+comment on column DRS_TESTTASK_ONLINE.SENDTIME
+  is '发送时间';
+comment on column DRS_TESTTASK_ONLINE.RECTIME
+  is '反馈时间';
+comment on column DRS_TESTTASK_ONLINE.TASKLEVEL
+  is '任务级别 1手动 2 系统再测 3 自动测试';
+comment on column DRS_TESTTASK_ONLINE.USERID
+  is '请求测试用户     -1:系统自动测试';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TESTTASK_ONLINE
+  add constraint PK_DRSTESTTASKONLINE primary key (TASKID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTTASKONLINE1 on DRS_TESTTASK_ONLINE (DRSID, COMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTTASKONLINE2 on DRS_TESTTASK_ONLINE (ASKTIME)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTPARAM_USER
+(
+  TASKID     NUMBER(10) not null,
+  PARAMID    NUMBER(10) not null,
+  PARAMVALUE VARCHAR2(100)
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTPARAM_USER
+  is '直放站测试参数用户表';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table DRS_TESTPARAM_USER
+  add constraint PK_DRSTESTPARAMUSER primary key (TASKID, PARAMID)
+  using index 
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table DRS_TESTRESULT_USER
+(
+  TASKID      NUMBER(10) not null,
+  CITYID      NUMBER(10) not null,
+  DRSID       NUMBER(10) not null,
+  COMID       NUMBER(10) not null,
+  PARAMID     NUMBER(10) not null,
+  VALUEINDEX  NUMBER(10) not null,
+  TESTRESULT  VARCHAR2(100),
+  COLLECTTIME DATE not null,
+  EXECID      NUMBER(10),
+  ISPROCESS   NUMBER(10) default 0 not null
+)
+tablespace MTSSPACE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table DRS_TESTRESULT_USER
+  is '直放站测试结果存放表(手动测试)';
+-- Add comments to the columns 
+comment on column DRS_TESTRESULT_USER.TASKID
+  is '测试任务';
+comment on column DRS_TESTRESULT_USER.DRSID
+  is '直放站编号';
+comment on column DRS_TESTRESULT_USER.COMID
+  is '命令编号';
+comment on column DRS_TESTRESULT_USER.PARAMID
+  is '参数编号';
+comment on column DRS_TESTRESULT_USER.TESTRESULT
+  is '测试结果';
+comment on column DRS_TESTRESULT_USER.COLLECTTIME
+  is '入库时间';
+-- Create/Recreate indexes 
+create index INDEX_DRSTESTRESULTUSER on DRS_TESTRESULT_USER (DRSID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTUSER1 on DRS_TESTRESULT_USER (TASKID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTUSER2 on DRS_TESTRESULT_USER (COMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index INDEX_DRSTESTRESULTUSER3 on DRS_TESTRESULT_USER (PARAMID)
+  tablespace MTSSPACE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );

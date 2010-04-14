@@ -1,0 +1,1285 @@
+delete appmoduleinfo
+ where moduleid = 1750
+   and appid = 17;
+insert into appmoduleinfo
+  (moduleid, appid, modulename)
+values
+  (1750, 17, '直放站命令查询');
+  
+delete userprivinfo
+ where userid=0 and moduleid=1750;
+insert into userprivinfo
+  (userid, moduleid)
+values
+  (0, 1750);
+
+
+delete from dic_type_info where typeid=33;
+insert into dic_type_info
+  (typeid, typename, remark)
+values
+  (33, '代维公司', '代维公司');
+
+
+delete appmoduleinfo
+ where moduleid = 1748
+   and appid = 17;
+insert into appmoduleinfo
+  (moduleid, appid, modulename)
+values
+  (1748, 17, 'DRS配置管理');
+delete userprivinfo
+ where userid=0 and moduleid=1748;
+insert into userprivinfo
+  (userid, moduleid)
+values
+  (0, 1748);
+
+commit;
+
+delete from dic_type_info where typeid=53;
+delete from dic_code_info where dictype=53;
+insert into dic_type_info
+(typeid, typename, remark)
+values
+(53, '直放站远程通信方式', '直放站远程通信方式');
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(1, 53, 'CDMA短消息', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(2, 53, 'GSM短消息', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(3, 53, '电路型数据传递', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(4, 53, '分组型数据传递', 0, null, 1, null, null);
+commit;
+
+
+delete from drs_param_define;
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (1, '设备类型（本地）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (2, '应答标志（本地）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (3, '命令体长度', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (4, '查询电话', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (5, '告警电话', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (6, '直放站远程通信方式', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (7, '信道1本振失锁', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (8, '信道2本振失锁', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (9, '自激告警', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (10, '门禁告警', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (11, '电源掉电', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (12, '上行低噪放故障', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (13, '下行低噪放故障', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (14, '光收发模块故障', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (15, '电源模块故障', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (16, '上行功放过功率', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (17, '下行功放过功率', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (18, '上行功放过温', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (19, '下行功放过温', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (20, '上行功放驻波门限告警', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (21, '下行功放驻波门限告警', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (22, '收发信号告警', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (23, '下行功放欠功率', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (24, '直放站编号（本地）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (25, '设备编号（本地）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (26, '厂家标识', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (27, '上行输出功率告警门限（上限）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (28, '版本号', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (29, '上行输出功率告警上门限', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (30, '下行输出功率告警上门限', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (31, '移频信道号', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (32, '上行输出功率电平', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (33, '下行输出功率电平', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (34, '上行最大增益', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (35, '下行最大增益', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (36, '信道1（输入信道）本振失锁（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (37, '信道2（输出信道）本振失锁（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (38, '自激告警（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (39, '门禁告警（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (40, '电源掉电（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (41, '上行低噪放故障（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (42, '下行低噪放故障（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (43, '光收发模块故障（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (44, '电源模块故障（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (45, '上行功放过功率（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (46, '下行功放过功率（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (47, '上行功放过温（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (48, '下行功放过温（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (49, '上行功放驻波门限告警（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (50, '下行功放驻波门限告警（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (51, '收发信号告警（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (52, '工作信道号', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (53, '下行衰减值', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (54, '上行衰减值', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (55, '下行功放开关', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (56, '上行功放开关', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (57, '下行功放欠功率（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (58, '可跳频载频数', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (59, '载频驻留时间', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (60, '设备工作模式', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (61, '输入信号PN码', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (62, '输出信号PN码', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (63, '输出信号码片延迟', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (64, '基准时钟来源', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (65, '输入信道号', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (66, '跳频输出信道号1', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (67, '跳频输出信道号2', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (68, '跳频输出信道号3', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (69, '跳频输出信道号4', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (70, '跳频输出信道号5', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (71, '跳频输出信道号6', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (72, '下行输入功率电平', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (74, '信道1本振失锁（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (75, '信道2本振失锁（告警）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (76, '下行输出功率告警门限（上限）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (77, '信道号1', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (78, '信道号2', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (79, '下行输出功率告警下门限', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (80, '设备类型（远端）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (81, '直放站编号（远端）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (82, '设备编号（远端）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (83, '应答标志（远端）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (84, '设备类型（参数）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (85, '直放站编号（参数）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (86, '设备编号（参数）', 1, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (87, '直放站编号', null, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (88, '设备编号', null, '');
+
+insert into drs_param_define (PARAMID, PARAMNAME, IFINEFFECT, REMARK)
+values (1001, '离线告警', 1, '');
+
+commit;
+
+delete from dic_type_info where typeid=54;
+delete from dic_code_info where dictype=54;
+insert into dic_type_info
+(typeid, typename, remark)
+values
+(54, '厂家标识', '厂家标识');
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(1, 54, '北京地杰通信设备有限公司', 0, null, 1, null, null);
+commit;
+
+
+delete from drs_command_define;
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (32, '监控系统参数查询命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (132, '监控系统参数查询结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (33, '直放站参数查询命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (133, '直放站参数查询结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (34, '伪导频发射机参数查询命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (134, '伪导频发射机参数查询结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (16, '直放站告警(自动上报)', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (48, '设置直放站系统编号命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (148, '设置直放站系统编号结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (49, '设置远程通信参数命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (149, '设置远程通信参数结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (50, '设置直放站主动告警使能标志命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (150, '设置直放站主动告警使能标志结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (51, '设置门限值命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (151, '设置门限值结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (52, '设置功放开关量命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (152, '设置功放开关量结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (53, '设置衰减量命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (153, '设置衰减量结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (54, '设置信道号命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (154, '设置信道号结果', 1, null, 2);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (55, '伪导频发射机参数设置命令', 1, null, 1);
+insert into drs_command_define
+  (comid, comname, ifineffect, remark, comtype)
+values
+  (155, '伪导频发射机参数设置结果', 1, null, 2);
+commit;
+
+
+delete from drs_comparam_config;
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 38, '自激告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 39, '门禁告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 40, '电源掉电（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 41, '上行低噪放故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 42, '下行低噪放故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 43, '光收发模块故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 44, '电源模块故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 45, '上行功放过功率（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 46, '下行功放过功率（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 47, '上行功放过温（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 48, '下行功放过温（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 49, '上行功放驻波门限告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 50, '下行功放驻波门限告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 51, '收发信号告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 57, '下行功放欠功率（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 74, '信道1本振失锁（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 75, '信道2本振失锁（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (16, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (32, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (32, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (32, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (32, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (33, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (33, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (33, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (33, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (34, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (34, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (34, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (34, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (48, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (48, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (48, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (48, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (49, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (49, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (49, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (49, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (50, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (50, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (50, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (50, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (51, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (51, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (51, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (51, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (52, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (52, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (52, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (52, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (53, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (53, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (53, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (53, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (54, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (54, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (54, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (54, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (55, 1, '设备类型（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (55, 2, '应答标志（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (55, 24, '直放站编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (55, 25, '设备编号（本地）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 4, '查询电话');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 5, '告警电话');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 6, '直放站远程通信方式');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 7, '信道1本振失锁');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 8, '信道2本振失锁');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 9, '自激告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 10, '门禁告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 11, '电源掉电');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 12, '上行低噪放故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 13, '下行低噪放故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 14, '光收发模块故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 15, '电源模块故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 16, '上行功放过功率');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 17, '下行功放过功率');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 18, '上行功放过温');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 19, '下行功放过温');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 20, '上行功放驻波门限告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 21, '下行功放驻波门限告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 22, '收发信号告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 23, '下行功放欠功率');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (132, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 26, '厂家标识');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 28, '版本号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 29, '上行输出功率告警上门限');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 30, '下行输出功率告警上门限');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 31, '移频信道号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 32, '上行输出功率电平');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 33, '下行输出功率电平');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 34, '上行最大增益');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 35, '下行最大增益');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 36, '信道1（输入信道）本振失锁（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 37, '信道2（输出信道）本振失锁（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 38, '自激告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 39, '门禁告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 40, '电源掉电（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 41, '上行低噪放故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 42, '下行低噪放故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 43, '光收发模块故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 44, '电源模块故障（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 45, '上行功放过功率（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 46, '下行功放过功率（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 47, '上行功放过温（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 48, '下行功放过温（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 49, '上行功放驻波门限告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 50, '下行功放驻波门限告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 51, '收发信号告警（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 52, '工作信道号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 53, '下行衰减值');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 54, '上行衰减值');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 55, '下行功放开关');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 56, '上行功放开关');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 57, '下行功放欠功率（告警）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (133, 84, '设备类型（参数）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 58, '可跳频载频数');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 59, '载频驻留时间');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 60, '设备工作模式');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 61, '输入信号PN码');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 62, '输出信号PN码');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 63, '输出信号码片延迟');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 64, '基准时钟来源');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 65, '输入信道号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 66, '跳频输出信道号1');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 67, '跳频输出信道号2');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 68, '跳频输出信道号3');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 69, '跳频输出信道号4');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 70, '跳频输出信道号5');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 71, '跳频输出信道号6');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 72, '下行输入功率电平');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 79, '下行输出功率告警下门限');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (134, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (148, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (148, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (148, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (148, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (148, 87, '直放站编号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (148, 88, '设备编号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 4, '查询电话');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 5, '告警电话');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 6, '直放站远程通信方式');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (149, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 7, '信道1本振失锁');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 8, '信道2本振失锁');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 9, '自激告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 10, '门禁告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 11, '电源掉电');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 12, '上行低噪放故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 13, '下行低噪放故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 14, '光收发模块故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 15, '电源模块故障');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 16, '上行功放过功率');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 17, '下行功放过功率');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 18, '上行功放过温');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 19, '下行功放过温');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 20, '上行功放驻波门限告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 21, '下行功放驻波门限告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 22, '收发信号告警');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 23, '下行功放欠功率');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (150, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (151, 27, '上行输出功率告警门限（上限）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (151, 76, '下行输出功率告警门限（上限）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (151, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (151, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (151, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (151, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (152, 55, '下行功放开关');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (152, 56, '上行功放开关');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (152, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (152, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (152, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (152, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (153, 53, '下行衰减值');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (153, 54, '上行衰减值');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (153, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (153, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (153, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (153, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (154, 77, '信道号1');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (154, 78, '信道号2');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (154, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (154, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (154, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (154, 83, '应答标志（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 58, '可跳频载频数');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 59, '载频驻留时间');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 60, '设备工作模式');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 61, '输入信号PN码');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 62, '输出信号PN码');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 63, '输出信号码片延迟');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 64, '基准时钟来源');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 65, '输入信道号');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 66, '跳频输出信道号1');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 67, '跳频输出信道号2');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 68, '跳频输出信道号3');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 69, '跳频输出信道号4');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 70, '跳频输出信道号5');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 71, '跳频输出信道号6');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 79, '下行输出功率告警下门限');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 80, '设备类型（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 81, '直放站编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 82, '设备编号（远端）');
+
+insert into drs_comparam_config (COMID, PARAMID, PARAMNAME)
+values (155, 83, '应答标志（远端）');
+
+commit;
+
+delete from dic_type_info where typeid=52;
+delete from dic_code_info where dictype=52;
+insert into dic_type_info
+(typeid, typename, remark)
+values
+(52, '省份编码', '省份编码');
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(1, 52, '北京市', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(2, 52, '天津市', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(13, 52, '浙江省', 0, null, 1, null, null);
+commit;
+
+
+delete from mtu_threadconfig;
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (1, 'MTU自动测试线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (2, 'MTU任务发送线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (3, 'MTU结果解析线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (4, 'MTU告警采集线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (5, 'MTU告警派障线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (6, '直放站自动测试线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (7, '直放站任务发送线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (8, '直放站短信接收线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (9, '直放站结果解析线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (10, '直放站告警采集线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (11, '直放站告警派障线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (21, '性能分析线程', 10, 0);
+insert into mtu_threadconfig (THREADID, THREADNAME, CYCTIME, STATE)
+values (22, 'CDMA告警采集线程', 10, 0);
+commit;
+
+
+delete from dic_type_info where typeid=55;
+delete from dic_code_info where dictype=55;
+insert into dic_type_info
+(typeid, typename, remark)
+values
+(55, '协议版本号', '协议版本号');
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(1, 55, '1.0（草案）', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(2, 55, '1.0', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(3, 55, '2.0', 0, null, 1, null, null);
+commit;
+
+
+delete from dic_type_info where typeid=56;
+delete from dic_code_info where dictype=56;
+insert into dic_type_info
+(typeid, typename, remark)
+values
+(56, '应答标志编码', '应答标志编码');
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(0, 56, '成功', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(1, 56, '命令编号错', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(2, 56, '直放站编号错', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(3, 56, '设备编号错', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(4, 56, '包序号错', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(5, 56, '校验错', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(6, 56, '设备类型错', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(160, 56, '其它错误', 0, null, 1, null, null);
+commit;
+
+
+delete from dic_type_info where typeid=51;
+delete from dic_code_info where dictype=51;
+insert into dic_type_info
+(typeid, typename, remark)
+values
+(51, '直放站设备类型', '直放站设备类型');
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(1, 51, '移频直放站近端机', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(2, 51, '移频直放站远端机', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(3, 51, '选频直放站', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(4, 51, '宽带直放站', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(5, 51, '光纤直放站近端机', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(6, 51, '光纤直放站远端机', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(7, 51, '干放', 0, null, 1, null, null);
+insert into dic_code_info
+(diccode, dictype, dicname, parentid, dicorder, ifineffect, remark, extendvalue)
+values
+(8, 51, '伪导频发射机', 0, null, 1, null, null);
+commit;
+
+
+
+
+delete from userprivinfo 
+    where userid=0 and moduleid=1749; 
+
+
+insert into userprivinfo
+        (userid, moduleid)
+  values
+       (0, 1749);
+
+delete from appmoduleinfo 
+    where moduleid=1749 and appid=17;
+
+insert into appmoduleinfo
+  (moduleid, appid, modulename)
+values
+  (1749, 17, '直放站告警内容管理');
+
+
+delete from appmoduleinfo 
+    where moduleid=1751 and appid=17;
+
+insert into appmoduleinfo
+  (moduleid, appid, modulename)
+values
+  (1751, 17, '直放站告警综合查询');
+commit;

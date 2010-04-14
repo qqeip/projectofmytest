@@ -1,0 +1,10 @@
+!table
+!version 450
+!charset WindowsSimpChinese
+
+Definition Table
+  Description "ÓÃ»§CDMAÍ¼²ã"
+  Type Native charset "Neutral"
+  Fields 2
+    CDMAID char (20) ;
+    CDMANAME char (100) ;
