@@ -1,0 +1,446 @@
+create or replace view drs_config_com_on_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   d80.dicname respdrstypename,
+   c81.testresult respdrsno,
+   c82.testresult respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_online t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d80 on d80.dictype=51 and d80.diccode=c80.testresult--直放站设备类型
+left join drs_testresult_online c81 on c81.cityid=t.cityid and c81.taskid=t.taskid and c81.paramid=81--直放站编号
+left join drs_testresult_online c82 on c82.cityid=t.cityid and c82.taskid=t.taskid and c82.paramid=82--直放站设备编号
+left join drs_testresult_online c83 on c83.cityid=t.cityid and c83.taskid=t.taskid and c83.paramid=83--应答标志
+left join dic_code_info d83 on d83.dictype=56 and d83.diccode=c83.testresult
+union all
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   d80.dicname respdrstypename,
+   c81.testresult respdrsno,
+   c82.testresult respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   1 IsUserComOK
+ from drs_testtask_user t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d80 on d80.dictype=51 and d80.diccode=c80.testresult--直放站设备类型
+left join drs_testresult_user c81 on c81.cityid=t.cityid and c81.taskid=t.taskid and c81.paramid=81--直放站编号
+left join drs_testresult_user c82 on c82.cityid=t.cityid and c82.taskid=t.taskid and c82.paramid=82--直放站设备编号
+left join drs_testresult_user c83 on c83.cityid=t.cityid and c83.taskid=t.taskid and c83.paramid=83--应答标志
+left join dic_code_info d83 on d83.dictype=56 and d83.diccode=c83.testresult
+with read only;
+/
+create or replace view drs_config_comparamq_on_view as
+select t.cityid,t.taskid, t.drsid,t.comid, t.paramid, b.paramname, t.testresult
+from drs_testresult_online t
+left join drs_param_define b on b.paramid=t.paramid
+union all
+select t.cityid,t.taskid, t.drsid,t.comid, t.paramid, b.paramname, t.testresult
+from drs_testresult_user t
+left join drs_param_define b on b.paramid=t.paramid
+with read only;
+/
+create or replace view drs_config_comparamq_his_view as
+select t.cityid,t.taskid, t.drsid,t.comid, t.paramid, b.paramname, t.testresult
+from drs_testresult_history t
+left join drs_param_define b on b.paramid=t.paramid
+with read only;
+/
+create or replace view drs_config_com_his_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   d80.dicname respdrstypename,
+   c81.testresult respdrsno,
+   c82.testresult respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_history t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d80 on d80.dictype=51 and d80.diccode=c80.testresult--直放站设备类型
+left join drs_testresult_online c81 on c81.cityid=t.cityid and c81.taskid=t.taskid and c81.paramid=81--直放站编号
+left join drs_testresult_online c82 on c82.cityid=t.cityid and c82.taskid=t.taskid and c82.paramid=82--直放站设备编号
+left join drs_testresult_online c83 on c83.cityid=t.cityid and c83.taskid=t.taskid and c83.paramid=83--应答标志
+left join dic_code_info d83 on d83.dictype=56 and d83.diccode=c83.testresult
+with read only;
+/
+
+-- Add/modify columns 
+alter table DRS_TESTTASK_HISTORY add REC1 VARCHAR2(50);
+alter table DRS_TESTTASK_HISTORY add REC2 VARCHAR2(50);
+alter table DRS_TESTTASK_HISTORY add REC3 VARCHAR2(50);
+alter table DRS_TESTTASK_HISTORY add REC4 VARCHAR2(50);
+-- Add comments to the columns 
+comment on column DRS_TESTTASK_HISTORY.REC1
+  is '应答标识';
+comment on column DRS_TESTTASK_HISTORY.REC2
+  is '返回直放站编号';
+comment on column DRS_TESTTASK_HISTORY.REC3
+  is '返回设备编号';
+comment on column DRS_TESTTASK_HISTORY.REC4
+  is '返回设备类型';
+
+-- Add/modify columns 
+alter table drs_testtask_online add REC1 VARCHAR2(50);
+alter table drs_testtask_online add REC2 VARCHAR2(50);
+alter table drs_testtask_online add REC3 VARCHAR2(50);
+alter table drs_testtask_online add REC4 VARCHAR2(50);
+-- Add comments to the columns 
+comment on column drs_testtask_online.REC1
+  is '应答标识';
+comment on column drs_testtask_online.REC2
+  is '返回直放站编号';
+comment on column drs_testtask_online.REC3
+  is '返回设备编号';
+comment on column drs_testtask_online.REC4
+  is '返回设备类型';
+  
+-- Add/modify columns 
+alter table drs_testtask_user add REC1 VARCHAR2(50);
+alter table drs_testtask_user add REC2 VARCHAR2(50);
+alter table drs_testtask_user add REC3 VARCHAR2(50);
+alter table drs_testtask_user add REC4 VARCHAR2(50);
+-- Add comments to the columns 
+comment on column drs_testtask_user.REC1
+  is '应答标识';
+comment on column drs_testtask_user.REC2
+  is '返回直放站编号';
+comment on column drs_testtask_user.REC3
+  is '返回设备编号';
+comment on column drs_testtask_user.REC4
+  is '返回设备类型';
+
+
+
+create or replace view drs_config_com_on_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   t.REC4 respdrstypename,
+   t.REC2 respdrsno,
+   t.REC3 respr_deviceid,
+   t.REC1 respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_online t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d83 on d83.dictype=56 and to_char(d83.diccode)=t.REC1
+union all
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   t.REC4 respdrstypename,
+   t.REC2 respdrsno,
+   t.REC3 respr_deviceid,
+   t.REC1 respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   1 IsUserComOK
+ from drs_testtask_user t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d83 on d83.dictype=56 and to_char(d83.diccode)=t.REC1
+with read only;
+/
+create or replace view drs_config_com_his_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   t.REC4 respdrstypename,
+   t.REC2 respdrsno,
+   t.REC3 respr_deviceid,
+   t.REC1 respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_history t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d83 on d83.dictype=56 and to_char(d83.diccode)=t.REC1
+with read only;
+/
+create or replace view alarm_drs_master_online_view as
+select
+decode(a.readed,0,'N','UNABLED') as isChecked,
+a.alarmid, --告警编号,
+b.alarmcontentname, --告警内容,
+a.alarmcontentcode, --告警内容编号,
+g.dicname as alarmkindname, --告警类型
+g.diccode as AlarmKindID,   --告警类型编号
+h.dicname as alarmlevelname,--告警等级
+a.sendtime,   --派障时间
+a.removetime, --排障时间
+a.collecttime,--建立时间
+b.limithour, --到期时限
+c.drsname,  --DRS名称
+c.drsno,    --DRS设备编号
+c.r_deviceid,
+c.cs,
+c.drstype,
+m.dicname as drstypename,  --DRS类型
+c.Drsmanu,
+n.dicname as drsmanuname,  --DRS厂家
+c.msc,      --DRS归属MSC
+c.bsc,      --DRS归属BSC
+c.cell,     --DRS归属扇区
+c.pn,       --DRS PN码
+c.Agentmanu,--代维公司
+c.Longitude,--经度
+c.Latitude,	--维度
+c.DRSADRESS,--地址
+c.drsphone, --电话号码
+--a.taskid, --任务号
+a.alarmcount, --告警累计次数
+d.buildingname, --室分点名称
+c.buildingid,-----室分点id
+d.address,--------室分点地址
+e.id as suburbid,--分局ID
+f.id as areaid,  --郊县id
+k.id as cityid,  --地市id
+e.name as suburbname,--分局名称
+f.name as areaname,  --郊县
+k.name as cityname,  --地市
+a.readed,   --是否已经阅读
+decode(a.readed,1,'是','否') readedname,
+a.flowtache,--告警状态 1:告警 2:派出 3:排除
+decode(a.flowtache,1,'告警',2,'派障',3,'消障','信息缺失') flowtachename,
+a.drsid,
+c.isprogram,--是否室分
+decode(c.isprogram,1,'室内',0,'室外','未知') as isprogramname,
+d.factory,
+r.dicname factoryname,
+a.remark,
+s.dicname as agentcompanyname,
+a.updatetime
+from drs_alarm_online a
+left join drs_alarm_content b on a.alarmcontentcode=b.alarmcontentcode
+left join dic_code_info g on b.alarmkind=g.diccode and g.dictype=11
+left join dic_code_info h on b.alarmlevel=h.diccode and h.dictype=10
+left join drs_info c on a.drsid=c.drsid
+left join building_info d on c.buildingid=d.buildingid
+left join dic_code_info r on d.factory=r.diccode and r.dictype=3--集成厂家
+left join area_info e on c.suburb=e.id
+left join area_info f on e.top_id=f.id
+left join area_info k on f.top_id=k.id
+left join dic_code_info s on d.agentcompany=s.diccode and s.dictype=33--代维公司
+left join dic_code_info m on c.drstype=m.diccode and m.dictype=51 --直放站类型
+left join dic_code_info n on c.drsmanu=n.diccode and n.dictype=54 --直放站厂家;
+/
+create or replace view alarm_drs_master_history_view as
+select
+decode(a.readed,0,'N','UNABLED') as isChecked,
+a.alarmid, --告警编号,
+b.alarmcontentname, --告警内容,
+a.alarmcontentcode, --告警内容编号,
+g.dicname as alarmkindname, --告警类型
+g.diccode as AlarmKindID,   --告警类型编号
+h.dicname as alarmlevelname,--告警等级
+a.sendtime,   --派障时间
+a.removetime, --排障时间
+a.collecttime,--建立时间
+b.limithour, --到期时限
+c.drsname,  --DRS名称
+c.drsno,    --DRS设备编号
+c.r_deviceid,
+c.cs,
+c.drstype,
+m.dicname as drstypename,  --DRS类型
+c.Drsmanu,
+n.dicname as drsmanuname,  --DRS厂家
+c.msc,      --DRS归属MSC
+c.bsc,      --DRS归属BSC
+c.cell,     --DRS归属扇区
+c.pn,       --DRS PN码
+c.Agentmanu,--代维公司
+c.Longitude,--经度
+c.Latitude,  --维度
+c.DRSADRESS,--地址
+c.drsphone, --电话号码
+--a.taskid, --任务号
+a.alarmcount, --告警累计次数
+d.buildingname, --室分点名称
+c.buildingid,-----室分点id
+d.address,--------室分点地址
+e.id as suburbid,--分局ID
+f.id as areaid,  --郊县id
+k.id as cityid,  --地市id
+e.name as suburbname,--分局名称
+f.name as areaname,  --郊县
+k.name as cityname,  --地市
+a.readed,   --是否已经阅读
+decode(a.readed,1,'是','否') readedname,
+a.flowtache,--告警状态 1:告警 2:派出 3:排除
+decode(a.flowtache,1,'告警',2,'派障',3,'消障','信息缺失') flowtachename,
+a.drsid,
+c.isprogram,--是否室分
+decode(c.isprogram,1,'室内',0,'室外','未知') as isprogramname,
+d.factory,
+r.dicname factoryname,
+a.remark,
+s.dicname as agentcompanyname,
+a.updatetime
+from drs_alarm_history a
+left join drs_alarm_content b on a.alarmcontentcode=b.alarmcontentcode
+left join dic_code_info g on b.alarmkind=g.diccode and g.dictype=11
+left join dic_code_info h on b.alarmlevel=h.diccode and h.dictype=10
+left join drs_info c on a.drsid=c.drsid
+left join building_info d on c.buildingid=d.buildingid
+left join dic_code_info r on d.factory=r.diccode and r.dictype=3--集成厂家
+left join area_info e on c.suburb=e.id
+left join area_info f on e.top_id=f.id
+left join area_info k on f.top_id=k.id
+left join dic_code_info s on d.agentcompany=s.diccode and s.dictype=33--代维公司
+left join dic_code_info m on c.drstype=m.diccode and m.dictype=51 --直放站类型
+left join dic_code_info n on c.drsmanu=n.diccode and n.dictype=54 --直放站厂家;
+/
+create or replace view drs_config_comparamq_his_view as
+select t.cityid,t.taskid, t.drsid,t.comid, t.paramid, b.paramname, t.testresult paramvalue
+from drs_testresult_history t
+left join drs_param_define b on b.paramid=t.paramid
+with read only;
+/
+create or replace view drs_config_comparamq_on_view as
+select t.cityid,t.taskid, t.drsid,t.comid, t.paramid, b.paramname, t.testresult paramvalue
+from drs_testresult_online t
+left join drs_param_define b on b.paramid=t.paramid
+union all
+select t.cityid,t.taskid, t.drsid,t.comid, t.paramid, b.paramname, t.testresult paramvalue
+from drs_testresult_user t
+left join drs_param_define b on b.paramid=t.paramid
+with read only;
+/
+create or replace view drs_config_comparam_on_view as
+select t.cityid,t.taskid, t.drsid,t.comid, a.paramid, b.paramname, a.paramvalue
+from drs_testtask_online t
+left join drs_testparam_online a on a.taskid=t.taskid
+left join drs_param_define b on b.paramid=a.paramid
+union all
+select t.cityid,t.taskid, t.drsid,t.comid, a.paramid, b.paramname, a.paramvalue
+from drs_testtask_user t
+left join drs_testparam_user a on a.taskid=t.taskid
+left join drs_param_define b on b.paramid=a.paramid
+with read only;
+/
+create or replace view drs_config_comparam_his_view as
+select t.cityid,t.taskid, t.drsid,t.comid, a.paramid, b.paramname, a.paramvalue
+from drs_testtask_history t
+left join drs_testparam_history a on a.taskid=t.taskid
+left join drs_param_define b on b.paramid=a.paramid
+with read only;
+/
+insert into appmoduleinfo (MODULEID, APPID, MODULENAME)
+values (1751, 17, '直放站告警综合查询');
+COMMIT;
+
+
+create or replace view drs_config_com_on_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   t.REC4 respdrstypename,
+   t.REC2 respdrsno,
+   t.REC3 respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_online t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d83 on d83.dictype=56 and to_char(d83.diccode)=t.REC1
+union all
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   t.REC4 respdrstypename,
+   t.REC2 respdrsno,
+   t.REC3 respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   1 IsUserComOK
+ from drs_testtask_user t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d83 on d83.dictype=56 and to_char(d83.diccode)=t.REC1
+with read only;
+
+
+/
+create or replace view drs_config_com_his_view as
+select t.taskid, t.cityid, t.drsid, t.comid, status, asktime, sendtime, rectime,
+  tasklevel, userid, modelid,
+ drsno, r_deviceid, drsname, drstype, drstypename, drsmanu, drsmanuname, isprogram,
+ isprogramname, suburbid, suburbname, areaid, areaname, cityname, buildingid,
+  buildingname, buildingno, cs, msc, bsc, cell, pn, agentmanu, longitude, latitude,
+  drsadress, drsphone, drsstatus, drsstatusname, updatetime1, updatetime2, alarmcounts,
+   updatetime3, updatetime4,
+   b.comname,
+   t.REC4 respdrstypename,
+   t.REC2 respdrsno,
+   t.REC3 respr_deviceid,
+   d83.dicname respfalg,
+   decode(t.comid, 32, '监控系统参数查询', 33, '直放站参数查询', '设置命令') comtype,
+   0 IsUserComOK
+ from drs_testtask_history t
+left join drs_config_info_view a on a.drsid=t.drsid
+left join drs_command_define b on b.comid=t.comid
+left join drs_testresult_online c80 on c80.cityid=t.cityid and c80.taskid=t.taskid and c80.paramid=80
+left join dic_code_info d83 on d83.dictype=56 and to_char(d83.diccode)=t.REC1
+with read only;
+
+
+/

@@ -1,0 +1,190 @@
+object Fm_ServerSet: TFm_ServerSet
+  Left = 305
+  Top = 235
+  BorderStyle = bsDialog
+  Caption = #36830#25509#26381#21153#22120#37197#32622#31383#21475
+  ClientHeight = 197
+  ClientWidth = 315
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 315
+    Height = 197
+    Align = alClient
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 5
+      Top = 97
+      Width = 84
+      Height = 13
+      Margins.Bottom = 0
+      Caption = #25511#21046#20449#36947#31471#21475
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #23435#20307
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 6
+      Top = 61
+      Width = 84
+      Height = 13
+      Margins.Bottom = 0
+      Caption = #25968#25454#20449#36947#31471#21475
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #23435#20307
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Button1: TButton
+      Left = 59
+      Top = 146
+      Width = 75
+      Height = 25
+      Caption = #30830#23450
+      TabOrder = 3
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 203
+      Top = 146
+      Width = 75
+      Height = 25
+      Caption = #21462#28040
+      TabOrder = 4
+      OnClick = Button2Click
+    end
+    object IPanel: TPanel
+      Left = 19
+      Top = 12
+      Width = 264
+      Height = 41
+      BevelOuter = bvNone
+      TabOrder = 0
+      object L1: TLabel
+        Left = 9
+        Top = 17
+        Width = 58
+        Height = 13
+        Margins.Bottom = 0
+        Caption = #26381#21153#22120'IP'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = #23435#20307
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object L2: TLabel
+        Left = 119
+        Top = 22
+        Width = 9
+        Height = 12
+        Margins.Bottom = 0
+        AutoSize = False
+        Caption = '.'
+        Font.Charset = GB2312_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object L3: TLabel
+        Left = 166
+        Top = 22
+        Width = 9
+        Height = 12
+        Margins.Bottom = 0
+        AutoSize = False
+        Caption = '.'
+        Font.Charset = GB2312_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object L4: TLabel
+        Left = 213
+        Top = 22
+        Width = 9
+        Height = 12
+        Margins.Bottom = 0
+        AutoSize = False
+        Caption = '.'
+        Font.Charset = GB2312_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #26032#23435#20307
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object IP1: TEdit
+        Left = 78
+        Top = 12
+        Width = 41
+        Height = 21
+        TabOrder = 0
+        OnKeyPress = IP1KeyPress
+      end
+      object IP2: TEdit
+        Left = 124
+        Top = 12
+        Width = 41
+        Height = 21
+        TabOrder = 1
+        OnKeyPress = IP2KeyPress
+      end
+      object IP4: TEdit
+        Left = 219
+        Top = 12
+        Width = 41
+        Height = 21
+        TabOrder = 3
+        OnKeyPress = IP4KeyPress
+      end
+      object IP3: TEdit
+        Left = 172
+        Top = 12
+        Width = 41
+        Height = 21
+        TabOrder = 2
+        OnKeyPress = IP3KeyPress
+      end
+    end
+    object edtPort: TEdit
+      Left = 96
+      Top = 94
+      Width = 182
+      Height = 21
+      TabOrder = 2
+      Text = '991'
+      OnKeyPress = edtPortKeyPress
+    end
+    object DBPort: TEdit
+      Left = 96
+      Top = 58
+      Width = 182
+      Height = 21
+      TabOrder = 1
+      Text = '990'
+      OnKeyPress = DBPortKeyPress
+    end
+  end
+end
