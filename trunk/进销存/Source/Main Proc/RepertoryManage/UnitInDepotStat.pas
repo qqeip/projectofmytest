@@ -9,7 +9,8 @@ uses
   cxGridLevel, cxClasses, cxControls, cxGridCustomView,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, ppDB,
   ppDBPipe, ppComm, ppRelatv, ppProd, ppClass, ppReport, CxGridUnit, ADODB,
-  ppBands, ppCache;
+  ppBands, ppCache, cxContainer, cxTextEdit, cxMaskEdit, cxDropDownEdit,
+  cxCalendar, ppPrnabl, ppCtrls, ppVar;
 
 type
   TFormInDepotStat = class(TForm)
@@ -27,19 +28,105 @@ type
     CbbInDepotType: TComboBox;
     ChkInDepotType: TCheckBox;
     ChkCreateDate: TCheckBox;
-    DtpBeginDateTime: TDateTimePicker;
-    DtpEndDateTime: TDateTimePicker;
     Label1: TLabel;
     Label2: TLabel;
     cxGridInDepotStatDBTableView1: TcxGridDBTableView;
     cxGridInDepotStatLevel1: TcxGridLevel;
     cxGridInDepotStat: TcxGrid;
-    ppReport: TppReport;
     ppDBPipeline: TppDBPipeline;
-    ppHeaderBand1: TppHeaderBand;
-    ppDetailBand1: TppDetailBand;
-    ppFooterBand1: TppFooterBand;
     DataSourceDSInDepotStat: TDataSource;
+    cxDateEditBegin: TcxDateEdit;
+    cxDateEditEnd: TcxDateEdit;
+    ppReport: TppReport;
+    ppHeaderBand1: TppHeaderBand;
+    ppLabel1: TppLabel;
+    ppLine2: TppLine;
+    ppLabel3: TppLabel;
+    ppSystemVariable2: TppSystemVariable;
+    ppLabel4: TppLabel;
+    ppLabel5: TppLabel;
+    ppSystemVariable3: TppSystemVariable;
+    ppLabel6: TppLabel;
+    ppLine13: TppLine;
+    ppLine14: TppLine;
+    ppLine15: TppLine;
+    ppLine16: TppLine;
+    ppLine17: TppLine;
+    ppLine18: TppLine;
+    ppLine19: TppLine;
+    ppLine20: TppLine;
+    ppLine21: TppLine;
+    ppLine22: TppLine;
+    ppLine23: TppLine;
+    ppLabel7: TppLabel;
+    ppLabel8: TppLabel;
+    ppLabel9: TppLabel;
+    ppLabel10: TppLabel;
+    ppLabel11: TppLabel;
+    ppLabel12: TppLabel;
+    ppLabel13: TppLabel;
+    ppLabel14: TppLabel;
+    ppLabel15: TppLabel;
+    ppDetailBand1: TppDetailBand;
+    ppDBText1: TppDBText;
+    ppDBText2: TppDBText;
+    ppDBText3: TppDBText;
+    ppDBText4: TppDBText;
+    ppDBText5: TppDBText;
+    ppDBText6: TppDBText;
+    ppDBText7: TppDBText;
+    ppDBText8: TppDBText;
+    ppDBText9: TppDBText;
+    ppLine1: TppLine;
+    ppLine3: TppLine;
+    ppLine4: TppLine;
+    ppLine5: TppLine;
+    ppLine6: TppLine;
+    ppLine7: TppLine;
+    ppLine8: TppLine;
+    ppLine9: TppLine;
+    ppLine10: TppLine;
+    ppLine11: TppLine;
+    ppLine12: TppLine;
+    ppFooterBand1: TppFooterBand;
+    ppLabel2: TppLabel;
+    ppSystemVariable1: TppSystemVariable;
+    ppLabel18: TppLabel;
+    ppSummaryBand1: TppSummaryBand;
+    ppDBCalc1: TppDBCalc;
+    ppDBCalc2: TppDBCalc;
+    ppDBCalc3: TppDBCalc;
+    ppLine35: TppLine;
+    ppLine36: TppLine;
+    ppLine39: TppLine;
+    ppLine40: TppLine;
+    ppLine41: TppLine;
+    ppLine42: TppLine;
+    ppLine43: TppLine;
+    ppLine44: TppLine;
+    ppLine45: TppLine;
+    ppLabel17: TppLabel;
+    ppDBText13: TppDBText;
+    ppDBText14: TppDBText;
+    ppGroup4: TppGroup;
+    ppGroupHeaderBand4: TppGroupHeaderBand;
+    ppGroupFooterBand4: TppGroupFooterBand;
+    ppDBCalc4: TppDBCalc;
+    ppDBCalc5: TppDBCalc;
+    ppDBCalc6: TppDBCalc;
+    ppLine24: TppLine;
+    ppLine25: TppLine;
+    ppLine28: TppLine;
+    ppLine29: TppLine;
+    ppLine30: TppLine;
+    ppLine31: TppLine;
+    ppLine32: TppLine;
+    ppLine33: TppLine;
+    ppLine34: TppLine;
+    ppLabel16: TppLabel;
+    ppDBText11: TppDBText;
+    ppDBText12: TppDBText;
+    ppDBText10: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -79,6 +166,8 @@ end;
 procedure TFormInDepotStat.FormShow(Sender: TObject);
 begin
   AddcxGridViewField;
+  cxDateEditBegin.EditValue:= Now;
+  cxDateEditEnd.EditValue:= Now;
 end;
 
 procedure TFormInDepotStat.FormClose(Sender: TObject;
@@ -125,6 +214,7 @@ procedure TFormInDepotStat.LoadStatInfo;
   function GetWhere: string;
   var
     lStr: string;
+    lBeginDateTime, lEndDateTime: string;
   begin
     Result:= '';
     lStr:= '';
@@ -136,12 +226,13 @@ procedure TFormInDepotStat.LoadStatInfo;
       lStr:= lStr + ' and InDepot.InDepotTypeID=' + IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items));
     if ChkCreateDate.Checked then
     begin
-      DtpBeginDateTime.Date:= Now;
-      DtpEndDateTime.Date:= Now;
-      lStr:= lStr + ' and InDepot.CreateTime between cdate(''' + DateToStr(DtpBeginDateTime.Date) + ' 00:00:00'
-                  + ''') and cdate(''' + DateToStr(DtpBeginDateTime.Date) + ' 59:59:59' + ''')';
+      lBeginDateTime:= DateTimeToStr(cxDateEditBegin.EditingValue);
+      lEndDateTime:= DateTimeToStr(cxDateEditEnd.EditingValue);
+      lStr:= lStr + ' and InDepot.CreateTime between cdate(''' + lBeginDateTime
+                  + ''') and cdate(''' + lEndDateTime
+                  + ''')';
     end;
-      
+
     Result:= lStr;
   end;
 begin
@@ -150,15 +241,16 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'SELECT InDepot.*, Depot.DepotName, Goods.GoodsName, InDepotType.InDepotTypeName, User.UserName,' +
+    SQL.Text:= 'SELECT * FROM (SELECT InDepot.*, Depot.DepotName, Goods.GoodsName, InDepotType.InDepotTypeName, User.UserName,' +
                ' Goods.CostPrice, Goods.SalePrice,' +
-               ' (Goods.CostPrice*InDepot.InDepotNum) AS Cost, (Goods.SalePrice*InDepot.InDepotNum) AS Sale ' +
+               ' (Goods.CostPrice*InDepot.InDepotNum) AS Cost, (Goods.SalePrice*InDepot.InDepotNum) AS Sale, ' +
+               ' Depot.DepotName&Goods.GoodsName&InDepotType.InDepotTypeName AS Merger' +
                ' FROM (((InDepot LEFT JOIN Depot ON InDepot.DepotID=Depot.DepotID) ' +
                ' LEFT JOIN Goods ON InDepot.GoodsID=Goods.GoodsID) ' +
                ' INNER JOIN [User] ON InDepot.UserID=User.UserID) ' +
                ' INNER JOIN InDepotType ON InDepot.InDepotTypeID=InDepotType.InDepotTypeID' +
                ' Where 1=1 ' + GetWhere +
-               ' Order by InDepot.DepotID,InDepot.GoodsID,InDepot.InDepotTypeID';
+               ' )Order by Merger';
     Active:= True;
     DataSourceDSInDepotStat.DataSet:= AdoQuery;
   end;

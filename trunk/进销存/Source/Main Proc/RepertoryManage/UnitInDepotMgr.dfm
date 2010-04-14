@@ -2306,7 +2306,7 @@ object FormInDepotMgr: TFormInDepotMgr
       end
       object ppGroupFooterBand1: TppGroupFooterBand
         mmBottomOffset = 0
-        mmHeight = 6085
+        mmHeight = 9525
         mmPrintPosition = 0
         object ppDBCalc4: TppDBCalc
           UserName = 'DBCalc4'
