@@ -161,6 +161,10 @@ object FormMain: TFormMain
         Caption = #20837#24211#20449#24687#32479#35745
         OnClick = NInDepotStatClick
       end
+      object NInDepotChangeStat: TMenuItem
+        Caption = #20837#24211#20462#25913#20449#24687#32479#35745
+        OnClick = NInDepotChangeStatClick
+      end
     end
     object MenuOutDepotMgr: TMenuItem
       Caption = #20986#24211#20449#24687#31649#29702

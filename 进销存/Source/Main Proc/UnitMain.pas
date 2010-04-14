@@ -53,6 +53,7 @@ type
     NMax: TMenuItem;
     NMin: TMenuItem;
     NClose: TMenuItem;
+    NInDepotChangeStat: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -89,6 +90,7 @@ type
     procedure NCloseClick(Sender: TObject);
     procedure FormTabChange(Sender: TObject; NewTab: Integer;
       var AllowChange: Boolean);
+    procedure NInDepotChangeStatClick(Sender: TObject);
   private
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
@@ -124,7 +126,7 @@ uses UnitLogIn, UnitPublicResourceManager, UnitResource,
   UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
   UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr,
-  UnitInDepotStat;
+  UnitInDepotStat, UnitInDepotChangeStat;
 
 {$R *.dfm}
 
@@ -727,6 +729,19 @@ procedure TFormMain.FormTabChange(Sender: TObject; NewTab: Integer;
   var AllowChange: Boolean);
 begin
   TForm(FormTab.Tabs.Objects[NewTab]).Show;
+end;
+
+procedure TFormMain.NInDepotChangeStatClick(Sender: TObject);
+begin
+  if not assigned(FormInDepotChangeStat) then
+  begin
+    FormInDepotChangeStat:=TFormInDepotChangeStat.Create(self);
+    AddToTab(FormInDepotChangeStat);
+  end
+  else
+    SetTabIndex(FormInDepotChangeStat);
+  FormInDepotChangeStat.WindowState:=wsMaximized;
+  FormInDepotChangeStat.Show;
 end;
 
 end.

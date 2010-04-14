@@ -30,9 +30,9 @@ type
     ChkCreateDate: TCheckBox;
     Label1: TLabel;
     Label2: TLabel;
-    cxGridInDepotStatDBTableView1: TcxGridDBTableView;
-    cxGridInDepotStatLevel1: TcxGridLevel;
-    cxGridInDepotStat: TcxGrid;
+    cxGridInDepotChangeStatDBTableView1: TcxGridDBTableView;
+    cxGridInDepotChangeStatLevel1: TcxGridLevel;
+    cxGridInDepotChangeStat: TcxGrid;
     ppDBPipeline: TppDBPipeline;
     DataSourceDSInDepotStat: TDataSource;
     cxDateEditBegin: TcxDateEdit;
@@ -160,7 +160,7 @@ procedure TFormInDepotStat.FormCreate(Sender: TObject);
 begin
   AdoQuery:= TADOQuery.Create(Self);
   FCxGridHelper:=TCxGridSet.Create;
-  FCxGridHelper.SetGridStyle(cxGridInDepotStat,true,false,true);
+  FCxGridHelper.SetGridStyle(cxGridInDepotChangeStat,true,false,true);
 end;
 
 procedure TFormInDepotStat.FormShow(Sender: TObject);
@@ -198,16 +198,16 @@ end;
 
 procedure TFormInDepotStat.AddcxGridViewField;
 begin
-  AddViewField(cxGridInDepotStatDBTableView1,'DepotName','仓库名称',100);
-  AddViewField(cxGridInDepotStatDBTableView1,'GoodsName','商品名称',200);
-  AddViewField(cxGridInDepotStatDBTableView1,'InDepotTypeName','入库类型');
-  AddViewField(cxGridInDepotStatDBTableView1,'InDepotNum','入库数量');
-  AddViewField(cxGridInDepotStatDBTableView1,'CostPrice','成本单价');
-  AddViewField(cxGridInDepotStatDBTableView1,'SalePrice','销售单价');
-  AddViewField(cxGridInDepotStatDBTableView1,'Cost','成本价');
-  AddViewField(cxGridInDepotStatDBTableView1,'Sale','销售价');
-  AddViewField(cxGridInDepotStatDBTableView1,'CreateTime','入库时间',100);
-  AddViewField(cxGridInDepotStatDBTableView1,'ModifyTime','修改时间',100);
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'DepotName','仓库名称',100);
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'GoodsName','商品名称',200);
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'InDepotTypeName','入库类型');
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'InDepotNum','入库数量');
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'CostPrice','成本单价');
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'SalePrice','销售单价');
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'Cost','成本价');
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'Sale','销售价');
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'CreateTime','入库时间',100);
+  AddViewField(cxGridInDepotChangeStatDBTableView1,'ModifyTime','修改时间',100);
 end;
 
 procedure TFormInDepotStat.LoadStatInfo;

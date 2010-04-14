@@ -1,9 +1,9 @@
-object FormInDepotStat: TFormInDepotStat
-  Left = 289
-  Top = 179
-  Width = 731
-  Height = 462
-  Caption = #20837#24211#20449#24687#32479#35745
+object FormInDepotChangeStat: TFormInDepotChangeStat
+  Left = 163
+  Top = 244
+  Width = 870
+  Height = 500
+  Caption = #20837#24211#20462#25913#21024#38500#26597#35810
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -23,7 +23,7 @@ object FormInDepotStat: TFormInDepotStat
   object spl1: TSplitter
     Left = 0
     Top = 105
-    Width = 723
+    Width = 862
     Height = 3
     Cursor = crVSplit
     Align = alTop
@@ -31,12 +31,12 @@ object FormInDepotStat: TFormInDepotStat
   object pnl1: TPanel
     Left = 0
     Top = 0
-    Width = 723
+    Width = 862
     Height = 105
     Align = alTop
     TabOrder = 0
     object grp1: TGroupBox
-      Left = 592
+      Left = 731
       Top = 1
       Width = 130
       Height = 103
@@ -338,7 +338,7 @@ object FormInDepotStat: TFormInDepotStat
     object grp2: TGroupBox
       Left = 1
       Top = 1
-      Width = 591
+      Width = 730
       Height = 103
       Align = alClient
       Caption = #26597#35810#26465#20214
@@ -362,14 +362,14 @@ object FormInDepotStat: TFormInDepotStat
       object ChkDepot: TCheckBox
         Left = 16
         Top = 24
-        Width = 50
+        Width = 60
         Height = 17
-        Caption = #20179#24211
+        Caption = #21407#20179#24211
         TabOrder = 0
         OnClick = ChkDepotClick
       end
       object CbbDepot: TComboBox
-        Left = 65
+        Left = 81
         Top = 22
         Width = 120
         Height = 21
@@ -378,7 +378,7 @@ object FormInDepotStat: TFormInDepotStat
         TabOrder = 1
       end
       object ChkGoodsType: TCheckBox
-        Left = 195
+        Left = 217
         Top = 24
         Width = 50
         Height = 17
@@ -387,7 +387,7 @@ object FormInDepotStat: TFormInDepotStat
         OnClick = ChkGoodsTypeClick
       end
       object CbbGoodsType: TComboBox
-        Left = 244
+        Left = 265
         Top = 22
         Width = 120
         Height = 21
@@ -396,7 +396,7 @@ object FormInDepotStat: TFormInDepotStat
         TabOrder = 3
       end
       object CbbInDepotType: TComboBox
-        Left = 452
+        Left = 497
         Top = 22
         Width = 120
         Height = 21
@@ -405,11 +405,11 @@ object FormInDepotStat: TFormInDepotStat
         TabOrder = 4
       end
       object ChkInDepotType: TCheckBox
-        Left = 378
+        Left = 404
         Top = 24
-        Width = 69
+        Width = 92
         Height = 17
-        Caption = #20837#24211#31867#22411
+        Caption = #21407#20837#24211#31867#22411
         TabOrder = 5
         OnClick = ChkInDepotTypeClick
       end
@@ -418,7 +418,7 @@ object FormInDepotStat: TFormInDepotStat
         Top = 49
         Width = 73
         Height = 17
-        Caption = #20837#24211#26102#38388
+        Caption = #20462#25913#26102#38388
         TabOrder = 6
       end
       object cxDateEditBegin: TcxDateEdit
@@ -440,20 +440,20 @@ object FormInDepotStat: TFormInDepotStat
   object pnl2: TPanel
     Left = 0
     Top = 108
-    Width = 723
-    Height = 320
+    Width = 862
+    Height = 358
     Align = alClient
     TabOrder = 1
     object cxGridInDepotChangeStat: TcxGrid
       Left = 1
       Top = 1
-      Width = 721
-      Height = 318
+      Width = 860
+      Height = 356
       Align = alClient
       TabOrder = 0
       object cxGridInDepotChangeStatDBTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
-        DataController.DataSource = DataSourceDSInDepotStat
+        DataController.DataSource = DSInDepotChangeStat
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
@@ -463,16 +463,6 @@ object FormInDepotStat: TFormInDepotStat
         GridView = cxGridInDepotChangeStatDBTableView1
       end
     end
-  end
-  object ppDBPipeline: TppDBPipeline
-    DataSource = DataSourceDSInDepotStat
-    UserName = 'DBPipeline'
-    Left = 313
-    Top = 324
-  end
-  object DataSourceDSInDepotStat: TDataSource
-    Left = 312
-    Top = 368
   end
   object ppReport: TppReport
     AutoStop = False
@@ -2079,5 +2069,15 @@ object FormInDepotStat: TFormInDepotStat
         end
       end
     end
+  end
+  object ppDBPipeline: TppDBPipeline
+    DataSource = DSInDepotChangeStat
+    UserName = 'DBPipeline'
+    Left = 313
+    Top = 324
+  end
+  object DSInDepotChangeStat: TDataSource
+    Left = 312
+    Top = 368
   end
 end

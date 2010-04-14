@@ -1014,6 +1014,12 @@ object FormInDepotMgr: TFormInDepotMgr
     Left = 440
     Top = 272
   end
+  object ppDBPipeline1: TppDBPipeline
+    DataSource = DataSourceInDeopt
+    UserName = 'DBPipeline1'
+    Left = 216
+    Top = 256
+  end
   object ppReport: TppReport
     AutoStop = False
     DataPipeline = ppDBPipeline1
@@ -1035,8 +1041,8 @@ object FormInDepotMgr: TFormInDepotMgr
     OutlineSettings.Visible = True
     TextSearchSettings.DefaultString = '<FindText>'
     TextSearchSettings.Enabled = True
-    Left = 280
-    Top = 256
+    Left = 290
+    Top = 255
     Version = '9.03'
     mmColumnWidth = 0
     DataPipelineName = 'ppDBPipeline1'
@@ -2290,23 +2296,23 @@ object FormInDepotMgr: TFormInDepotMgr
         BandType = 7
       end
     end
-    object ppGroup1: TppGroup
-      BreakName = 'ppDBText1'
+    object ppGroup4: TppGroup
+      BreakName = 'ppDBText10'
       BreakType = btCustomField
       KeepTogether = True
       OutlineSettings.CreateNode = True
-      UserName = 'Group1'
+      UserName = 'Group4'
       mmNewColumnThreshold = 0
       mmNewPageThreshold = 0
       DataPipelineName = ''
-      object ppGroupHeaderBand1: TppGroupHeaderBand
+      object ppGroupHeaderBand4: TppGroupHeaderBand
         mmBottomOffset = 0
         mmHeight = 0
         mmPrintPosition = 0
       end
-      object ppGroupFooterBand1: TppGroupFooterBand
+      object ppGroupFooterBand4: TppGroupFooterBand
         mmBottomOffset = 0
-        mmHeight = 9525
+        mmHeight = 5821
         mmPrintPosition = 0
         object ppDBCalc4: TppDBCalc
           UserName = 'DBCalc4'
@@ -2322,7 +2328,6 @@ object FormInDepotMgr: TFormInDepotMgr
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
-          ResetGroup = ppGroup1
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline1'
@@ -2347,7 +2352,6 @@ object FormInDepotMgr: TFormInDepotMgr
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
-          ResetGroup = ppGroup1
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline1'
@@ -2372,7 +2376,6 @@ object FormInDepotMgr: TFormInDepotMgr
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
-          ResetGroup = ppGroup1
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline1'
@@ -2604,7 +2607,7 @@ object FormInDepotMgr: TFormInDepotMgr
           Border.Style = psSolid
           Border.Visible = False
           Border.Weight = 1.000000000000000000
-          DataField = 'DepotName'
+          DataField = 'Merger'
           DataPipeline = ppDBPipeline1
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -2613,106 +2616,14 @@ object FormInDepotMgr: TFormInDepotMgr
           Font.Style = [fsBold]
           Transparent = True
           DataPipelineName = 'ppDBPipeline1'
-          mmHeight = 3217
+          mmHeight = 3175
           mmLeft = 5292
           mmTop = 1323
-          mmWidth = 18785
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppDBText15: TppDBText
-          UserName = 'DBText15'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'GoodsName'
-          DataPipeline = ppDBPipeline1
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = #23435#20307
-          Font.Size = 8
-          Font.Style = [fsBold]
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline1'
-          mmHeight = 3217
-          mmLeft = 24342
-          mmTop = 1323
-          mmWidth = 18521
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppDBText16: TppDBText
-          UserName = 'DBText16'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'InDepotTypeName'
-          DataPipeline = ppDBPipeline1
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = #23435#20307
-          Font.Size = 8
-          Font.Style = [fsBold]
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline1'
-          mmHeight = 3217
-          mmLeft = 43127
-          mmTop = 1323
-          mmWidth = 14552
+          mmWidth = 52388
           BandType = 5
           GroupNo = 0
         end
       end
     end
-    object ppGroup2: TppGroup
-      BreakName = 'ppDBText2'
-      BreakType = btCustomField
-      KeepTogether = True
-      OutlineSettings.CreateNode = True
-      UserName = 'Group2'
-      mmNewColumnThreshold = 0
-      mmNewPageThreshold = 0
-      DataPipelineName = ''
-      object ppGroupHeaderBand2: TppGroupHeaderBand
-        mmBottomOffset = 0
-        mmHeight = 0
-        mmPrintPosition = 0
-      end
-      object ppGroupFooterBand2: TppGroupFooterBand
-        mmBottomOffset = 0
-        mmHeight = 0
-        mmPrintPosition = 0
-      end
-    end
-    object ppGroup3: TppGroup
-      BreakName = 'ppDBText3'
-      BreakType = btCustomField
-      KeepTogether = True
-      OutlineSettings.CreateNode = True
-      UserName = 'Group3'
-      mmNewColumnThreshold = 0
-      mmNewPageThreshold = 0
-      DataPipelineName = ''
-      object ppGroupHeaderBand3: TppGroupHeaderBand
-        mmBottomOffset = 0
-        mmHeight = 0
-        mmPrintPosition = 0
-      end
-      object ppGroupFooterBand3: TppGroupFooterBand
-        mmBottomOffset = 0
-        mmHeight = 0
-        mmPrintPosition = 0
-      end
-    end
-  end
-  object ppDBPipeline1: TppDBPipeline
-    DataSource = DataSourceInDeopt
-    UserName = 'DBPipeline1'
-    Left = 216
-    Top = 256
   end
 end
