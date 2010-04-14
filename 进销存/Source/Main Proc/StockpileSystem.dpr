@@ -24,7 +24,8 @@ uses
   UnitChangePWD in 'UserManage\UnitChangePWD.pas' {FormChangePWD},
   UnitLockSystem in 'View\UnitLockSystem.pas' {FormLockSystem},
   UnitInDepotMgr in 'RepertoryManage\UnitInDepotMgr.pas' {FormInDepotMgr},
-  UnitOutDepotMgr in 'RepertoryManage\UnitOutDepotMgr.pas' {FormOutDepotMgr};
+  UnitOutDepotMgr in 'RepertoryManage\UnitOutDepotMgr.pas' {FormOutDepotMgr},
+  UnitInDepotStat in 'RepertoryManage\UnitInDepotStat.pas' {FormInDepotStat};
 
 {$R *.res}
 var
