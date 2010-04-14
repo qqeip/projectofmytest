@@ -1,6 +1,6 @@
 object FormEditUser: TFormEditUser
-  Left = 417
-  Top = 298
+  Left = 341
+  Top = 291
   Width = 393
   Height = 413
   Caption = #32534#35793#29992#25143
@@ -19,7 +19,7 @@ object FormEditUser: TFormEditUser
     Top = 6
     Width = 378
     Height = 338
-    ActivePage = ts1
+    ActivePage = ts2
     Style = tsFlatButtons
     TabOrder = 0
     object ts1: TTabSheet
@@ -96,7 +96,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 0
         end
         object CHKRepertoryStat: TCheckBox
-          Left = 127
+          Left = 125
           Top = 16
           Width = 115
           Height = 17
@@ -120,7 +120,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 0
         end
         object CHKAssociatorTypeInfoMgr: TCheckBox
-          Left = 127
+          Left = 125
           Top = 17
           Width = 115
           Height = 17
@@ -128,7 +128,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 1
         end
         object CHKProviderInfoMgr: TCheckBox
-          Left = 243
+          Left = 240
           Top = 17
           Width = 118
           Height = 17
@@ -144,7 +144,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 3
         end
         object CHKGoodsTypeInfo: TCheckBox
-          Left = 127
+          Left = 125
           Top = 37
           Width = 115
           Height = 17
@@ -152,7 +152,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 4
         end
         object CHKInDepotTypeMgr: TCheckBox
-          Left = 243
+          Left = 240
           Top = 37
           Width = 115
           Height = 17
@@ -184,12 +184,20 @@ object FormEditUser: TFormEditUser
           TabOrder = 0
         end
         object CHKInDepotStat: TCheckBox
-          Left = 127
+          Left = 125
           Top = 16
           Width = 115
           Height = 17
           Caption = #20837#24211#20449#24687#32479#35745
           TabOrder = 1
+        end
+        object ChkInDepotChangeStat: TCheckBox
+          Left = 240
+          Top = 16
+          Width = 115
+          Height = 17
+          Caption = #20837#24211#20462#25913#32479#35745
+          TabOrder = 2
         end
       end
       object GRPDataAnalyse: TGroupBox
@@ -208,7 +216,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 0
         end
         object CHKBalanceAnalyse: TCheckBox
-          Left = 127
+          Left = 125
           Top = 16
           Width = 115
           Height = 17
@@ -216,7 +224,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 1
         end
         object CHKRepertoryAnalyse: TCheckBox
-          Left = 243
+          Left = 240
           Top = 16
           Width = 115
           Height = 17
@@ -240,12 +248,20 @@ object FormEditUser: TFormEditUser
           TabOrder = 0
         end
         object CHKOutDepotStat: TCheckBox
-          Left = 127
+          Left = 125
           Top = 16
           Width = 115
           Height = 17
           Caption = #20986#24211#20449#24687#32479#35745
           TabOrder = 1
+        end
+        object ChkOutDepotChangeStat: TCheckBox
+          Left = 240
+          Top = 16
+          Width = 115
+          Height = 17
+          Caption = #20986#24211#20462#25913#32479#35745
+          TabOrder = 2
         end
       end
       object GRPUserMgr: TGroupBox
@@ -264,9 +280,9 @@ object FormEditUser: TFormEditUser
           TabOrder = 0
         end
         object CHKUserChangePass: TCheckBox
-          Left = 127
+          Left = 125
           Top = 16
-          Width = 122
+          Width = 115
           Height = 17
           Caption = #25805#20316#21592#23494#30721#20462#25913
           TabOrder = 1
@@ -280,7 +296,7 @@ object FormEditUser: TFormEditUser
           TabOrder = 2
         end
         object CHKLogOut: TCheckBox
-          Left = 127
+          Left = 125
           Top = 32
           Width = 115
           Height = 17

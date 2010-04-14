@@ -45,6 +45,8 @@ type
     CHKUserChangePass: TCheckBox;
     CHKSystemLock: TCheckBox;
     CHKLogOut: TCheckBox;
+    ChkInDepotChangeStat: TCheckBox;
+    ChkOutDepotChangeStat: TCheckBox;
     procedure cbbUserLevelChange(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
@@ -136,7 +138,12 @@ begin
       else if UpperCase(Copy(aRights,iIndex,1)) = 'S' then
         Dlg.CHKSystemLock.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'T' then
-        Dlg.CHKLogOut.Checked := True;
+        Dlg.CHKLogOut.Checked := True
+      //后加功能
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'O' then
+        Dlg.ChkInDepotChangeStat.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'P' then
+        Dlg.ChkOutDepotChangeStat.Checked := True
     end;
 
     if Dlg.ShowModal = mrOk then begin
@@ -187,6 +194,11 @@ begin
         aRights := aRights + 'S';
       if Dlg.CHKLogOut.Checked then
         aRights := aRights + 'T';
+      //后加功能
+      if Dlg.ChkInDepotChangeStat.Checked then
+        aRights := aRights + 'O';
+      if Dlg.ChkOutDepotChangeStat.Checked then
+        aRights := aRights + 'P';
 
       case aOperate of
         eumAdd: lSqlStr:= 'insert into User(UserName,UserPWD,UserType,UserRights) values(:Name,:PWD,:Type,:Rights)';
