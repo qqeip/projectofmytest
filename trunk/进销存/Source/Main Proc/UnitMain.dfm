@@ -127,8 +127,12 @@ object FormMain: TFormMain
         Caption = #23458#25143#36164#26009#31649#29702
         OnClick = NCustomerInfoMgrClick
       end
-      object NGoodsTypeInfoMgr: TMenuItem
+      object NGoodsTypeMgr: TMenuItem
         Caption = #21830#21697#31867#21035#31649#29702
+        OnClick = NGoodsTypeMgrClick
+      end
+      object NGoodsTypeInfoMgr: TMenuItem
+        Caption = #21830#21697#31649#29702
         OnClick = NGoodsTypeInfoMgrClick
       end
       object NInDepotTypeMgr: TMenuItem
