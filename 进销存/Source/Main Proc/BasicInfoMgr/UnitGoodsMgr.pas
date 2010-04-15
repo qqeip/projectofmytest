@@ -40,6 +40,8 @@ type
     DataSourceGoods: TDataSource;
     Label8: TLabel;
     EdtGoodsID: TEdit;
+    Label9: TLabel;
+    CbbGoodsType: TComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -79,6 +81,7 @@ begin
   FCxGridHelper:=TCxGridSet.Create;
   FCxGridHelper.SetGridStyle(cxGridGoods,true,false,true);
   SetItemCode('Provider', 'ProviderID', 'ProviderName', '', CBProvider.Items);
+  SetItemCode('GoodsType', 'GoodsTypeID', 'GoodsTypeName', '', CbbGoodsType.Items);
 end;
 
 procedure TFormGoodsMgr.FormShow(Sender: TObject);
@@ -103,6 +106,7 @@ begin
   AddViewField(cxGridGoodsDBTableView1,'GoodsID','商品编号');
   AddViewField(cxGridGoodsDBTableView1,'BarCode','条形编码');
   AddViewField(cxGridGoodsDBTableView1,'GoodsName','商品名称');
+  AddViewField(cxGridGoodsDBTableView1,'GOODSTYPENAME','商品类别');
   AddViewField(cxGridGoodsDBTableView1,'MeasureUnit','计量单位');
   AddViewField(cxGridGoodsDBTableView1,'GoodsSize','规格型号');
   AddViewField(cxGridGoodsDBTableView1,'CostPrice','成本价格');
@@ -118,7 +122,9 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'SELECT Goods.*, Provider.ProviderName FROM Goods LEFT JOIN Provider ON Provider.ProviderID=Goods.ProviderID' +
+    SQL.Text:= 'SELECT Goods.*, Provider.ProviderName, GOODSTYPE.GOODSTYPENAME FROM ' +
+               '(Goods LEFT JOIN Provider ON Provider.ProviderID=Goods.ProviderID)' +
+               ' LEFT JOIN GOODSTYPE ON GOODSTYPE.GOODSTYPEID=Goods.GoodsTypeID' +
                ' order by GoodsID';
     Active:= True;
     DataSourceGoods.DataSet:= AdoQuery;
@@ -155,13 +161,14 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       SQL.Text:= 'insert into Goods(' +
-                 'GoodsID,BarCode, GoodsName, CostPrice,SalePrice, ProducingArea, ProviderID,MeasureUnit,GoodsSize)' +
-                 'values(:ID,:BarCode,:Name,:CostPrice,:SalePrice,:ProducingArea,:ProviderID,:MeasureUnit,:GoodsSize)';
+                 'GoodsID,BarCode, GoodsName,GoodsTypeID, CostPrice,SalePrice, ProducingArea, ProviderID,MeasureUnit,GoodsSize)' +
+                 'values(:ID,:BarCode,:Name,:GoodsTypeID,:CostPrice,:SalePrice,:ProducingArea,:ProviderID,:MeasureUnit,:GoodsSize)';
       Parameters.ParamByName('ID').DataType:= ftInteger;
       Parameters.ParamByName('ID').Direction:=pdInput;
       Parameters.ParamByName('BarCode').DataType:= ftString;
       Parameters.ParamByName('BarCode').Direction:=pdInput;
       Parameters.ParamByName('Name').DataType:=ftString;
+      Parameters.ParamByName('GoodsTypeID').DataType:=ftInteger;
       Parameters.ParamByName('CostPrice').DataType:= ftFloat;
       Parameters.ParamByName('SalePrice').DataType:= ftFloat;
       Parameters.ParamByName('ProducingArea').DataType:= ftString;
@@ -172,6 +179,7 @@ begin
       Parameters.ParamByName('ID').Value:= StrToInt(EdtGoodsID.Text);
       Parameters.ParamByName('BarCode').Value:= EdtBarCode.Text;
       Parameters.ParamByName('Name').Value:=EdtGoodsName.Text;
+      Parameters.ParamByName('GoodsTypeID').Value:= GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items);
       Parameters.ParamByName('CostPrice').Value:= StrToFloat(EdtCostPrice.Text);
       Parameters.ParamByName('SalePrice').Value:= StrToFloat(EdtSalePrice.Text);
       Parameters.ParamByName('ProducingArea').Value:= EdtProduceArea.Text;
@@ -220,6 +228,7 @@ begin
                  'GoodsID=' + EdtGoodsID.Text + ',' +
                  'BarCode=''' + EdtBarCode.Text + ''',' +
                  'GoodsName=''' + EdtGoodsName.Text + ''',' +
+                 'GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
                  'CostPrice=' + EdtCostPrice.Text + ',' +
                  'SalePrice=' + EdtSalePrice.Text + ',' +
                  'ProducingArea=''' + EdtProduceArea.Text + ''',' +
@@ -277,6 +286,7 @@ begin
     EdtGoodsID.Text:= FieldByName('GoodsID').AsString;
     EdtBarCode.Text:= FieldByName('BarCode').AsString;
     EdtGoodsName.Text:= FieldByName('GoodsName').AsString;
+    CbbGoodsType.ItemIndex:= CbbGoodsType.Items.IndexOf(FieldByName('GoodsTypeName').AsString);
     EdtCostPrice.Text:= FieldByName('CostPrice').AsString;
     EdtSalePrice.Text:= FieldByName('SalePrice').AsString;
     EdtProduceArea.Text:= FieldByName('ProducingArea').AsString;

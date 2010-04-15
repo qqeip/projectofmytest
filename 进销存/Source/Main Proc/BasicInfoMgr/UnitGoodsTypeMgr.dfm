@@ -1,9 +1,9 @@
-object FormGoodsMgr: TFormGoodsMgr
-  Left = 370
-  Top = 253
+object FormGoodsTypeMgr: TFormGoodsTypeMgr
+  Left = 371
+  Top = 235
   Width = 584
   Height = 398
-  Caption = #21830#21697#31649#29702
+  Caption = #21830#21697#22823#31867#31649#29702
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,21 +11,51 @@ object FormGoodsMgr: TFormGoodsMgr
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object grp1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 576
+    Height = 217
+    Align = alClient
+    Caption = #21830#21697#22823#31867#35814#32454#20449#24687
+    TabOrder = 0
+    object cxGridGoodsType: TcxGrid
+      Left = 2
+      Top = 15
+      Width = 572
+      Height = 200
+      Align = alClient
+      TabOrder = 0
+      object cxGridGoodsTypeDBTableView1: TcxGridDBTableView
+        NavigatorButtons.ConfirmDelete = False
+        OnFocusedRecordChanged = cxGridGoodsTypeDBTableView1FocusedRecordChanged
+        DataController.DataSource = DSGoodsType
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        OptionsView.GroupByBox = False
+      end
+      object cxGridGoodsTypeLevel1: TcxGridLevel
+        GridView = cxGridGoodsTypeDBTableView1
+      end
+    end
+  end
+  object pnl1: TPanel
     Left = 0
     Top = 311
     Width = 576
     Height = 53
     Align = alBottom
-    TabOrder = 0
+    TabOrder = 1
     object Btn_Add: TSpeedButton
-      Left = 107
+      Left = 77
       Top = 16
       Width = 65
       Height = 22
@@ -171,7 +201,7 @@ object FormGoodsMgr: TFormGoodsMgr
       OnClick = Btn_AddClick
     end
     object Btn_Modify: TSpeedButton
-      Left = 208
+      Left = 178
       Top = 16
       Width = 65
       Height = 22
@@ -317,7 +347,7 @@ object FormGoodsMgr: TFormGoodsMgr
       OnClick = Btn_ModifyClick
     end
     object Btn_Delete: TSpeedButton
-      Left = 310
+      Left = 280
       Top = 16
       Width = 65
       Height = 22
@@ -463,7 +493,7 @@ object FormGoodsMgr: TFormGoodsMgr
       OnClick = Btn_DeleteClick
     end
     object Btn_Close: TSpeedButton
-      Left = 411
+      Left = 381
       Top = 16
       Width = 65
       Height = 22
@@ -609,220 +639,99 @@ object FormGoodsMgr: TFormGoodsMgr
       OnClick = Btn_CloseClick
     end
   end
-  object GroupBox2: TGroupBox
+  object grp2: TGroupBox
     Left = 0
-    Top = 192
+    Top = 217
     Width = 576
-    Height = 119
+    Height = 94
     Align = alBottom
-    Caption = #23458#25143#20449#24687#35774#32622
-    TabOrder = 1
-    object Label1: TLabel
-      Left = 205
-      Top = 22
-      Width = 60
+    Caption = #21830#21697#22823#31867#20449#24687#35774#32622
+    TabOrder = 2
+    object LabelDepotID: TLabel
+      Left = 14
+      Top = 31
+      Width = 90
       Height = 13
       AutoSize = False
-      Caption = #21830#21697#21517#31216#65306
+      Caption = #21830#21697#22823#31867#32534#21495#65306
     end
     object Label2: TLabel
-      Left = 32
-      Top = 46
-      Width = 60
+      Left = 14
+      Top = 56
+      Width = 90
       Height = 13
       AutoSize = False
-      Caption = #26465#24418#32534#30721#65306
+      Caption = #21830#21697#22823#31867#35828#26126#65306
+    end
+    object LabelDepotName: TLabel
+      Left = 190
+      Top = 31
+      Width = 90
+      Height = 13
+      AutoSize = False
+      Caption = #21830#21697#22823#31867#21517#31216#65306
+    end
+    object Label1: TLabel
+      Left = 398
+      Top = 31
+      Width = 65
+      Height = 13
+      AutoSize = False
+      Caption = #25552#25104#27604#20363#65306
     end
     object Label3: TLabel
-      Left = 205
-      Top = 69
-      Width = 60
+      Left = 488
+      Top = 31
+      Width = 36
       Height = 13
       AutoSize = False
-      Caption = #35745#37327#21333#20301#65306
+      Caption = '%'#27599#20214
     end
-    object Label4: TLabel
-      Left = 380
-      Top = 69
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #35268#26684#22411#21495#65306
-    end
-    object Label5: TLabel
-      Left = 205
-      Top = 46
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #25104#26412#20215#26684#65306
-    end
-    object Label6: TLabel
-      Left = 380
-      Top = 46
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #38144#21806#20215#26684#65306
-    end
-    object Label7: TLabel
-      Left = 32
-      Top = 93
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #21830#21697#20135#22320#65306
-    end
-    object Label11: TLabel
-      Left = 380
-      Top = 22
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #20027#20379#36135#21830#65306
-    end
-    object Label8: TLabel
-      Left = 32
-      Top = 22
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #21830#21697#32534#21495#65306
-    end
-    object Label9: TLabel
-      Left = 32
-      Top = 69
-      Width = 60
-      Height = 13
-      AutoSize = False
-      Caption = #21830#21697#31867#21035#65306
-    end
-    object EdtGoodsName: TEdit
-      Left = 267
-      Top = 19
-      Width = 100
+    object EdtGoodsTypeName: TEdit
+      Left = 282
+      Top = 28
+      Width = 110
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
     end
-    object CBProvider: TComboBox
-      Left = 442
-      Top = 19
-      Width = 100
-      Height = 21
-      Style = csDropDownList
+    object EdtGoodsTypeComment: TEdit
+      Left = 104
+      Top = 53
+      Width = 417
+      Height = 19
       Ctl3D = False
-      ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 2
     end
-    object EdtCostPrice: TEdit
-      Left = 267
-      Top = 43
-      Width = 100
+    object EdtGoodsTypeID: TEdit
+      Left = 104
+      Top = 28
+      Width = 80
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 6
+      TabOrder = 0
+      OnKeyPress = EdtGoodsTypeIDKeyPress
     end
-    object EdtSalePrice: TEdit
-      Left = 442
-      Top = 43
-      Width = 100
+    object EdtPercent: TEdit
+      Left = 461
+      Top = 28
+      Width = 25
       Height = 19
+      Hint = #27599#20214#21830#21697#25552#25104#30334#20998#20043#22810#23569
       Ctl3D = False
       ParentCtl3D = False
-      TabOrder = 7
-    end
-    object EdtProduceArea: TEdit
-      Left = 93
-      Top = 90
-      Width = 449
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 8
-    end
-    object EdtBarCode: TEdit
-      Left = 93
-      Top = 43
-      Width = 100
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
-    end
-    object EdtMeasureUnit: TEdit
-      Left = 267
-      Top = 66
-      Width = 100
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 4
-    end
-    object EdtSize: TEdit
-      Left = 442
-      Top = 66
-      Width = 100
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 5
-    end
-    object EdtGoodsID: TEdit
-      Left = 93
-      Top = 19
-      Width = 100
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 0
-    end
-    object CbbGoodsType: TComboBox
-      Left = 93
-      Top = 66
-      Width = 100
-      Height = 21
-      Style = csDropDownList
-      Ctl3D = False
-      ItemHeight = 13
-      ParentCtl3D = False
-      TabOrder = 9
+      Text = '0'
+      OnKeyPress = EdtPercentKeyPress
     end
   end
-  object GroupBox1: TGroupBox
-    Left = 0
-    Top = 0
-    Width = 576
-    Height = 192
-    Align = alClient
-    Caption = #23458#25143#35814#32454#20449#24687
-    TabOrder = 2
-    object cxGridGoods: TcxGrid
-      Left = 2
-      Top = 15
-      Width = 572
-      Height = 175
-      Align = alClient
-      TabOrder = 0
-      object cxGridGoodsDBTableView1: TcxGridDBTableView
-        NavigatorButtons.ConfirmDelete = False
-        OnFocusedRecordChanged = cxGridGoodsDBTableView1FocusedRecordChanged
-        DataController.DataSource = DataSourceGoods
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsView.GroupByBox = False
-      end
-      object cxGridGoodsLevel1: TcxGridLevel
-        GridView = cxGridGoodsDBTableView1
-      end
-    end
-  end
-  object DataSourceGoods: TDataSource
-    Left = 88
-    Top = 104
+  object DSGoodsType: TDataSource
+    Left = 200
+    Top = 136
   end
 end

@@ -54,6 +54,7 @@ type
     NMin: TMenuItem;
     NClose: TMenuItem;
     NInDepotChangeStat: TMenuItem;
+    NGoodsTypeMgr: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -91,6 +92,7 @@ type
     procedure FormTabChange(Sender: TObject; NewTab: Integer;
       var AllowChange: Boolean);
     procedure NInDepotChangeStatClick(Sender: TObject);
+    procedure NGoodsTypeMgrClick(Sender: TObject);
   private
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
@@ -126,7 +128,7 @@ uses UnitLogIn, UnitPublicResourceManager, UnitResource,
   UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
   UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr,
-  UnitInDepotStat, UnitInDepotChangeStat;
+  UnitInDepotStat, UnitInDepotChangeStat, UnitGoodsTypeMgr;
 
 {$R *.dfm}
 
@@ -388,6 +390,18 @@ end;
 procedure TFormMain.NCustomerInfoMgrClick(Sender: TObject);
 begin
   with TFormCustomerMgr.Create(nil) do
+  begin
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TFormMain.NGoodsTypeMgrClick(Sender: TObject);
+begin
+  with TFormGoodsTypeMgr.Create(nil) do
   begin
     try
       ShowModal;
