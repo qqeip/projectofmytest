@@ -12,13 +12,6 @@ uses
 type
   TFormOutDepotMgr = class(TForm)
     Panel1: TPanel;
-    GroupBox2: TGroupBox;
-    LabelDepotID: TLabel;
-    Label2: TLabel;
-    LabelDepotName: TLabel;
-    EdtDepotName: TEdit;
-    EdtDepotComment: TEdit;
-    EdtDepotID: TEdit;
     GroupBox1: TGroupBox;
     cxGridDepot: TcxGrid;
     cxGridDepotDBTableView1: TcxGridDBTableView;
@@ -29,6 +22,33 @@ type
     Btn_Close: TSpeedButton;
     Btn_Print: TSpeedButton;
     Btn_Calc: TSpeedButton;
+    Panel2: TPanel;
+    GroupBox2: TGroupBox;
+    LabelDepotID: TLabel;
+    Label2: TLabel;
+    LabelDepotName: TLabel;
+    Label1: TLabel;
+    Label3: TLabel;
+    EdtDepotName: TEdit;
+    EdtDepotComment: TEdit;
+    EdtDepotID: TEdit;
+    Edit1: TEdit;
+    ComboBox1: TComboBox;
+    GroupBox3: TGroupBox;
+    Label4: TLabel;
+    Edit2: TEdit;
+    Label5: TLabel;
+    Edit3: TEdit;
+    Label6: TLabel;
+    Edit4: TEdit;
+    Label7: TLabel;
+    Edit5: TEdit;
+    Label8: TLabel;
+    Edit6: TEdit;
+    Label9: TLabel;
+    Edit7: TEdit;
+    Label10: TLabel;
+    Edit8: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -39,6 +59,8 @@ type
     procedure Btn_PrintClick(Sender: TObject);
     procedure Btn_CalcClick(Sender: TObject);
     procedure Btn_CloseClick(Sender: TObject);
+    procedure EdtDepotIDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -104,6 +126,12 @@ end;
 procedure TFormOutDepotMgr.Btn_CloseClick(Sender: TObject);
 begin
   FormMain.RemoveForm(FormOutDepotMgr);
+end;
+
+procedure TFormOutDepotMgr.EdtDepotIDKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+//
 end;
 
 end.
