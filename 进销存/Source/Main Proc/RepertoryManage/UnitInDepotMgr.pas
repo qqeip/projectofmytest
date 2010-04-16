@@ -9,7 +9,8 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls, CxGridUnit, ADODB,
   ppCtrls, ppPrnabl, ppClass, ppDB, ppDBPipe, ppBands, ppCache, ppComm,
-  ppRelatv, ppProd, ppReport, ppVar;
+  ppRelatv, ppProd, ppReport, ppVar, cxContainer, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit;
 
 type
   TFormInDepotMgr = class(TForm)
@@ -24,11 +25,8 @@ type
     cxGridInDepotDBTableView1: TcxGridDBTableView;
     cxGridInDepotLevel1: TcxGridLevel;
     Label1: TLabel;
-    CbbDepot: TComboBox;
     Label3: TLabel;
-    CbbGoodsType: TComboBox;
     Label4: TLabel;
-    CbbInDepotType: TComboBox;
     Btn_Print: TSpeedButton;
     Btn_Calc: TSpeedButton;
     Label2: TLabel;
@@ -125,6 +123,11 @@ type
     ppDBText11: TppDBText;
     ppDBText12: TppDBText;
     ppDBText10: TppDBText;
+    Label5: TLabel;
+    CbbGoodsType: TcxComboBox;
+    CbbGoods: TcxComboBox;
+    CbbDepot: TcxComboBox;
+    CbbInDepotType: TcxComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -140,6 +143,8 @@ type
       Sender: TcxCustomGridTableView; APrevFocusedRecord,
       AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure CbbGoodsPropertiesChange(Sender: TObject);
+    procedure CbbGoodsTypePropertiesCloseUp(Sender: TObject);
   private
     { Private declarations }
     AdoQuery, AdoEdit: TAdoquery;
@@ -167,9 +172,10 @@ begin
   AdoEdit:= TADOQuery.Create(Self);
   FCxGridHelper:=TCxGridSet.Create;
   FCxGridHelper.SetGridStyle(cxGridInDepot,true,false,true);
-  SetItemCode('Depot', 'DepotID', 'DepotName', '', CbbDepot.Items);
-  SetItemCode('Goods', 'GoodsID', 'GoodsName', '', CbbGoodsType.Items);
-  SetItemCode('InDepotType', 'InDepotTypeID', 'InDepotTypeName', ' where InDepotTypeID<>1004', CbbInDepotType.Items);
+  SetItemCode('Depot', 'DepotID', 'DepotName', '', CbbDepot.Properties.Items);
+  SetItemCode('GoodsType', 'GoodsTypeID', 'GoodsTypeName', '', CbbGoodsType.Properties.Items);
+  SetItemCode('Goods', 'GoodsID', 'GoodsName', '', CbbGoods.Properties.Items);
+  SetItemCode('InDepotType', 'InDepotTypeID', 'InDepotTypeName', ' where InDepotTypeID<>1004', CbbInDepotType.Properties.Items);
 end;
 
 procedure TFormInDepotMgr.FormShow(Sender: TObject);
@@ -183,6 +189,10 @@ procedure TFormInDepotMgr.FormClose(Sender: TObject;
 begin
   FormMain.RemoveForm(FormInDepotMgr);
 //  Action:= caFree;
+  ClearTStrings(CbbDepot.Properties.Items);
+  ClearTStrings(CbbGoodsType.Properties.Items);
+  ClearTStrings(CbbGoods.Properties.Items);
+  ClearTStrings(CbbInDepotType.Properties.Items);
 end;
 
 procedure TFormInDepotMgr.FormDestroy(Sender: TObject);
@@ -202,6 +212,11 @@ begin
     Application.MessageBox('请先选择商品类型！','提示',MB_OK+64);
     Exit;
   end;
+  if CbbGoods.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择商品！','提示',MB_OK+64);
+    Exit;
+  end;
   if CbbInDepotType.ItemIndex=-1 then
   begin
     Application.MessageBox('请先选择入库类型！','提示',MB_OK+64);
@@ -217,10 +232,10 @@ begin
       SQL.Text:= 'insert into InDepot(' +
                  'DepotID,GoodsID, UserID, InDepotTypeID, InDepotNum, CreateTime) ' +
                  'values(' +
-                 IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items)) + ',' +
-                 IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Properties.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items)) + ',' +
                  IntToStr(CurUser.UserID) + ',' +
-                 IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Properties.Items)) + ',' +
                  EdtNum.Text + ',' +
                  'cdate(''' + DateTimeToStr(Now) + ''')' +
                  ')';
@@ -289,10 +304,10 @@ begin
                  AdoQuery.FieldByName('UserID').AsString + ',' +
                  AdoQuery.FieldByName('InDepotTypeID').AsString + ',' +
                  AdoQuery.FieldByName('InDepotNum').AsString + ',' +
-                 IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items)) + ',' +
-                 IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Properties.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items)) + ',' +
                  IntToStr(CurUser.UserID) + ',' +
-                 IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items)) + ',' +
+                 IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Properties.Items)) + ',' +
                  EdtNum.Text + ',' +
                  '1,' +
                  'cdate(''' + DateTimeToStr(Now) + '''))';
@@ -302,10 +317,10 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       SQL.Text:= 'update InDepot set ' +
-                 'DepotID=' + IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items)) + ',' +
-                 'GoodsID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + ',' +
+                 'DepotID=' + IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Properties.Items)) + ',' +
+                 'GoodsID=' + IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items)) + ',' +
                  'UserID=' + IntToStr(CurUser.UserID) + ',' +
-                 'InDepotTypeID=' + IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items)) + ',' +
+                 'InDepotTypeID=' + IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Properties.Items)) + ',' +
                  'InDepotNum=' + EdtNum.Text + ',' +
                  'ModifyTime=cdate(''' + DateTimeToStr(Now) + ''')' +
                  ' where ID=' + AdoQuery.FieldByName('ID').AsString;
@@ -384,6 +399,7 @@ end;
 procedure TFormInDepotMgr.AddcxGridViewField;
 begin
   AddViewField(cxGridInDepotDBTableView1,'DepotName','仓库名称',100);
+  AddViewField(cxGridInDepotDBTableView1,'GoodsTypeName','商品类型');
   AddViewField(cxGridInDepotDBTableView1,'GoodsName','商品名称',200);
   AddViewField(cxGridInDepotDBTableView1,'InDepotTypeName','入库类型');
   AddViewField(cxGridInDepotDBTableView1,'InDepotNum','入库数量');
@@ -402,20 +418,18 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-//    SQL.Text:= 'SELECT InDepot.*, Depot.DepotName, Goods.GoodsName, InDepotType.InDepotTypeName,User.UserName ' +
-//               ' FROM (((InDepot LEFT JOIN Depot ON Depot.DepotID=InDepot.DepotID) ' +
-//               ' LEFT JOIN Goods ON Goods.GoodsID=InDepot.GoodsID) ' +
-//               ' LEFT JOIN InDepotType ON InDepotType.InDepotTypeID=InDepot.InDepotTypeID) ' +
-//               ' LEFT JOIN User ON Depot.UserID=User.UserID';
-    SQL.Text:= 'SELECT * FROM (SELECT InDepot.*, Depot.DepotName, Goods.GoodsName, InDepotType.InDepotTypeName, User.UserName,' +
+    SQL.Text:= 'SELECT * FROM (SELECT InDepot.*, Depot.DepotName, Goods1.GoodsTypeName, Goods1.GoodsName,' +
+               ' InDepotType.InDepotTypeName, User.UserName,' +
                ' Goods.CostPrice, Goods.SalePrice,' +
                ' (Goods.CostPrice*InDepot.InDepotNum) AS Cost, (Goods.SalePrice*InDepot.InDepotNum) AS Sale,' +
-               ' Depot.DepotName&Goods.GoodsName&InDepotType.InDepotTypeName AS Merger' +
-               ' FROM (((InDepot LEFT JOIN Depot ON InDepot.DepotID=Depot.DepotID) ' +
-               ' LEFT JOIN Goods ON InDepot.GoodsID=Goods.GoodsID) ' +
-               ' INNER JOIN [User] ON InDepot.UserID=User.UserID) ' +
-               ' INNER JOIN InDepotType ON InDepot.InDepotTypeID=InDepotType.InDepotTypeID' +
-               ' )Order by InDepot.DepotID,InDepot.GoodsID,InDepot.InDepotTypeID';
+               ' Depot.DepotName&Goods1.GoodsName&InDepotType.InDepotTypeName AS Merger' +
+               ' FROM (((InDepot LEFT JOIN Depot ON InDepot.DepotID = Depot.DepotID) ' +
+               ' LEFT JOIN (SELECT Goods.*,GoodsType.GoodsTypeID,GoodsType.GoodsTypeName FROM Goods ' +
+               '              LEFT JOIN GoodsType ON Goods.GoodsTypeID = GoodsType.GoodsTypeID) AS Goods1 ' +
+               '                ON InDepot.GoodsID = Goods1.GoodsID) ' +
+               ' LEFT JOIN User ON InDepot.UserID = User.UserID) ' +
+               ' LEFT JOIN InDepotType ON InDepot.InDepotTypeID = InDepotType.InDepotTypeID)' +
+               ' Order by Merger';
     Active:= True;
     DataSourceInDeopt.DataSet:= AdoQuery;
   end;
@@ -432,13 +446,61 @@ procedure TFormInDepotMgr.cxGridInDepotDBTableView1FocusedRecordChanged(
   ANewItemRecordFocusingChanged: Boolean);
 begin
   if IsRecordChanged then Exit;
+  SetItemCode('Goods', 'GoodsID', 'GoodsName', ' ', CbbGoods.Properties.Items);
   with AdoQuery do
   begin
-    CbbDepot.ItemIndex:= CbbDepot.Items.IndexOf(FieldByName('DepotName').AsString);
-    CbbGoodsType.ItemIndex:= CbbGoodsType.Items.IndexOf(FieldByName('GoodsName').AsString);
-    CbbInDepotType.ItemIndex:= CbbInDepotType.Items.IndexOf(FieldByName('InDepotTypeName').AsString);
+    CbbDepot.ItemIndex:= CbbDepot.Properties.Items.IndexOf(FieldByName('DepotName').AsString);
+    CbbGoodsType.ItemIndex:= CbbGoodsType.Properties.Items.IndexOf(FieldByName('GoodsTypeName').AsString);
+    CbbGoods.ItemIndex:= CbbGoods.Properties.Items.IndexOf(FieldByName('GoodsName').AsString);
+    CbbInDepotType.ItemIndex:= CbbInDepotType.Properties.Items.IndexOf(FieldByName('InDepotTypeName').AsString);
     EdtNum.Text:= FieldByName('InDepotNum').AsString;
   end;
+end;
+
+procedure TFormInDepotMgr.CbbGoodsPropertiesChange(Sender: TObject);
+//var
+//  lGoodsID: Integer;
+//  lAdoQuery: TADOQuery;
+begin
+//  lGoodsID:= GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items);
+//  if lGoodsID>-1 then
+//  begin
+//    lAdoQuery:= TADOQuery.Create(nil);
+//    with lAdoQuery do
+//    begin
+//      try
+//        Active:= False;
+//        Connection:= DM.ADOConnection;
+//        SQL.Clear;
+//        SQL.Text:= 'SELECT Goods.*,GoodsType.GoodsTypeID,GoodsType.GoodsTypeName FROM Goods ' +
+//                   ' LEFT JOIN GoodsType ON Goods.GoodsTypeID = GoodsType.GoodsTypeID ' +
+//                   ' WHERE Goods.GoodsID=' + IntToStr(lGoodsID);
+//        Active:= True;
+//        if RecordCount=1 then
+//          CbbGoodsType.ItemIndex:= CbbGoodsType.Properties.Items.IndexOf(FieldByName('GoodsTypeName').AsString)
+//        else
+//          Exit;
+//      finally
+//        Free;
+//      end;
+//    end;
+//  end;
+end;
+
+procedure TFormInDepotMgr.CbbGoodsTypePropertiesCloseUp(Sender: TObject);
+var
+  lGoodsTypeID: Integer;
+  lWhereStr: string;
+begin
+  lGoodsTypeID:= GetItemCode(CbbGoodsType.Text, CbbGoodsType.Properties.Items);
+  ClearTStrings(CbbGoods.Properties.Items);
+  if lGoodsTypeID>-1 then
+  begin
+    lWhereStr:= ' where GoodsTypeID=' + IntToStr(lGoodsTypeID);
+    SetItemCode('Goods', 'GoodsID', 'GoodsName', lWhereStr, CbbGoods.Properties.Items);
+  end
+  else
+    SetItemCode('Goods', 'GoodsID', 'GoodsName', ' ', CbbGoods.Properties.Items);
 end;
 
 end.

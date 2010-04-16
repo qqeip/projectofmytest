@@ -26,7 +26,8 @@ uses
   UnitInDepotMgr in 'RepertoryManage\UnitInDepotMgr.pas' {FormInDepotMgr},
   UnitOutDepotMgr in 'RepertoryManage\UnitOutDepotMgr.pas' {FormOutDepotMgr},
   UnitInDepotStat in 'RepertoryManage\UnitInDepotStat.pas' {FormInDepotStat},
-  UnitInDepotChangeStat in 'RepertoryManage\UnitInDepotChangeStat.pas' {FormInDepotChangeStat};
+  UnitInDepotChangeStat in 'RepertoryManage\UnitInDepotChangeStat.pas' {FormInDepotChangeStat},
+  UnitGoodsTypeMgr in 'BasicInfoMgr\UnitGoodsTypeMgr.pas' {FormGoodsTypeMgr};
 
 {$R *.res}
 var
