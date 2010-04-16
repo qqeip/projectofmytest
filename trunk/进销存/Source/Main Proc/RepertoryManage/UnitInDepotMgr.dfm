@@ -907,15 +907,15 @@ object FormInDepotMgr: TFormInDepotMgr
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 347
+    Top = 336
     Width = 862
-    Height = 66
+    Height = 77
     Align = alBottom
     Caption = #20837#24211#20449#24687#35774#32622
     TabOrder = 1
     object Label1: TLabel
       Left = 22
-      Top = 29
+      Top = 22
       Width = 60
       Height = 13
       AutoSize = False
@@ -923,69 +923,81 @@ object FormInDepotMgr: TFormInDepotMgr
     end
     object Label3: TLabel
       Left = 228
-      Top = 29
+      Top = 22
       Width = 60
       Height = 13
       AutoSize = False
       Caption = #21830#21697#31867#22411#65306
     end
     object Label4: TLabel
-      Left = 436
-      Top = 29
+      Left = 20
+      Top = 48
       Width = 60
       Height = 13
       AutoSize = False
       Caption = #20837#24211#31867#22411#65306
     end
     object Label2: TLabel
-      Left = 645
-      Top = 29
+      Left = 228
+      Top = 48
       Width = 60
       Height = 13
       AutoSize = False
       Caption = #20837#24211#25968#37327#65306
     end
-    object CbbDepot: TComboBox
-      Left = 85
-      Top = 26
-      Width = 130
-      Height = 21
-      Style = csDropDownList
-      ItemHeight = 13
-      TabOrder = 0
-    end
-    object CbbGoodsType: TComboBox
-      Left = 291
-      Top = 26
-      Width = 130
-      Height = 21
-      Style = csDropDownList
-      ItemHeight = 13
-      TabOrder = 1
-    end
-    object CbbInDepotType: TComboBox
-      Left = 500
-      Top = 26
-      Width = 130
-      Height = 21
-      Style = csDropDownList
-      ItemHeight = 13
-      TabOrder = 2
+    object Label5: TLabel
+      Left = 435
+      Top = 22
+      Width = 54
+      Height = 13
+      AutoSize = False
+      Caption = #21830'    '#21697#65306
     end
     object EdtNum: TEdit
-      Left = 712
-      Top = 26
+      Left = 291
+      Top = 45
       Width = 130
-      Height = 21
-      TabOrder = 3
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 0
       OnKeyPress = EdtNumKeyPress
+    end
+    object CbbGoodsType: TcxComboBox
+      Left = 291
+      Top = 19
+      Properties.DropDownListStyle = lsEditFixedList
+      Properties.OnCloseUp = CbbGoodsTypePropertiesCloseUp
+      TabOrder = 1
+      Width = 130
+    end
+    object CbbGoods: TcxComboBox
+      Left = 488
+      Top = 19
+      Properties.DropDownListStyle = lsEditFixedList
+      TabOrder = 2
+      Width = 130
+    end
+    object CbbDepot: TcxComboBox
+      Left = 83
+      Top = 19
+      Properties.DropDownListStyle = lsEditFixedList
+      TabOrder = 3
+      Width = 130
+    end
+    object CbbInDepotType: TcxComboBox
+      Left = 83
+      Top = 45
+      Properties.DropDownListStyle = lsEditFixedList
+      TabOrder = 4
+      Width = 130
     end
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
     Width = 862
-    Height = 347
+    Height = 336
     Align = alClient
     Caption = #20837#24211#35814#32454#20449#24687
     TabOrder = 2
@@ -993,7 +1005,7 @@ object FormInDepotMgr: TFormInDepotMgr
       Left = 2
       Top = 15
       Width = 858
-      Height = 330
+      Height = 319
       Align = alClient
       TabOrder = 0
       object cxGridInDepotDBTableView1: TcxGridDBTableView
