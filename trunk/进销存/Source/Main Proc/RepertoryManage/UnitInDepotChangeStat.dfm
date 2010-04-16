@@ -502,7 +502,7 @@ object FormInDepotChangeStat: TFormInDepotChangeStat
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #20837#24211#35814#21333#25171#21360
+        Caption = #20837#24211#20462#25913#35760#24405#25171#21360
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307

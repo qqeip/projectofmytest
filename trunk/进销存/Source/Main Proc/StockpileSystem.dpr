@@ -25,7 +25,8 @@ uses
   UnitLockSystem in 'View\UnitLockSystem.pas' {FormLockSystem},
   UnitInDepotMgr in 'RepertoryManage\UnitInDepotMgr.pas' {FormInDepotMgr},
   UnitOutDepotMgr in 'RepertoryManage\UnitOutDepotMgr.pas' {FormOutDepotMgr},
-  UnitInDepotStat in 'RepertoryManage\UnitInDepotStat.pas' {FormInDepotStat};
+  UnitInDepotStat in 'RepertoryManage\UnitInDepotStat.pas' {FormInDepotStat},
+  UnitInDepotChangeStat in 'RepertoryManage\UnitInDepotChangeStat.pas' {FormInDepotChangeStat};
 
 {$R *.res}
 var
