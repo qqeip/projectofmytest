@@ -1,8 +1,8 @@
 object FormInDepotStat: TFormInDepotStat
   Left = 289
   Top = 179
-  Width = 731
-  Height = 462
+  Width = 847
+  Height = 527
   Caption = #20837#24211#20449#24687#32479#35745
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -22,8 +22,8 @@ object FormInDepotStat: TFormInDepotStat
   TextHeight = 13
   object spl1: TSplitter
     Left = 0
-    Top = 105
-    Width = 723
+    Top = 113
+    Width = 839
     Height = 3
     Cursor = crVSplit
     Align = alTop
@@ -31,19 +31,19 @@ object FormInDepotStat: TFormInDepotStat
   object pnl1: TPanel
     Left = 0
     Top = 0
-    Width = 723
-    Height = 105
+    Width = 839
+    Height = 113
     Align = alTop
     TabOrder = 0
     object grp1: TGroupBox
-      Left = 592
+      Left = 680
       Top = 1
-      Width = 130
-      Height = 103
+      Width = 158
+      Height = 111
       Align = alRight
       TabOrder = 0
       object Btn_Print: TSpeedButton
-        Left = 37
+        Left = 45
         Top = 55
         Width = 65
         Height = 22
@@ -189,8 +189,8 @@ object FormInDepotStat: TFormInDepotStat
         OnClick = Btn_PrintClick
       end
       object Btn_Query: TSpeedButton
-        Left = 37
-        Top = 23
+        Left = 45
+        Top = 25
         Width = 65
         Height = 22
         Flat = True
@@ -338,23 +338,23 @@ object FormInDepotStat: TFormInDepotStat
     object grp2: TGroupBox
       Left = 1
       Top = 1
-      Width = 591
-      Height = 103
+      Width = 679
+      Height = 111
       Align = alClient
       Caption = #26597#35810#26465#20214
       TabOrder = 1
       object Label1: TLabel
-        Left = 32
-        Top = 71
-        Width = 60
+        Left = 306
+        Top = 56
+        Width = 80
         Height = 13
         AutoSize = False
         Caption = #24320#22987#26102#38388#65306
       end
       object Label2: TLabel
-        Left = 248
-        Top = 71
-        Width = 60
+        Left = 477
+        Top = 56
+        Width = 80
         Height = 13
         AutoSize = False
         Caption = #32467#26463#26102#38388#65306
@@ -362,93 +362,137 @@ object FormInDepotStat: TFormInDepotStat
       object ChkDepot: TCheckBox
         Left = 16
         Top = 24
-        Width = 50
+        Width = 80
         Height = 17
-        Caption = #20179#24211
+        Caption = #20179#24211#36873#25321
         TabOrder = 0
         OnClick = ChkDepotClick
       end
       object CbbDepot: TComboBox
-        Left = 65
+        Left = 96
         Top = 22
         Width = 120
         Height = 21
         Style = csDropDownList
+        Enabled = False
         ItemHeight = 13
         TabOrder = 1
       end
       object ChkGoodsType: TCheckBox
-        Left = 195
+        Left = 226
         Top = 24
-        Width = 50
+        Width = 80
         Height = 17
-        Caption = #21830#21697
+        Caption = #21830#21697#31867#22411
         TabOrder = 2
         OnClick = ChkGoodsTypeClick
       end
       object CbbGoodsType: TComboBox
-        Left = 244
+        Left = 306
         Top = 22
         Width = 120
         Height = 21
         Style = csDropDownList
+        Enabled = False
         ItemHeight = 13
         TabOrder = 3
+        OnChange = CbbGoodsTypeChange
       end
       object CbbInDepotType: TComboBox
-        Left = 452
-        Top = 22
+        Left = 96
+        Top = 54
         Width = 120
         Height = 21
         Style = csDropDownList
+        Enabled = False
         ItemHeight = 13
         TabOrder = 4
       end
       object ChkInDepotType: TCheckBox
-        Left = 378
-        Top = 24
-        Width = 69
+        Left = 18
+        Top = 56
+        Width = 80
         Height = 17
         Caption = #20837#24211#31867#22411
         TabOrder = 5
         OnClick = ChkInDepotTypeClick
       end
       object ChkCreateDate: TCheckBox
-        Left = 16
-        Top = 49
-        Width = 73
+        Left = 226
+        Top = 56
+        Width = 80
         Height = 17
         Caption = #20837#24211#26102#38388
         TabOrder = 6
+        OnClick = ChkCreateDateClick
       end
       object cxDateEditBegin: TcxDateEdit
-        Left = 96
-        Top = 68
+        Left = 367
+        Top = 54
+        Enabled = False
         Properties.Kind = ckDateTime
         TabOrder = 7
-        Width = 121
+        Width = 100
       end
       object cxDateEditEnd: TcxDateEdit
-        Left = 312
-        Top = 68
+        Left = 538
+        Top = 54
+        Enabled = False
         Properties.Kind = ckDateTime
         TabOrder = 8
-        Width = 121
+        Width = 100
+      end
+      object ChkGoods: TCheckBox
+        Left = 437
+        Top = 24
+        Width = 80
+        Height = 17
+        Caption = #21830#21697#21517#31216
+        TabOrder = 9
+        OnClick = ChkGoodsClick
+      end
+      object CbbGoods: TComboBox
+        Left = 518
+        Top = 22
+        Width = 120
+        Height = 21
+        Style = csDropDownList
+        Enabled = False
+        ItemHeight = 13
+        TabOrder = 10
+      end
+      object RBOrderByTime: TRadioButton
+        Left = 18
+        Top = 81
+        Width = 130
+        Height = 17
+        Caption = #25353#20837#24211#26102#38388#25490#24207
+        Checked = True
+        TabOrder = 11
+        TabStop = True
+      end
+      object RBOrderByName: TRadioButton
+        Left = 144
+        Top = 81
+        Width = 130
+        Height = 17
+        Caption = #25353#20179#24211#21644#21830#21697#25490#24207
+        TabOrder = 12
       end
     end
   end
   object pnl2: TPanel
     Left = 0
-    Top = 108
-    Width = 723
-    Height = 320
+    Top = 116
+    Width = 839
+    Height = 377
     Align = alClient
     TabOrder = 1
     object cxGridInDepotChangeStat: TcxGrid
       Left = 1
       Top = 1
-      Width = 721
-      Height = 318
+      Width = 837
+      Height = 375
       Align = alClient
       TabOrder = 0
       object cxGridInDepotChangeStatDBTableView1: TcxGridDBTableView
@@ -465,7 +509,6 @@ object FormInDepotStat: TFormInDepotStat
     end
   end
   object ppDBPipeline: TppDBPipeline
-    DataSource = DataSourceDSInDepotStat
     UserName = 'DBPipeline'
     Left = 313
     Top = 324
@@ -496,15 +539,15 @@ object FormInDepotStat: TFormInDepotStat
     TextSearchSettings.DefaultString = '<FindText>'
     TextSearchSettings.Enabled = True
     Left = 314
-    Top = 280
+    Top = 279
     Version = '9.03'
     mmColumnWidth = 0
     DataPipelineName = 'ppDBPipeline'
-    object ppHeaderBand1: TppHeaderBand
+    object ppHeaderBand2: TppHeaderBand
       mmBottomOffset = 0
       mmHeight = 19050
       mmPrintPosition = 0
-      object ppLabel1: TppLabel
+      object ppLabel19: TppLabel
         UserName = 'Label1'
         AutoSize = False
         Border.BorderPositions = []
@@ -526,7 +569,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 109538
         BandType = 0
       end
-      object ppLine2: TppLine
+      object ppLine26: TppLine
         UserName = 'Line2'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -540,7 +583,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 196058
         BandType = 0
       end
-      object ppLabel3: TppLabel
+      object ppLabel20: TppLabel
         UserName = 'Label3'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -561,7 +604,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 2794
         BandType = 0
       end
-      object ppSystemVariable2: TppSystemVariable
+      object ppSystemVariable4: TppSystemVariable
         UserName = 'SystemVariable2'
         AutoSize = False
         Border.BorderPositions = []
@@ -583,7 +626,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 6350
         BandType = 0
       end
-      object ppLabel4: TppLabel
+      object ppLabel21: TppLabel
         UserName = 'Label4'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -604,7 +647,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 2910
         BandType = 0
       end
-      object ppLabel5: TppLabel
+      object ppLabel22: TppLabel
         UserName = 'Label5'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -625,7 +668,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 2794
         BandType = 0
       end
-      object ppSystemVariable3: TppSystemVariable
+      object ppSystemVariable5: TppSystemVariable
         UserName = 'SystemVariable3'
         AutoSize = False
         Border.BorderPositions = []
@@ -647,7 +690,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 6350
         BandType = 0
       end
-      object ppLabel6: TppLabel
+      object ppLabel23: TppLabel
         UserName = 'Label6'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -668,7 +711,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 2910
         BandType = 0
       end
-      object ppLine13: TppLine
+      object ppLine27: TppLine
         UserName = 'Line13'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -682,7 +725,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 196057
         BandType = 0
       end
-      object ppLine14: TppLine
+      object ppLine37: TppLine
         UserName = 'Line14'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -697,7 +740,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine15: TppLine
+      object ppLine38: TppLine
         UserName = 'Line15'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -712,7 +755,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine16: TppLine
+      object ppLine46: TppLine
         UserName = 'Line16'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -727,7 +770,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine17: TppLine
+      object ppLine47: TppLine
         UserName = 'Line17'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -742,7 +785,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine18: TppLine
+      object ppLine48: TppLine
         UserName = 'Line18'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -757,7 +800,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine19: TppLine
+      object ppLine49: TppLine
         UserName = 'Line19'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -772,7 +815,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine20: TppLine
+      object ppLine50: TppLine
         UserName = 'Line20'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -787,7 +830,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine21: TppLine
+      object ppLine51: TppLine
         UserName = 'Line101'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -802,7 +845,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine22: TppLine
+      object ppLine52: TppLine
         UserName = 'Line22'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -817,7 +860,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLine23: TppLine
+      object ppLine53: TppLine
         UserName = 'Line23'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -832,7 +875,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 0
       end
-      object ppLabel7: TppLabel
+      object ppLabel24: TppLabel
         UserName = 'Label7'
         AutoSize = False
         Border.BorderPositions = []
@@ -854,7 +897,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 0
       end
-      object ppLabel8: TppLabel
+      object ppLabel25: TppLabel
         UserName = 'Label8'
         AutoSize = False
         Border.BorderPositions = []
@@ -876,7 +919,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 0
       end
-      object ppLabel9: TppLabel
+      object ppLabel26: TppLabel
         UserName = 'Label9'
         AutoSize = False
         Border.BorderPositions = []
@@ -898,7 +941,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 0
       end
-      object ppLabel10: TppLabel
+      object ppLabel27: TppLabel
         UserName = 'Label10'
         AutoSize = False
         Border.BorderPositions = []
@@ -920,7 +963,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16404
         BandType = 0
       end
-      object ppLabel11: TppLabel
+      object ppLabel28: TppLabel
         UserName = 'Label11'
         AutoSize = False
         Border.BorderPositions = []
@@ -942,7 +985,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16404
         BandType = 0
       end
-      object ppLabel12: TppLabel
+      object ppLabel29: TppLabel
         UserName = 'Label12'
         AutoSize = False
         Border.BorderPositions = []
@@ -964,7 +1007,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16404
         BandType = 0
       end
-      object ppLabel13: TppLabel
+      object ppLabel30: TppLabel
         UserName = 'Label13'
         AutoSize = False
         Border.BorderPositions = []
@@ -986,7 +1029,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 0
       end
-      object ppLabel14: TppLabel
+      object ppLabel31: TppLabel
         UserName = 'Label14'
         AutoSize = False
         Border.BorderPositions = []
@@ -1008,7 +1051,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 0
       end
-      object ppLabel15: TppLabel
+      object ppLabel32: TppLabel
         UserName = 'Label15'
         AutoSize = False
         Border.BorderPositions = []
@@ -1031,11 +1074,11 @@ object FormInDepotStat: TFormInDepotStat
         BandType = 0
       end
     end
-    object ppDetailBand1: TppDetailBand
+    object ppDetailBand2: TppDetailBand
       mmBottomOffset = 0
       mmHeight = 5821
       mmPrintPosition = 0
-      object ppDBText1: TppDBText
+      object ppDBText15: TppDBText
         UserName = 'DBText1'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1057,7 +1100,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 4
       end
-      object ppDBText2: TppDBText
+      object ppDBText16: TppDBText
         UserName = 'DBText2'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1079,7 +1122,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 4
       end
-      object ppDBText3: TppDBText
+      object ppDBText17: TppDBText
         UserName = 'DBText3'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1101,7 +1144,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 4
       end
-      object ppDBText4: TppDBText
+      object ppDBText18: TppDBText
         UserName = 'DBText4'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1124,7 +1167,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16403
         BandType = 4
       end
-      object ppDBText5: TppDBText
+      object ppDBText19: TppDBText
         UserName = 'DBText5'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1147,7 +1190,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16403
         BandType = 4
       end
-      object ppDBText6: TppDBText
+      object ppDBText20: TppDBText
         UserName = 'DBText6'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1170,7 +1213,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16403
         BandType = 4
       end
-      object ppDBText7: TppDBText
+      object ppDBText21: TppDBText
         UserName = 'DBText7'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1193,7 +1236,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 4
       end
-      object ppDBText8: TppDBText
+      object ppDBText22: TppDBText
         UserName = 'DBText8'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1216,7 +1259,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 4
       end
-      object ppDBText9: TppDBText
+      object ppDBText23: TppDBText
         UserName = 'DBText9'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1239,7 +1282,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 32278
         BandType = 4
       end
-      object ppLine1: TppLine
+      object ppLine54: TppLine
         UserName = 'Line1'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1253,7 +1296,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 196057
         BandType = 4
       end
-      object ppLine3: TppLine
+      object ppLine55: TppLine
         UserName = 'Line3'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1268,7 +1311,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine4: TppLine
+      object ppLine56: TppLine
         UserName = 'Line4'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1283,7 +1326,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine5: TppLine
+      object ppLine57: TppLine
         UserName = 'Line5'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1298,7 +1341,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine6: TppLine
+      object ppLine58: TppLine
         UserName = 'Line6'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1313,7 +1356,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine7: TppLine
+      object ppLine59: TppLine
         UserName = 'Line7'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1328,7 +1371,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine8: TppLine
+      object ppLine60: TppLine
         UserName = 'Line8'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1343,7 +1386,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine9: TppLine
+      object ppLine61: TppLine
         UserName = 'Line9'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1358,7 +1401,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine10: TppLine
+      object ppLine62: TppLine
         UserName = 'Line10'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1373,7 +1416,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine11: TppLine
+      object ppLine63: TppLine
         UserName = 'Line11'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1388,7 +1431,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 4
       end
-      object ppLine12: TppLine
+      object ppLine64: TppLine
         UserName = 'Line12'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1404,11 +1447,11 @@ object FormInDepotStat: TFormInDepotStat
         BandType = 4
       end
     end
-    object ppFooterBand1: TppFooterBand
+    object ppFooterBand2: TppFooterBand
       mmBottomOffset = 0
       mmHeight = 11377
       mmPrintPosition = 0
-      object ppLabel2: TppLabel
+      object ppLabel33: TppLabel
         UserName = 'Label2'
         AutoSize = False
         Border.BorderPositions = []
@@ -1430,7 +1473,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 17198
         BandType = 8
       end
-      object ppSystemVariable1: TppSystemVariable
+      object ppSystemVariable6: TppSystemVariable
         UserName = 'SystemVariable1'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1451,7 +1494,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 36777
         BandType = 8
       end
-      object ppLabel18: TppLabel
+      object ppLabel34: TppLabel
         UserName = 'Label18'
         AutoSize = False
         Border.BorderPositions = []
@@ -1474,11 +1517,11 @@ object FormInDepotStat: TFormInDepotStat
         BandType = 8
       end
     end
-    object ppSummaryBand1: TppSummaryBand
+    object ppSummaryBand2: TppSummaryBand
       mmBottomOffset = 0
       mmHeight = 5821
       mmPrintPosition = 0
-      object ppDBCalc1: TppDBCalc
+      object ppDBCalc7: TppDBCalc
         UserName = 'DBCalc1'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1501,7 +1544,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 7
       end
-      object ppDBCalc2: TppDBCalc
+      object ppDBCalc8: TppDBCalc
         UserName = 'DBCalc2'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1524,7 +1567,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 20373
         BandType = 7
       end
-      object ppDBCalc3: TppDBCalc
+      object ppDBCalc9: TppDBCalc
         UserName = 'DBCalc3'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1547,7 +1590,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 16404
         BandType = 7
       end
-      object ppLine35: TppLine
+      object ppLine65: TppLine
         UserName = 'Line35'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1561,7 +1604,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 196057
         BandType = 7
       end
-      object ppLine36: TppLine
+      object ppLine66: TppLine
         UserName = 'Line36'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1576,7 +1619,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine39: TppLine
+      object ppLine67: TppLine
         UserName = 'Line39'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1591,7 +1634,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine40: TppLine
+      object ppLine68: TppLine
         UserName = 'Line40'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1606,7 +1649,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine41: TppLine
+      object ppLine69: TppLine
         UserName = 'Line301'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1621,7 +1664,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine42: TppLine
+      object ppLine70: TppLine
         UserName = 'Line42'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1636,7 +1679,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine43: TppLine
+      object ppLine71: TppLine
         UserName = 'Line43'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1651,7 +1694,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine44: TppLine
+      object ppLine72: TppLine
         UserName = 'Line44'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1666,7 +1709,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLine45: TppLine
+      object ppLine73: TppLine
         UserName = 'Line45'
         Border.BorderPositions = []
         Border.Color = clBlack
@@ -1681,7 +1724,7 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 265
         BandType = 7
       end
-      object ppLabel17: TppLabel
+      object ppLabel35: TppLabel
         UserName = 'Label17'
         AutoSize = False
         Border.BorderPositions = []
@@ -1703,55 +1746,9 @@ object FormInDepotStat: TFormInDepotStat
         mmWidth = 38894
         BandType = 7
       end
-      object ppDBText13: TppDBText
-        UserName = 'DBText13'
-        Border.BorderPositions = []
-        Border.Color = clBlack
-        Border.Style = psSolid
-        Border.Visible = False
-        Border.Weight = 1.000000000000000000
-        DataField = 'CostPrice'
-        DataPipeline = ppDBPipeline
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = #23435#20307
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taRightJustified
-        Transparent = True
-        DataPipelineName = 'ppDBPipeline'
-        mmHeight = 3175
-        mmLeft = 87577
-        mmTop = 1323
-        mmWidth = 16404
-        BandType = 7
-      end
-      object ppDBText14: TppDBText
-        UserName = 'DBText14'
-        Border.BorderPositions = []
-        Border.Color = clBlack
-        Border.Style = psSolid
-        Border.Visible = False
-        Border.Weight = 1.000000000000000000
-        DataField = 'SalePrice'
-        DataPipeline = ppDBPipeline
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = #23435#20307
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taRightJustified
-        Transparent = True
-        DataPipelineName = 'ppDBPipeline'
-        mmHeight = 3175
-        mmLeft = 105304
-        mmTop = 1323
-        mmWidth = 16404
-        BandType = 7
-      end
     end
-    object ppGroup4: TppGroup
-      BreakName = 'ppDBText10'
+    object ppGroup1: TppGroup
+      BreakName = 'ppDBText24'
       BreakType = btCustomField
       KeepTogether = True
       OutlineSettings.CreateNode = True
@@ -1759,16 +1756,16 @@ object FormInDepotStat: TFormInDepotStat
       mmNewColumnThreshold = 0
       mmNewPageThreshold = 0
       DataPipelineName = ''
-      object ppGroupHeaderBand4: TppGroupHeaderBand
+      object ppGroupHeaderBand1: TppGroupHeaderBand
         mmBottomOffset = 0
         mmHeight = 0
         mmPrintPosition = 0
       end
-      object ppGroupFooterBand4: TppGroupFooterBand
+      object ppGroupFooterBand1: TppGroupFooterBand
         mmBottomOffset = 0
         mmHeight = 5821
         mmPrintPosition = 0
-        object ppDBCalc4: TppDBCalc
+        object ppDBCalc10: TppDBCalc
           UserName = 'DBCalc4'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1782,6 +1779,7 @@ object FormInDepotStat: TFormInDepotStat
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
+          ResetGroup = ppGroup1
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline'
@@ -1792,7 +1790,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppDBCalc5: TppDBCalc
+        object ppDBCalc11: TppDBCalc
           UserName = 'DBCalc5'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1806,6 +1804,7 @@ object FormInDepotStat: TFormInDepotStat
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
+          ResetGroup = ppGroup1
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline'
@@ -1816,31 +1815,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppDBCalc6: TppDBCalc
-          UserName = 'DBCalc6'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'InDepotNum'
-          DataPipeline = ppDBPipeline
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Name = 'Courier New'
-          Font.Size = 8
-          Font.Style = []
-          TextAlignment = taRightJustified
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline'
-          mmHeight = 3175
-          mmLeft = 69850
-          mmTop = 1323
-          mmWidth = 16404
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppLine24: TppLine
+        object ppLine74: TppLine
           UserName = 'Line24'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1855,7 +1830,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine25: TppLine
+        object ppLine75: TppLine
           UserName = 'Line25'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1871,7 +1846,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine28: TppLine
+        object ppLine76: TppLine
           UserName = 'Line28'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1887,7 +1862,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine29: TppLine
+        object ppLine77: TppLine
           UserName = 'Line29'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1903,7 +1878,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine30: TppLine
+        object ppLine78: TppLine
           UserName = 'Line30'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1919,7 +1894,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine31: TppLine
+        object ppLine79: TppLine
           UserName = 'Line31'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1935,7 +1910,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine32: TppLine
+        object ppLine80: TppLine
           UserName = 'Line102'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1951,7 +1926,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine33: TppLine
+        object ppLine81: TppLine
           UserName = 'Line33'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1967,7 +1942,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLine34: TppLine
+        object ppLine82: TppLine
           UserName = 'Line34'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -1983,7 +1958,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppLabel16: TppLabel
+        object ppLabel36: TppLabel
           UserName = 'Label16'
           AutoSize = False
           Border.BorderPositions = []
@@ -2006,55 +1981,7 @@ object FormInDepotStat: TFormInDepotStat
           BandType = 5
           GroupNo = 0
         end
-        object ppDBText11: TppDBText
-          UserName = 'DBText11'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'CostPrice'
-          DataPipeline = ppDBPipeline
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = #23435#20307
-          Font.Size = 8
-          Font.Style = []
-          TextAlignment = taRightJustified
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline'
-          mmHeight = 3175
-          mmLeft = 87577
-          mmTop = 1323
-          mmWidth = 16404
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppDBText12: TppDBText
-          UserName = 'DBText12'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'SalePrice'
-          DataPipeline = ppDBPipeline
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = #23435#20307
-          Font.Size = 8
-          Font.Style = []
-          TextAlignment = taRightJustified
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline'
-          mmHeight = 3175
-          mmLeft = 105304
-          mmTop = 1323
-          mmWidth = 16404
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppDBText10: TppDBText
+        object ppDBText24: TppDBText
           UserName = 'DBText10'
           Border.BorderPositions = []
           Border.Color = clBlack
@@ -2074,6 +2001,81 @@ object FormInDepotStat: TFormInDepotStat
           mmLeft = 5292
           mmTop = 1323
           mmWidth = 52388
+          BandType = 5
+          GroupNo = 0
+        end
+        object ppDBCalc12: TppDBCalc
+          UserName = 'DBCalc6'
+          Border.BorderPositions = []
+          Border.Color = clBlack
+          Border.Style = psSolid
+          Border.Visible = False
+          Border.Weight = 1.000000000000000000
+          DataField = 'InDepotNum'
+          DataPipeline = ppDBPipeline
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Name = 'Courier New'
+          Font.Size = 8
+          Font.Style = []
+          ResetGroup = ppGroup1
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'ppDBPipeline'
+          mmHeight = 3175
+          mmLeft = 69850
+          mmTop = 1323
+          mmWidth = 16404
+          BandType = 5
+          GroupNo = 0
+        end
+        object ppDBText25: TppDBText
+          UserName = 'DBText11'
+          Border.BorderPositions = []
+          Border.Color = clBlack
+          Border.Style = psSolid
+          Border.Visible = False
+          Border.Weight = 1.000000000000000000
+          DataField = 'CostPrice'
+          DataPipeline = ppDBPipeline
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = #23435#20307
+          Font.Size = 8
+          Font.Style = []
+          ResetGroup = ppGroup1
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'ppDBPipeline'
+          mmHeight = 3175
+          mmLeft = 87577
+          mmTop = 1323
+          mmWidth = 16404
+          BandType = 5
+          GroupNo = 0
+        end
+        object ppDBText26: TppDBText
+          UserName = 'DBText12'
+          Border.BorderPositions = []
+          Border.Color = clBlack
+          Border.Style = psSolid
+          Border.Visible = False
+          Border.Weight = 1.000000000000000000
+          DataField = 'SalePrice'
+          DataPipeline = ppDBPipeline
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = #23435#20307
+          Font.Size = 8
+          Font.Style = []
+          ResetGroup = ppGroup1
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'ppDBPipeline'
+          mmHeight = 3175
+          mmLeft = 105304
+          mmTop = 1323
+          mmWidth = 16404
           BandType = 5
           GroupNo = 0
         end

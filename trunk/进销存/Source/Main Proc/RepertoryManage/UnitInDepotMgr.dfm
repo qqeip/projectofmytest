@@ -1027,7 +1027,6 @@ object FormInDepotMgr: TFormInDepotMgr
     Top = 272
   end
   object ppDBPipeline1: TppDBPipeline
-    DataSource = DataSourceInDeopt
     UserName = 'DBPipeline1'
     Left = 216
     Top = 256
@@ -2261,52 +2260,6 @@ object FormInDepotMgr: TFormInDepotMgr
         mmWidth = 38894
         BandType = 7
       end
-      object ppDBText13: TppDBText
-        UserName = 'DBText13'
-        Border.BorderPositions = []
-        Border.Color = clBlack
-        Border.Style = psSolid
-        Border.Visible = False
-        Border.Weight = 1.000000000000000000
-        DataField = 'CostPrice'
-        DataPipeline = ppDBPipeline1
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = #23435#20307
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taRightJustified
-        Transparent = True
-        DataPipelineName = 'ppDBPipeline1'
-        mmHeight = 3175
-        mmLeft = 87577
-        mmTop = 1323
-        mmWidth = 16404
-        BandType = 7
-      end
-      object ppDBText14: TppDBText
-        UserName = 'DBText14'
-        Border.BorderPositions = []
-        Border.Color = clBlack
-        Border.Style = psSolid
-        Border.Visible = False
-        Border.Weight = 1.000000000000000000
-        DataField = 'SalePrice'
-        DataPipeline = ppDBPipeline1
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Name = #23435#20307
-        Font.Size = 8
-        Font.Style = []
-        TextAlignment = taRightJustified
-        Transparent = True
-        DataPipelineName = 'ppDBPipeline1'
-        mmHeight = 3175
-        mmLeft = 105304
-        mmTop = 1323
-        mmWidth = 16404
-        BandType = 7
-      end
     end
     object ppGroup4: TppGroup
       BreakName = 'ppDBText10'
@@ -2340,6 +2293,7 @@ object FormInDepotMgr: TFormInDepotMgr
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
+          ResetGroup = ppGroup4
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline1'
@@ -2364,6 +2318,7 @@ object FormInDepotMgr: TFormInDepotMgr
           Font.Name = 'Courier New'
           Font.Size = 8
           Font.Style = []
+          ResetGroup = ppGroup4
           TextAlignment = taRightJustified
           Transparent = True
           DataPipelineName = 'ppDBPipeline1'
@@ -2371,30 +2326,6 @@ object FormInDepotMgr: TFormInDepotMgr
           mmLeft = 144727
           mmTop = 1323
           mmWidth = 20373
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppDBCalc6: TppDBCalc
-          UserName = 'DBCalc6'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'InDepotNum'
-          DataPipeline = ppDBPipeline1
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Name = 'Courier New'
-          Font.Size = 8
-          Font.Style = []
-          TextAlignment = taRightJustified
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline1'
-          mmHeight = 3175
-          mmLeft = 69850
-          mmTop = 1323
-          mmWidth = 16404
           BandType = 5
           GroupNo = 0
         end
@@ -2564,6 +2495,54 @@ object FormInDepotMgr: TFormInDepotMgr
           BandType = 5
           GroupNo = 0
         end
+        object ppDBText10: TppDBText
+          UserName = 'DBText10'
+          Border.BorderPositions = []
+          Border.Color = clBlack
+          Border.Style = psSolid
+          Border.Visible = False
+          Border.Weight = 1.000000000000000000
+          DataField = 'Merger'
+          DataPipeline = ppDBPipeline1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Name = #23435#20307
+          Font.Size = 8
+          Font.Style = [fsBold]
+          Transparent = True
+          DataPipelineName = 'ppDBPipeline1'
+          mmHeight = 3175
+          mmLeft = 5292
+          mmTop = 1323
+          mmWidth = 52388
+          BandType = 5
+          GroupNo = 0
+        end
+        object ppDBCalc6: TppDBCalc
+          UserName = 'DBCalc6'
+          Border.BorderPositions = []
+          Border.Color = clBlack
+          Border.Style = psSolid
+          Border.Visible = False
+          Border.Weight = 1.000000000000000000
+          DataField = 'InDepotNum'
+          DataPipeline = ppDBPipeline1
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Name = 'Courier New'
+          Font.Size = 8
+          Font.Style = []
+          ResetGroup = ppGroup4
+          TextAlignment = taRightJustified
+          Transparent = True
+          DataPipelineName = 'ppDBPipeline1'
+          mmHeight = 3175
+          mmLeft = 69850
+          mmTop = 1323
+          mmWidth = 16404
+          BandType = 5
+          GroupNo = 0
+        end
         object ppDBText11: TppDBText
           UserName = 'DBText11'
           Border.BorderPositions = []
@@ -2609,29 +2588,6 @@ object FormInDepotMgr: TFormInDepotMgr
           mmLeft = 105304
           mmTop = 1323
           mmWidth = 16404
-          BandType = 5
-          GroupNo = 0
-        end
-        object ppDBText10: TppDBText
-          UserName = 'DBText10'
-          Border.BorderPositions = []
-          Border.Color = clBlack
-          Border.Style = psSolid
-          Border.Visible = False
-          Border.Weight = 1.000000000000000000
-          DataField = 'Merger'
-          DataPipeline = ppDBPipeline1
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Name = #23435#20307
-          Font.Size = 8
-          Font.Style = [fsBold]
-          Transparent = True
-          DataPipelineName = 'ppDBPipeline1'
-          mmHeight = 3175
-          mmLeft = 5292
-          mmTop = 1323
-          mmWidth = 52388
           BandType = 5
           GroupNo = 0
         end

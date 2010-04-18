@@ -344,17 +344,17 @@ object FormInDepotChangeStat: TFormInDepotChangeStat
       Caption = #26597#35810#26465#20214
       TabOrder = 1
       object Label1: TLabel
-        Left = 32
-        Top = 71
-        Width = 60
+        Left = 306
+        Top = 56
+        Width = 80
         Height = 13
         AutoSize = False
         Caption = #24320#22987#26102#38388#65306
       end
       object Label2: TLabel
-        Left = 248
-        Top = 71
-        Width = 60
+        Left = 477
+        Top = 56
+        Width = 80
         Height = 13
         AutoSize = False
         Caption = #32467#26463#26102#38388#65306
@@ -362,78 +362,121 @@ object FormInDepotChangeStat: TFormInDepotChangeStat
       object ChkDepot: TCheckBox
         Left = 16
         Top = 24
-        Width = 60
+        Width = 80
         Height = 17
-        Caption = #21407#20179#24211
+        Caption = #20179#24211#36873#25321
         TabOrder = 0
         OnClick = ChkDepotClick
       end
       object CbbDepot: TComboBox
-        Left = 81
+        Left = 96
         Top = 22
         Width = 120
         Height = 21
         Style = csDropDownList
+        Enabled = False
         ItemHeight = 13
         TabOrder = 1
       end
       object ChkGoodsType: TCheckBox
-        Left = 217
+        Left = 226
         Top = 24
-        Width = 50
+        Width = 80
         Height = 17
-        Caption = #21830#21697
+        Caption = #21830#21697#31867#22411
         TabOrder = 2
         OnClick = ChkGoodsTypeClick
       end
       object CbbGoodsType: TComboBox
-        Left = 265
+        Left = 306
         Top = 22
         Width = 120
         Height = 21
         Style = csDropDownList
+        Enabled = False
         ItemHeight = 13
         TabOrder = 3
+        OnChange = CbbGoodsTypeChange
       end
       object CbbInDepotType: TComboBox
-        Left = 497
-        Top = 22
+        Left = 96
+        Top = 54
         Width = 120
         Height = 21
         Style = csDropDownList
+        Enabled = False
         ItemHeight = 13
         TabOrder = 4
       end
       object ChkInDepotType: TCheckBox
-        Left = 404
-        Top = 24
-        Width = 92
+        Left = 18
+        Top = 56
+        Width = 80
         Height = 17
-        Caption = #21407#20837#24211#31867#22411
+        Caption = #20837#24211#31867#22411
         TabOrder = 5
         OnClick = ChkInDepotTypeClick
       end
       object ChkCreateDate: TCheckBox
-        Left = 16
-        Top = 49
-        Width = 73
+        Left = 226
+        Top = 56
+        Width = 80
         Height = 17
-        Caption = #20462#25913#26102#38388
+        Caption = #20837#24211#26102#38388
         TabOrder = 6
+        OnClick = ChkCreateDateClick
       end
       object cxDateEditBegin: TcxDateEdit
-        Left = 96
-        Top = 68
+        Left = 367
+        Top = 54
+        Enabled = False
         Properties.Kind = ckDateTime
         TabOrder = 7
-        Width = 121
+        Width = 100
       end
       object cxDateEditEnd: TcxDateEdit
-        Left = 312
-        Top = 68
+        Left = 538
+        Top = 54
+        Enabled = False
         Properties.Kind = ckDateTime
         TabOrder = 8
-        Width = 121
+        Width = 100
+      end
+      object ChkGoods: TCheckBox
+        Left = 437
+        Top = 24
+        Width = 80
+        Height = 17
+        Caption = #21830#21697#21517#31216
+        TabOrder = 9
+      end
+      object CbbGoods: TComboBox
+        Left = 518
+        Top = 22
+        Width = 120
+        Height = 21
+        Style = csDropDownList
+        Enabled = False
+        ItemHeight = 13
+        TabOrder = 10
+      end
+      object RBOrderByTime: TRadioButton
+        Left = 18
+        Top = 81
+        Width = 130
+        Height = 17
+        Caption = #25353#20837#24211#26102#38388#25490#24207
+        Checked = True
+        TabOrder = 11
+        TabStop = True
+      end
+      object RBOrderByName: TRadioButton
+        Left = 144
+        Top = 81
+        Width = 130
+        Height = 17
+        Caption = #25353#20179#24211#21644#21830#21697#25490#24207
+        TabOrder = 12
       end
     end
   end

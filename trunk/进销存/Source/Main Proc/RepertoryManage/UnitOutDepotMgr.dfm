@@ -1,6 +1,6 @@
 object FormOutDepotMgr: TFormOutDepotMgr
-  Left = 272
-  Top = 177
+  Left = 276
+  Top = 166
   Width = 879
   Height = 581
   Caption = #20986#24211#31649#29702
@@ -907,9 +907,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 201
+    Top = 152
     Width = 871
-    Height = 293
+    Height = 342
     Align = alClient
     Caption = #20986#24211#35814#32454#20449#24687
     TabOrder = 1
@@ -917,11 +917,12 @@ object FormOutDepotMgr: TFormOutDepotMgr
       Left = 2
       Top = 15
       Width = 867
-      Height = 276
+      Height = 325
       Align = alClient
       TabOrder = 0
       object cxGridDepotDBTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
+        DataController.DataSource = DS1
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
@@ -931,124 +932,218 @@ object FormOutDepotMgr: TFormOutDepotMgr
         GridView = cxGridDepotDBTableView1
       end
     end
+    object dbgrd1: TDBGrid
+      Left = 24
+      Top = 16
+      Width = 705
+      Height = 193
+      DataSource = DS1
+      TabOrder = 1
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 871
-    Height = 201
+    Height = 152
     Align = alTop
     TabOrder = 2
     object GroupBox2: TGroupBox
       Left = 1
       Top = 1
       Width = 424
-      Height = 199
+      Height = 150
       Align = alLeft
       Caption = #20986#24211
       TabOrder = 0
-      object LabelDepotID: TLabel
-        Left = 8
-        Top = 23
+      object LabelBarCode: TLabel
+        Left = 29
+        Top = 21
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #26465#24418#32534#30721#65306
       end
-      object Label2: TLabel
-        Left = 208
-        Top = 46
+      object LabelCustomerName: TLabel
+        Left = 29
+        Top = 68
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #23458#25143#21517#31216#65306
+        Enabled = False
       end
-      object LabelDepotName: TLabel
-        Left = 208
-        Top = 23
-        Width = 65
-        Height = 13
-        AutoSize = False
-        Caption = #21830#21697#32534#21495#65306
-      end
-      object Label1: TLabel
-        Left = 208
-        Top = 70
+      object LabelIntegral: TLabel
+        Left = 221
+        Top = 92
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #23458#25143#31215#20998#65306
+        Enabled = False
       end
-      object Label3: TLabel
-        Left = 8
-        Top = 70
+      object LabelAssociatorType: TLabel
+        Left = 221
+        Top = 68
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #20250#21592#31561#32423#65306
+        Enabled = False
       end
-      object Label4: TLabel
-        Left = 8
-        Top = 46
+      object BtnGoodsSearch: TSpeedButton
+        Left = 221
+        Top = 16
+        Width = 35
+        Height = 22
+        Caption = #26597#25214
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        OnClick = BtnGoodsSearchClick
+      end
+      object BtnCustomerSearch: TSpeedButton
+        Left = 221
+        Top = 41
+        Width = 35
+        Height = 22
+        Caption = #26597#25214
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        OnClick = BtnCustomerSearchClick
+      end
+      object BtnSubmit: TSpeedButton
+        Left = 197
+        Top = 118
+        Width = 65
+        Height = 22
+        Caption = #32467#31639
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = Btn_AddClick
+      end
+      object BtnCancel: TSpeedButton
+        Left = 269
+        Top = 118
+        Width = 65
+        Height = 22
+        Caption = #21462#28040
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = Btn_AddClick
+      end
+      object Btn1: TSpeedButton
+        Left = 341
+        Top = 118
+        Width = 65
+        Height = 22
+        Caption = #25171#21360
+        Flat = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clRed
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        OnClick = Btn_AddClick
+      end
+      object LabelDiscount: TLabel
+        Left = 29
+        Top = 92
         Width = 65
         Height = 13
         AutoSize = False
-        Caption = #21830#21697#21517#31216#65306
+        Caption = #20139#21463#25240#25187#65306
       end
-      object EdtDepotName: TEdit
-        Left = 272
-        Top = 20
+      object LabelCustomerID: TLabel
+        Left = 29
+        Top = 45
+        Width = 65
+        Height = 13
+        AutoSize = False
+        Caption = #23458#25143#32534#21495#65306
+      end
+      object EdtCustomerName: TEdit
+        Left = 93
+        Top = 65
         Width = 120
         Height = 19
         Ctl3D = False
+        Enabled = False
         ParentCtl3D = False
         TabOrder = 1
       end
-      object EdtDepotComment: TEdit
-        Left = 272
-        Top = 44
-        Width = 120
-        Height = 19
-        Ctl3D = False
-        ParentCtl3D = False
-        TabOrder = 2
-      end
-      object EdtDepotID: TEdit
-        Left = 72
-        Top = 20
+      object EdtBarCode: TEdit
+        Left = 93
+        Top = 18
         Width = 120
         Height = 19
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 0
-        OnKeyDown = EdtDepotIDKeyDown
+        OnKeyDown = EdtBarCodeKeyDown
       end
-      object Edit1: TEdit
-        Left = 272
-        Top = 67
+      object EdtIntegral: TEdit
+        Left = 285
+        Top = 89
+        Width = 120
+        Height = 19
+        Ctl3D = False
+        Enabled = False
+        ParentCtl3D = False
+        TabOrder = 2
+      end
+      object EdtDiscount: TEdit
+        Left = 93
+        Top = 89
         Width = 120
         Height = 19
         Ctl3D = False
         ParentCtl3D = False
         TabOrder = 3
+        Text = '100'
+        OnKeyPress = EdtDiscountKeyPress
       end
-      object ComboBox1: TComboBox
-        Left = 72
-        Top = 67
-        Width = 120
-        Height = 21
-        Ctl3D = False
-        ItemHeight = 13
-        ParentCtl3D = False
-        TabOrder = 4
-        Text = 'ComboBox1'
-      end
-      object Edit2: TEdit
-        Left = 72
-        Top = 44
+      object EdtCustomerID: TEdit
+        Left = 93
+        Top = 42
         Width = 120
         Height = 19
         Ctl3D = False
+        ParentCtl3D = False
+        TabOrder = 4
+      end
+      object EdtAssociatorType: TEdit
+        Left = 285
+        Top = 65
+        Width = 120
+        Height = 19
+        Ctl3D = False
+        Enabled = False
         ParentCtl3D = False
         TabOrder = 5
       end
@@ -1057,112 +1152,128 @@ object FormOutDepotMgr: TFormOutDepotMgr
       Left = 425
       Top = 1
       Width = 445
-      Height = 199
+      Height = 150
       Align = alClient
       Caption = #21830#21697#20449#24687
       TabOrder = 1
-      object Label5: TLabel
+      object LabelGoodsID1: TLabel
         Left = 8
         Top = 23
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #21830#21697#32534#21495#65306
+        Enabled = False
       end
-      object Label6: TLabel
-        Left = 200
-        Top = 22
+      object LabelGoodsName1: TLabel
+        Left = 8
+        Top = 47
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #21830#21697#21517#31216#65306
+        Enabled = False
       end
-      object Label7: TLabel
-        Left = 8
+      object LabelDepotName: TLabel
+        Left = 200
         Top = 47
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #25152#23646#24211#23384#65306
+        Enabled = False
       end
-      object Label8: TLabel
-        Left = 200
-        Top = 47
+      object LabelProvider: TLabel
+        Left = 8
+        Top = 71
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #20379' '#36135' '#21830#65306
+        Enabled = False
       end
-      object Label9: TLabel
-        Left = 8
+      object LabelConst: TLabel
+        Left = 200
         Top = 71
         Width = 65
         Height = 13
         AutoSize = False
         Caption = #38144#21806#21333#20215#65306
+        Enabled = False
       end
-      object Label10: TLabel
+      object LabelGoodsType: TLabel
         Left = 200
-        Top = 71
+        Top = 23
         Width = 65
         Height = 13
         AutoSize = False
-        Caption = #25152#23646#24211#23384#65306
+        Caption = #21830#21697#31867#21035#65306
+        Enabled = False
       end
-      object Edit3: TEdit
+      object EdtGoodsID: TEdit
         Left = 72
         Top = 20
         Width = 120
         Height = 19
         Ctl3D = False
+        Enabled = False
         ParentCtl3D = False
         TabOrder = 0
       end
-      object Edit4: TEdit
+      object EdtGoodsName: TEdit
+        Left = 72
+        Top = 44
+        Width = 120
+        Height = 19
+        Ctl3D = False
+        Enabled = False
+        ParentCtl3D = False
+        TabOrder = 1
+      end
+      object EdtDepotName: TEdit
+        Left = 264
+        Top = 44
+        Width = 120
+        Height = 19
+        Ctl3D = False
+        Enabled = False
+        ParentCtl3D = False
+        TabOrder = 2
+      end
+      object EdtProvider: TEdit
+        Left = 72
+        Top = 68
+        Width = 120
+        Height = 19
+        Ctl3D = False
+        Enabled = False
+        ParentCtl3D = False
+        TabOrder = 3
+      end
+      object EdtCostPrice: TEdit
+        Left = 264
+        Top = 68
+        Width = 120
+        Height = 19
+        Ctl3D = False
+        Enabled = False
+        ParentCtl3D = False
+        TabOrder = 4
+      end
+      object EdtGoodsType: TEdit
         Left = 264
         Top = 20
         Width = 120
         Height = 19
         Ctl3D = False
-        ParentCtl3D = False
-        TabOrder = 1
-      end
-      object Edit5: TEdit
-        Left = 72
-        Top = 44
-        Width = 120
-        Height = 19
-        Ctl3D = False
-        ParentCtl3D = False
-        TabOrder = 2
-      end
-      object Edit6: TEdit
-        Left = 264
-        Top = 44
-        Width = 120
-        Height = 19
-        Ctl3D = False
-        ParentCtl3D = False
-        TabOrder = 3
-      end
-      object Edit7: TEdit
-        Left = 72
-        Top = 68
-        Width = 120
-        Height = 19
-        Ctl3D = False
-        ParentCtl3D = False
-        TabOrder = 4
-      end
-      object Edit8: TEdit
-        Left = 264
-        Top = 68
-        Width = 120
-        Height = 19
-        Ctl3D = False
+        Enabled = False
         ParentCtl3D = False
         TabOrder = 5
       end
     end
+  end
+  object DS1: TDataSource
+    Left = 512
+    Top = 409
   end
 end
