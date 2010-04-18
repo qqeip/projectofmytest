@@ -148,6 +148,11 @@ begin
     Application.MessageBox('商品编号已存在！','提示',MB_OK+64);
     Exit;
   end;
+  if IsExistID('BarCode', 'Goods', ''''+EdtBarCode.Text+'''') then
+  begin
+    Application.MessageBox('此商品条形码已存在！','提示',MB_OK+64);
+    Exit;
+  end;
   if CBProvider.ItemIndex=-1 then
   begin
     Application.MessageBox('请选择供货商！','提示',MB_OK+64);

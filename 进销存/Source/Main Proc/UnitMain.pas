@@ -169,6 +169,7 @@ begin
             CurUser.LonInType:= 1;
             SystemStatusBar.Panels.Items[0].Text:= sStatusVersionStr + sVersion;
             SystemStatusBar.Panels.Items[1].Text:= sStatusUserStr + CurUser.UserName;
+            NOutDepotMgrClick(Sender);
             Break;
           end
           else

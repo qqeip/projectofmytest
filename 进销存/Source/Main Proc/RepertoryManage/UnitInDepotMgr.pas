@@ -102,14 +102,11 @@ type
     ppLine44: TppLine;
     ppLine45: TppLine;
     ppLabel17: TppLabel;
-    ppDBText13: TppDBText;
-    ppDBText14: TppDBText;
     ppGroup4: TppGroup;
     ppGroupHeaderBand4: TppGroupHeaderBand;
     ppGroupFooterBand4: TppGroupFooterBand;
     ppDBCalc4: TppDBCalc;
     ppDBCalc5: TppDBCalc;
-    ppDBCalc6: TppDBCalc;
     ppLine24: TppLine;
     ppLine25: TppLine;
     ppLine28: TppLine;
@@ -120,14 +117,15 @@ type
     ppLine33: TppLine;
     ppLine34: TppLine;
     ppLabel16: TppLabel;
-    ppDBText11: TppDBText;
-    ppDBText12: TppDBText;
     ppDBText10: TppDBText;
     Label5: TLabel;
     CbbGoodsType: TcxComboBox;
     CbbGoods: TcxComboBox;
     CbbDepot: TcxComboBox;
     CbbInDepotType: TcxComboBox;
+    ppDBCalc6: TppDBCalc;
+    ppDBText11: TppDBText;
+    ppDBText12: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -382,7 +380,33 @@ begin
 end;
 
 procedure TFormInDepotMgr.Btn_PrintClick(Sender: TObject);
+VAR
+  lAdoquery: TADOQuery;
+  DSPrint: TDataSource;
 begin
+  lAdoquery:= TADOQuery.Create(Self);
+  DSPrint:= TDataSource.Create(Self);
+  with lAdoQuery do
+  begin
+    Connection:= DM.ADOConnection;
+    Active:= False;
+    SQL.Clear;
+    SQL.Text:= 'SELECT * FROM (SELECT InDepot.*, Depot.DepotName, Goods1.GoodsTypeName, Goods1.GoodsName,' +
+               ' InDepotType.InDepotTypeName, User.UserName,' +
+               ' Goods.CostPrice, Goods.SalePrice,' +
+               ' (Goods.CostPrice*InDepot.InDepotNum) AS Cost, (Goods.SalePrice*InDepot.InDepotNum) AS Sale,' +
+               ' Depot.DepotName&Goods1.GoodsName&InDepotType.InDepotTypeName AS Merger' +
+               ' FROM (((InDepot LEFT JOIN Depot ON InDepot.DepotID = Depot.DepotID) ' +
+               ' LEFT JOIN (SELECT Goods.*,GoodsType.GoodsTypeID,GoodsType.GoodsTypeName FROM Goods ' +
+               '              LEFT JOIN GoodsType ON Goods.GoodsTypeID = GoodsType.GoodsTypeID) AS Goods1 ' +
+               '                ON InDepot.GoodsID = Goods1.GoodsID) ' +
+               ' LEFT JOIN User ON InDepot.UserID = User.UserID) ' +
+               ' LEFT JOIN InDepotType ON InDepot.InDepotTypeID = InDepotType.InDepotTypeID)' +
+               ' Order by Merger';
+    Active:= True;
+    DSPrint.DataSet:= lAdoQuery;
+  end;
+  ppDBPipeline1.DataSource:= DSPrint;
   ppReport.Print;
 end;
 
@@ -429,7 +453,7 @@ begin
                '                ON InDepot.GoodsID = Goods1.GoodsID) ' +
                ' LEFT JOIN User ON InDepot.UserID = User.UserID) ' +
                ' LEFT JOIN InDepotType ON InDepot.InDepotTypeID = InDepotType.InDepotTypeID)' +
-               ' Order by Merger';
+               ' Order by CreateTime';
     Active:= True;
     DataSourceInDeopt.DataSet:= AdoQuery;
   end;

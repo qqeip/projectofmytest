@@ -7,7 +7,8 @@ uses
   Dialogs, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls;
+  cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls, ADODB, Grids,
+  DBGrids;
 
 type
   TFormOutDepotMgr = class(TForm)
@@ -24,31 +25,38 @@ type
     Btn_Calc: TSpeedButton;
     Panel2: TPanel;
     GroupBox2: TGroupBox;
-    LabelDepotID: TLabel;
-    Label2: TLabel;
-    LabelDepotName: TLabel;
-    Label1: TLabel;
-    Label3: TLabel;
-    EdtDepotName: TEdit;
-    EdtDepotComment: TEdit;
-    EdtDepotID: TEdit;
-    Edit1: TEdit;
-    ComboBox1: TComboBox;
+    LabelBarCode: TLabel;
+    LabelCustomerName: TLabel;
+    LabelIntegral: TLabel;
+    LabelAssociatorType: TLabel;
+    EdtCustomerName: TEdit;
+    EdtBarCode: TEdit;
+    EdtIntegral: TEdit;
     GroupBox3: TGroupBox;
-    Label4: TLabel;
-    Edit2: TEdit;
-    Label5: TLabel;
-    Edit3: TEdit;
-    Label6: TLabel;
-    Edit4: TEdit;
-    Label7: TLabel;
-    Edit5: TEdit;
-    Label8: TLabel;
-    Edit6: TEdit;
-    Label9: TLabel;
-    Edit7: TEdit;
-    Label10: TLabel;
-    Edit8: TEdit;
+    LabelGoodsID1: TLabel;
+    EdtGoodsID: TEdit;
+    LabelGoodsName1: TLabel;
+    EdtGoodsName: TEdit;
+    LabelDepotName: TLabel;
+    EdtDepotName: TEdit;
+    LabelProvider: TLabel;
+    EdtProvider: TEdit;
+    LabelConst: TLabel;
+    EdtCostPrice: TEdit;
+    LabelGoodsType: TLabel;
+    EdtGoodsType: TEdit;
+    BtnGoodsSearch: TSpeedButton;
+    BtnCustomerSearch: TSpeedButton;
+    BtnSubmit: TSpeedButton;
+    BtnCancel: TSpeedButton;
+    Btn1: TSpeedButton;
+    LabelDiscount: TLabel;
+    EdtDiscount: TEdit;
+    DS1: TDataSource;
+    dbgrd1: TDBGrid;
+    LabelCustomerID: TLabel;
+    EdtCustomerID: TEdit;
+    EdtAssociatorType: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -59,8 +67,11 @@ type
     procedure Btn_PrintClick(Sender: TObject);
     procedure Btn_CalcClick(Sender: TObject);
     procedure Btn_CloseClick(Sender: TObject);
-    procedure EdtDepotIDKeyDown(Sender: TObject; var Key: Word;
+    procedure EdtBarCodeKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure BtnGoodsSearchClick(Sender: TObject);
+    procedure BtnCustomerSearchClick(Sender: TObject);
+    procedure EdtDiscountKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -72,7 +83,7 @@ var
 
 implementation
 
-uses UnitMain;
+uses UnitMain, UnitDataModule, UnitGoodsSearch;
 
 {$R *.dfm}
 
@@ -83,7 +94,7 @@ end;
 
 procedure TFormOutDepotMgr.FormShow(Sender: TObject);
 begin
-//
+  EdtBarCode.SetFocus;
 end;
 
 procedure TFormOutDepotMgr.FormClose(Sender: TObject;
@@ -128,10 +139,77 @@ begin
   FormMain.RemoveForm(FormOutDepotMgr);
 end;
 
-procedure TFormOutDepotMgr.EdtDepotIDKeyDown(Sender: TObject;
+procedure TFormOutDepotMgr.EdtBarCodeKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
+var
+  lAdoQuery: TADOQuery;
+begin
+  if Key = 13 then
+  begin
+    if EdtBarCode.Text = '' then
+    begin
+      Application.MessageBox('条形码为空！','提示',MB_OK+64);
+      Exit;
+    end;
+    lAdoQuery:= TADOQuery.Create(nil);
+    with lAdoQuery do
+    begin
+      try
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT Repertory.*, DEPOT.DEPOTNAME, Goods1.GoodsTypeName, Goods.GoodsName, Goods1.ProviderName, Goods1.CostPrice ' +
+                   ' FROM (Repertory ' +
+                   ' LEFT JOIN DEPOT ON DEPOT.DEPOTID=Repertory.DEPOTID)' +
+                   ' LEFT JOIN (SELECT Goods.*, GoodsType.GoodsTypeName, Provider.ProviderName' +
+                   '              FROM (Goods ' +
+                   '              LEFT JOIN GoodsType ON GoodsType.GoodsTypeID=Goods.GoodsTypeID)' +
+                   '              LEFT JOIN Provider ON Provider.ProviderID=Goods.ProviderID ' +
+                   '           ) AS Goods1 ON Goods1.GoodsID=Repertory.GoodsID' +
+                   ' where Goods1.BarCode=''' + Trim(EdtBarCode.Text) + '''';
+        Active:= True;
+        DS1.DataSet:= lAdoQuery;
+        if RecordCount=1 then
+        begin
+          EdtGoodsID.Text:= FieldByName('GoodsID').AsString;
+          EdtGoodsType.Text:= FieldByName('GoodsTypeName').AsString;
+          EdtGoodsName.Text:= FieldByName('GoodsName').AsString;
+          EdtDepotName.Text:= FieldByName('DepotName').AsString;
+          EdtProvider.Text:= FieldByName('ProviderName').AsString;
+          EdtCostPrice.Text:= FieldByName('CostPrice').AsString;
+        end;
+        EdtCustomerName.SetFocus;
+      finally
+//        Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TFormOutDepotMgr.BtnGoodsSearchClick(Sender: TObject);
+begin  
+  with TFormGoodsSearch.Create(nil) do
+  begin
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TFormOutDepotMgr.BtnCustomerSearchClick(Sender: TObject);
 begin
 //
+end;
+
+procedure TFormOutDepotMgr.EdtDiscountKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (key in ['0'..'9',#8,#13,#46]) then
+  begin
+    Key := #0;
+  end;
 end;
 
 end.
