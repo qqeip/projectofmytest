@@ -344,20 +344,20 @@ object FormInDepotStat: TFormInDepotStat
       Caption = #26597#35810#26465#20214
       TabOrder = 1
       object Label1: TLabel
-        Left = 306
-        Top = 56
-        Width = 80
+        Left = 315
+        Top = 57
+        Width = 38
         Height = 13
         AutoSize = False
-        Caption = #24320#22987#26102#38388#65306
+        Caption = #24320#22987#65306
       end
       object Label2: TLabel
-        Left = 477
-        Top = 56
-        Width = 80
+        Left = 489
+        Top = 57
+        Width = 38
         Height = 13
         AutoSize = False
-        Caption = #32467#26463#26102#38388#65306
+        Caption = #32467#26463#65306
       end
       object ChkDepot: TCheckBox
         Left = 16
@@ -379,7 +379,7 @@ object FormInDepotStat: TFormInDepotStat
         TabOrder = 1
       end
       object ChkGoodsType: TCheckBox
-        Left = 226
+        Left = 235
         Top = 24
         Width = 80
         Height = 17
@@ -388,7 +388,7 @@ object FormInDepotStat: TFormInDepotStat
         OnClick = ChkGoodsTypeClick
       end
       object CbbGoodsType: TComboBox
-        Left = 306
+        Left = 315
         Top = 22
         Width = 120
         Height = 21
@@ -418,7 +418,7 @@ object FormInDepotStat: TFormInDepotStat
         OnClick = ChkInDepotTypeClick
       end
       object ChkCreateDate: TCheckBox
-        Left = 226
+        Left = 235
         Top = 56
         Width = 80
         Height = 17
@@ -427,23 +427,23 @@ object FormInDepotStat: TFormInDepotStat
         OnClick = ChkCreateDateClick
       end
       object cxDateEditBegin: TcxDateEdit
-        Left = 367
+        Left = 352
         Top = 54
         Enabled = False
         Properties.Kind = ckDateTime
         TabOrder = 7
-        Width = 100
+        Width = 130
       end
       object cxDateEditEnd: TcxDateEdit
-        Left = 538
+        Left = 528
         Top = 54
         Enabled = False
         Properties.Kind = ckDateTime
         TabOrder = 8
-        Width = 100
+        Width = 130
       end
       object ChkGoods: TCheckBox
-        Left = 437
+        Left = 457
         Top = 24
         Width = 80
         Height = 17
@@ -452,7 +452,7 @@ object FormInDepotStat: TFormInDepotStat
         OnClick = ChkGoodsClick
       end
       object CbbGoods: TComboBox
-        Left = 518
+        Left = 538
         Top = 22
         Width = 120
         Height = 21

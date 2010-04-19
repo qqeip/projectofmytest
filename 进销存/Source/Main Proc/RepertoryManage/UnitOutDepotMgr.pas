@@ -12,17 +12,10 @@ uses
 
 type
   TFormOutDepotMgr = class(TForm)
-    Panel1: TPanel;
     GroupBox1: TGroupBox;
     cxGridDepot: TcxGrid;
     cxGridDepotDBTableView1: TcxGridDBTableView;
     cxGridDepotLevel1: TcxGridLevel;
-    Btn_Add: TSpeedButton;
-    Btn_Modify: TSpeedButton;
-    Btn_Delete: TSpeedButton;
-    Btn_Close: TSpeedButton;
-    Btn_Print: TSpeedButton;
-    Btn_Calc: TSpeedButton;
     Panel2: TPanel;
     GroupBox2: TGroupBox;
     LabelBarCode: TLabel;
@@ -53,25 +46,34 @@ type
     LabelDiscount: TLabel;
     EdtDiscount: TEdit;
     DS1: TDataSource;
-    dbgrd1: TDBGrid;
     LabelCustomerID: TLabel;
     EdtCustomerID: TEdit;
     EdtAssociatorType: TEdit;
+    LabelOutDepotType: TLabel;
+    CbbOutDepotType: TComboBox;
+    LabelOutDepotNum: TLabel;
+    EdtOutDepotNum: TEdit;
+    grp1: TGroupBox;
+    spl1: TSplitter;
+    cxGrid1: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
-    procedure Btn_AddClick(Sender: TObject);
-    procedure Btn_ModifyClick(Sender: TObject);
-    procedure Btn_DeleteClick(Sender: TObject);
-    procedure Btn_PrintClick(Sender: TObject);
-    procedure Btn_CalcClick(Sender: TObject);
-    procedure Btn_CloseClick(Sender: TObject);
     procedure EdtBarCodeKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure BtnGoodsSearchClick(Sender: TObject);
     procedure BtnCustomerSearchClick(Sender: TObject);
     procedure EdtDiscountKeyPress(Sender: TObject; var Key: Char);
+    procedure EdtCustomerIDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtOutDepotNumKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtnSubmitClick(Sender: TObject);
+    procedure BtnCancelClick(Sender: TObject);
+    procedure Btn1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -83,18 +85,19 @@ var
 
 implementation
 
-uses UnitMain, UnitDataModule, UnitGoodsSearch;
+uses UnitMain, UnitDataModule, UnitGoodsSearch, UnitPublic;
 
 {$R *.dfm}
 
 procedure TFormOutDepotMgr.FormCreate(Sender: TObject);
 begin
-//
+  SetItemCode('OutDepotType', 'OutDepotTypeID', 'OutDepotTypeNAME', '', CbbOutDepotType.Items);
 end;
 
 procedure TFormOutDepotMgr.FormShow(Sender: TObject);
 begin
   EdtBarCode.SetFocus;
+  CbbOutDepotType.ItemIndex:= CbbOutDepotType.Items.IndexOf('零售出库');
 end;
 
 procedure TFormOutDepotMgr.FormClose(Sender: TObject;
@@ -109,34 +112,19 @@ begin
   FormOutDepotMgr:= nil;
 end;
 
-procedure TFormOutDepotMgr.Btn_AddClick(Sender: TObject);
+procedure TFormOutDepotMgr.BtnSubmitClick(Sender: TObject);
 begin
 //
 end;
 
-procedure TFormOutDepotMgr.Btn_ModifyClick(Sender: TObject);
+procedure TFormOutDepotMgr.BtnCancelClick(Sender: TObject);
 begin
 //
 end;
 
-procedure TFormOutDepotMgr.Btn_DeleteClick(Sender: TObject);
+procedure TFormOutDepotMgr.Btn1Click(Sender: TObject);
 begin
 //
-end;
-
-procedure TFormOutDepotMgr.Btn_PrintClick(Sender: TObject);
-begin
-//
-end;
-
-procedure TFormOutDepotMgr.Btn_CalcClick(Sender: TObject);
-begin
-  winexec('calc.exe',sw_normal);
-end;
-
-procedure TFormOutDepotMgr.Btn_CloseClick(Sender: TObject);
-begin
-  FormMain.RemoveForm(FormOutDepotMgr);
 end;
 
 procedure TFormOutDepotMgr.EdtBarCodeKeyDown(Sender: TObject;
@@ -178,7 +166,7 @@ begin
           EdtProvider.Text:= FieldByName('ProviderName').AsString;
           EdtCostPrice.Text:= FieldByName('CostPrice').AsString;
         end;
-        EdtCustomerName.SetFocus;
+        EdtOutDepotNum.SetFocus;
       finally
 //        Free;
       end;
@@ -209,6 +197,62 @@ begin
   if not (key in ['0'..'9',#8,#13,#46]) then
   begin
     Key := #0;
+  end;
+end;
+
+procedure TFormOutDepotMgr.EdtCustomerIDKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var
+  lAdoQuery: TADOQuery;
+begin
+  if Key = 13 then
+  begin
+    if EdtCustomerID.Text = '' then
+    begin
+      Application.MessageBox('客户编号为空！','提示',MB_OK+64);
+      Exit;
+    end;
+    lAdoQuery:= TADOQuery.Create(nil);
+    with lAdoQuery do
+    begin
+      try
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT Customer.*, AssociatorType.AssociatorTypeName, AssociatorType.Discount ' +
+                   ' FROM Customer ' +
+                   ' LEFT JOIN AssociatorType ' +
+                   ' ON AssociatorType.AssociatorTypeID=Customer.CustomerAssociatorTypeID' +
+                   ' WHERE Customer.CustomerID=' + Trim(EdtCustomerID.Text);
+        Active:= True;
+        DS1.DataSet:= lAdoQuery;
+        if RecordCount=1 then
+        begin
+          EdtCustomerName.Text:= FieldByName('CustomerName').AsString;
+          EdtAssociatorType.Text:= FieldByName('AssociatorTypeName').AsString;
+          EdtDiscount.Text:= FieldByName('Discount').AsString;
+          EdtIntegral.Text:= FieldByName('CustomerIntegral').AsString;
+        end;
+        EdtBarCode.Clear;
+        EdtBarCode.SetFocus;
+      finally
+//        Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TFormOutDepotMgr.EdtOutDepotNumKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var
+  lOrderID: string;
+begin
+  if Key=13 then
+  begin
+    lOrderID:= GetID('OrderBH', 'OutDepotSummary');
+    ShowMessage(lOrderID);
+    EdtBarCode.Clear;
+    EdtBarCode.SetFocus;
   end;
 end;
 

@@ -20,7 +20,7 @@ type
   function GetItemCode(DicName:string;Items:TStrings):integer;  //Combbox读取对象ID
   procedure SetItemCode(aTableName, aFieldID, aFieldName, aWhere: string; DicCodeItems:TStrings);
   function IsExistID(aFieldID, aTableName, aFieldValue: string): Boolean; //添加、修改操作时-判断编号是否已存在
-  function GetID(aFieldID, aTableName: string): Integer;     //获取ID
+  function GetID(aFieldID, aTableName: string): string;     //获取ID
   procedure InPutChar(var key: Char); //输入框只允许输入【0..9,.】不允许输入字母
   
 implementation
@@ -134,11 +134,13 @@ end;
     end;
   end;
 
-  function GetID(aFieldID, aTableName: string): Integer;     //获取ID
+  function GetID(aFieldID, aTableName: string): string;     //获取ID
   var
     lAdoQuery: TAdoQuery;
+    i: Integer;
+    lID: string;
   begin
-    Result:= -1;
+    Result:= '-1';
     lAdoQuery:= TAdoQuery.Create(nil);
     try
       with lAdoQuery do
@@ -146,9 +148,12 @@ end;
         Active:= False;
         Connection:= DM.ADOConnection;
         SQL.Clear;
-        SQL.Text:= 'SELECT Max(' + aFieldID + ') AS NEWID from ' + aTableName;
+        SQL.Text:= 'SELECT NZ(Max(' + aFieldID + '),''00000001'') AS NEWID from ' + aTableName;
         Active:= True;
-        Result:= FieldByName('NEWID').AsInteger + 1;
+        lID:= IntToStr(FieldByName('NEWID').AsInteger + 1);
+        for i:= 0 to (7-(Length(lID))) do
+          lID:= '0' + lID;
+        Result:= lID;
         Close;
       end;
     finally
