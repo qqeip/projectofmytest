@@ -620,7 +620,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     object LabelAssociatorTypeID: TLabel
       Left = 29
       Top = 21
-      Width = 80
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31867#22411#21517#31216#65306
@@ -628,7 +628,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     object Label2: TLabel
       Left = 29
       Top = 69
-      Width = 80
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31867#22411#35828#26126#65306
@@ -636,7 +636,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     object LabelAssociatorTypeName: TLabel
       Left = 268
       Top = 21
-      Width = 80
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31867#22411#21517#31216#65306
@@ -644,7 +644,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     object Label1: TLabel
       Left = 29
       Top = 45
-      Width = 80
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20250#21592#20139#21463#25240#25187#65306
@@ -652,7 +652,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     object Label3: TLabel
       Left = 268
       Top = 45
-      Width = 80
+      Width = 90
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31215#20998#35268#21017#65306
