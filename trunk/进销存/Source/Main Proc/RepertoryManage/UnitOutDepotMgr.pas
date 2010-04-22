@@ -76,6 +76,7 @@ type
     procedure Btn1Click(Sender: TObject);
   private
     { Private declarations }
+    ISExsitCustomer: Boolean;
   public
     { Public declarations }
   end;
@@ -119,7 +120,7 @@ end;
 
 procedure TFormOutDepotMgr.BtnCancelClick(Sender: TObject);
 begin
-//
+  ISExsitCustomer:= False;
 end;
 
 procedure TFormOutDepotMgr.Btn1Click(Sender: TObject);
@@ -228,13 +229,21 @@ begin
         DS1.DataSet:= lAdoQuery;
         if RecordCount=1 then
         begin
+          ISExsitCustomer:= True;
           EdtCustomerName.Text:= FieldByName('CustomerName').AsString;
           EdtAssociatorType.Text:= FieldByName('AssociatorTypeName').AsString;
           EdtDiscount.Text:= FieldByName('Discount').AsString;
           EdtIntegral.Text:= FieldByName('CustomerIntegral').AsString;
+          EdtBarCode.Clear;
+          EdtBarCode.SetFocus;
+        end
+        else
+        begin
+          ISExsitCustomer:= False;
+          EdtCustomerID.Clear;
+          EdtCustomerID.SetFocus;
         end;
-        EdtBarCode.Clear;
-        EdtBarCode.SetFocus;
+
       finally
 //        Free;
       end;
@@ -253,6 +262,13 @@ begin
     ShowMessage(lOrderID);
     EdtBarCode.Clear;
     EdtBarCode.SetFocus;
+    if GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)=1001 then
+    begin
+      if ISExsitCustomer then
+      begin
+      
+      end;
+    end;
   end;
 end;
 
