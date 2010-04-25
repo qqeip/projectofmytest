@@ -74,9 +74,13 @@ type
     procedure BtnSubmitClick(Sender: TObject);
     procedure BtnCancelClick(Sender: TObject);
     procedure Btn1Click(Sender: TObject);
+    procedure EdtOutDepotNumKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
-    ISExsitCustomer: Boolean;
+    FAdoEdit: TAdoquery;
+    ISExsitCustomer: Boolean; //是否存在客户
+    FDepotID, FGoodsID, FCustomerID : Integer;
+    FGoodsNum: Integer; //商品的库存数量
   public
     { Public declarations }
   end;
@@ -86,12 +90,14 @@ var
 
 implementation
 
-uses UnitMain, UnitDataModule, UnitGoodsSearch, UnitPublic;
+uses UnitMain, UnitDataModule, UnitGoodsSearch, UnitPublic,
+  UnitPublicResourceManager;
 
 {$R *.dfm}
 
 procedure TFormOutDepotMgr.FormCreate(Sender: TObject);
 begin
+  FAdoEdit:= TADOQuery.Create(Self);
   SetItemCode('OutDepotType', 'OutDepotTypeID', 'OutDepotTypeNAME', '', CbbOutDepotType.Items);
 end;
 
@@ -115,7 +121,14 @@ end;
 
 procedure TFormOutDepotMgr.BtnSubmitClick(Sender: TObject);
 begin
-//
+  if ISExsitCustomer then
+  begin
+
+  end
+  else
+  begin
+  
+  end;
 end;
 
 procedure TFormOutDepotMgr.BtnCancelClick(Sender: TObject);
@@ -160,16 +173,26 @@ begin
         DS1.DataSet:= lAdoQuery;
         if RecordCount=1 then
         begin
+          FDepotID:= FieldByName('DepotID').AsInteger;
+          FGoodsID:= FieldByName('GoodsID').AsInteger;
+          FGoodsNum:= FieldByName('GoodsNum').AsInteger;
           EdtGoodsID.Text:= FieldByName('GoodsID').AsString;
           EdtGoodsType.Text:= FieldByName('GoodsTypeName').AsString;
           EdtGoodsName.Text:= FieldByName('GoodsName').AsString;
           EdtDepotName.Text:= FieldByName('DepotName').AsString;
           EdtProvider.Text:= FieldByName('ProviderName').AsString;
           EdtCostPrice.Text:= FieldByName('CostPrice').AsString;
+          EdtOutDepotNum.SetFocus;
+        end
+        else
+        begin
+          Application.MessageBox('此条形码的商品不存在或已无库存，请重新输入！','提示',MB_OK+64);
+          EdtBarCode.Clear;
+          EdtBarCode.SetFocus;
         end;
-        EdtOutDepotNum.SetFocus;
+
       finally
-//        Free;
+        lAdoQuery.Free;
       end;
     end;
   end;
@@ -230,6 +253,7 @@ begin
         if RecordCount=1 then
         begin
           ISExsitCustomer:= True;
+          FCustomerID:= FieldByName('CustomerID').AsInteger;
           EdtCustomerName.Text:= FieldByName('CustomerName').AsString;
           EdtAssociatorType.Text:= FieldByName('AssociatorTypeName').AsString;
           EdtDiscount.Text:= FieldByName('Discount').AsString;
@@ -245,7 +269,7 @@ begin
         end;
 
       finally
-//        Free;
+        lAdoQuery.Free;
       end;
     end;
   end;
@@ -258,17 +282,55 @@ var
 begin
   if Key=13 then
   begin
+    if StrToInt(EdtOutDepotNum.Text)>FGoodsNum then
+    begin
+      Application.MessageBox(PChar('现库存有此商品'+inttostr(FGoodsNum)+'，不够要求出库数量！'),'提示',MB_OK+64);
+      Exit;
+    end;
     lOrderID:= GetID('OrderBH', 'OutDepotSummary');
-    ShowMessage(lOrderID);
     EdtBarCode.Clear;
     EdtBarCode.SetFocus;
-    if GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)=1001 then
+    if GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)=1001 then //如果是零售出库
     begin
-      if ISExsitCustomer then
+      with FAdoEdit do
       begin
-      
+        try
+          Active:= False;
+          Connection:= DM.ADOConnection;
+          SQL.Clear;
+          SQL.Text:= 'insert into OutDepotDetails(' +
+                     'OrderBH,' +
+                     'DepotID,' +
+                     'GoodsID,' +
+                     'UserID,' +
+                     'OutDepotTypeID,' +
+                     'OutDepotNum,' +
+                     'CreateTime) ' +
+                     'Values(''' +
+                     lOrderID + ''',' +
+                     IntToStr(FDepotID) + ',' +
+                     IntToStr(FGoodsID) + ',' +
+                     IntToStr(CurUser.UserID) + ',' +
+                     IntToStr(GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)) + ',' +
+                     EdtOutDepotNum.Text + ',' +
+                     'cdate(''' + DateTimeToStr(Now) + ''')' +
+                     ')';
+          ExecSQL;
+        finally
+
+        end;
+
       end;
     end;
+  end;
+end;
+
+procedure TFormOutDepotMgr.EdtOutDepotNumKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (key in ['0'..'9',#8,#13]) then
+  begin
+    Key := #0;
   end;
 end;
 
