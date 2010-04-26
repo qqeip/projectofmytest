@@ -1,0 +1,22 @@
+我们知道，ASP.NET的Web窗体新增了对服务器端控件的支持，其特征是在控件的HTML标记内加入了runat="server"属性。拥有这个标记的控件，其实例将在服务器端生成，由.NET框架负责转换为普通的HTML标记并输出至客户端。这个转换的过程是ASP.NET一个极为重要的基础。为什么呢？熟悉HTML开发的朋友应该非常了解编写动态网页所需要的控件（FORM、INPUT……）。而ASP.NET为我们提供了更为丰富的用户界面交互元素——服务器端控件（简单的有Button、Label，复杂的包括DataGrid等数据控件）——可以说，它们是ASP.NET强大特性最直观的部分。你可能会有一个疑问：服务器端控件是如何在客户端运行的呢？HTML规范中并没有它们的影子，然而客户端却并不需要特殊的环境就能正常浏览ASP.NET页面。这是如何做到的？转换——就好像两国元首之间的交流需要翻译，要让服务器端的控件被客户端正常识别、运行，需要一个转换过程——这就是.NET Framework存在的理由。 
+.NET Framework为控件做的转换工作非常复杂，但是只要我们了解其中的规律，就能为我们所用。 
+ASP.NET拾萃——服务器端控件篇（一） uno（原作） 
+关键字 控件 
+技巧一：在客户端的JavaScript脚本中获取服务器端控件的值 
+以前，当我们需要在脚本里访问页面内一个对象的时候，一般都是通过对象的id或name。就像这样—— // ... function getText() { return document.form1.Text1.value; // Text1就是对象的id } 
+// ... <input id="Text1" type="text" ...> 
+现在，ASP.NET让我们越来越习惯使用TextBox作为用户输入的途径。如果我们想在客户端脚本里访问一个TextBox，原先的做法就行不通了—— // ... function getText() { return document.form1.Text1.value; // Text1还是对象的id？ } 
+// ... 
+浏览页面时，会有一个脚本错误——“Text1对象不存在”。原因就在于，Text1作为服务器端控件TextBox，在被发送到客户端之前，先由.NET Framework进行转换，而它的id显然也是转换的一部分。如果你在客户端查看页面的源代码，你可以发现原先的Text1已经不存在，取而代之的是一个普通的INPUT—— <input name="Test:Text1" type="text" id="Test_Text1" /> 
+这就是转换的结果，id不再是设计时所指定的id。如果我们要在客户端访问这个文本输入框，也必须改变访问的id。如何改变？直接将 document.form1.Text1 改为 document.form1.item("Test_Text1") // 保险起见，使用item由id或name得到控件或者 document.getElementByID("Test_Text1") // 保险起见，使用getElementByID由id或name得到控件 
+可以吗？当然可以！只要你的控件id固定是"Text1"。但是，只有这个条件还不够。"Test"又是什么？它也应该被考虑在内（幸好form的id不会改变，否则要关心的内容又会多一个）。你或许已经看出，Test就是这个Web页面的名字。对吗？——不完全对:P 确切地说，控件转换后id中的"Test"是其所在的Web窗体对象的ClientID。所有的ASP.NET对象都在服务器端有一个实例（如果你面向对象的基础不够，建议也补完一次吧），而这个"Test"，就是这个页面实例对象的ClientID。而ClientID，则是每个Web窗体页的一个属性，它指明了这个Web窗体在客户端的标识。为什么要这么复杂？道理很简单，我们并不能在客户端脚本里确定页面的ClientID和控件的ID。那应该怎样做呢？ “在服务器端代码里生成客户端JavaScript。”——似乎非常复杂，其实并不困难，只要在服务器端Page_Load事件里加上（在IsPostBack判断之外）—— RegisterStartupScript("start", "\n<script>\n" + "function getText()\n" + "{\n" + " return document.forms(0).item('" + this.ClientID + ":" + this.Text1.ID + "');\n" + "}\n" + "</script>\n"); 
+RegisterStartupScript是Web窗体（System.Web.UI.Page类）的一个方法，作用是在生成的页面里注册客户端脚本。在这里，我们添加了一个getText()函数，作用和之前的getText()一样，所不同的在于，它所访问的控件id并非脚本内指定，而是在服务器端根据页面的ClientID（this.ClientID，this就是页面自己）和Text1控件的ID（this.Text1.ID）动态生成的。编译之后重新浏览，我们会在新的页面源代码里找到这个由服务器端代码生成的JavaScript函数。此时，在页面的其他地方调用getText()函数就将正确得到Text1中的内容了。 
+ASP.NET拾萃——服务器端控件篇（二） uno（原作） 
+关键字 控件 
+技巧二：掌握控件的客户端属性及事件 
+经常在网上看到类似的问题：如何让ASP.NET服务器端控件响应客户端事件？ 
+ASP.NET服务器端控件能够响应服务器端事件，使我们能够像编写Windows程序一样编写网页。可有时我们并不需要让客户端运行的控件和服务器发生交互，这样做的开销是很大的：不仅占用网络带宽、服务器的CPU资源，还会产生一次PostBack导致客户端浏览器“刷新”影响界面效果。如果直接在Web窗体的HTML代码内为服务器端控件添加客户端事件代码，就像这样： 
+你会发现，当按下这个按钮时，并没有预定的消息框弹出，而是直接执行服务器端代码内的响应按钮按下事件的Button1_Click方法（假设我们已经为按钮绑定了这个事件）。如果查看客户端页面的源代码，按钮的OnClick事件里，根本没有自己写的代码，却变成了"JavaScript:__doPostBack(...)"。其实这正是.NET Framework转换工作的一部分。有了这个"JavaScript:__doPostBack(...)"，才能实现按钮提交、服务器端响应事件等一系列动作。（关于这段自动加上的脚本，我会在今后的文章里详细说明。）想要控件在客户端就响应事件，必须另寻他法。好在.NET已经为我们提供了丰富的接口去实现这些功能。所有的服务器端控件（Button、Label、TextBox……）都有一个属性Attributes——这是一个很重要的属性，它是服务器端控件在客户端对应HTML元素属性及事件的集合。有了它，我们能够自定义服务器端控件在客户端的行为、外观。还是刚才的Button1，这次我们在Page_Load事件里加上这么一句（在IsPostBack判断之外）： Button1.Attributes.Add("onclick", "window.alert('按钮被按下了')"); 
+重新生成项目之后再次浏览页面，这次我们终于能够看到“按钮被按下”的消息框被正常弹出了。回过头来解释这句代码：Attributes是Button1也是所有服务器端控件拥有的属性，Add(...)是Attributes所属的一个方法，作用是为控件在客户端的HTML标记内添加代码，第一个参数是属性的名称，第二个参数是属性的值。在这里我们为按钮的onclick事件添加了一段弹出消息框的代码。在客户端查看页面源代码，可以看到按钮的onclick事件里包含了这段代码（.NET Framework自动生成的"__doPostBack(...)"就跟在后面，我们使用Add就是告诉.NET Framework：“先加入我们的代码！”）。 
+Attributes还有另一种访问的形式（C#专用）： Button1.Attributes["onclick"] = "window.alert('按钮被按下了')"; // []内是属性的名称，等号右边就是属性的值 
+这个方法同样可以用于使用服务器端代码为控件改变属性： Button1.Attributes["style"] = "fontsize: 9pt"; // 改变控件样式的字体为9磅
