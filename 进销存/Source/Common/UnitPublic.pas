@@ -148,7 +148,7 @@ end;
         Active:= False;
         Connection:= DM.ADOConnection;
         SQL.Clear;
-        SQL.Text:= 'SELECT iif(Max(' + aFieldID + ') is null,''00000000'') AS NEWID from ' + aTableName;
+        SQL.Text:= 'SELECT iif(Max(' + aFieldID + ') is null,''00000000'',iif(Max(OrderBH) is not null,Max(OrderBH))) AS NEWID from ' + aTableName;
         Active:= True;
         lID:= IntToStr(FieldByName('NEWID').AsInteger + 1);
         for i:= 0 to (7-(Length(lID))) do

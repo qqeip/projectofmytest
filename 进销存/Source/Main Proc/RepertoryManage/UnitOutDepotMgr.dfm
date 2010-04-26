@@ -143,6 +143,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Height = 22
         Hint = #25152#26377#21830#21697#25195#25551#36807#26465#24418#30721#21518#32467#31639#24635#37329#39069
         Caption = #32467#31639
+        Enabled = False
         Flat = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clRed

@@ -689,8 +689,11 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       Top = 42
       Width = 121
       Height = 19
+      Hint = #22914#65306'85'#25240'='#24635#37329#39069#215'0.85'
       Ctl3D = False
       ParentCtl3D = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
     end
     object EdtIntegralRuler: TEdit
