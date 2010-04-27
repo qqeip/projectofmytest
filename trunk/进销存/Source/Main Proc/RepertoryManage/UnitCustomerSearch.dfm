@@ -1,9 +1,9 @@
-object FormGoodsSearch: TFormGoodsSearch
-  Left = 629
-  Top = 30
+object FormCustomerSearch: TFormCustomerSearch
+  Left = 416
+  Top = 300
   Width = 450
   Height = 380
-  Caption = #21830#21697#26597#25214
+  Caption = 'FormCustomerSearch'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,14 +11,14 @@ object FormGoodsSearch: TFormGoodsSearch
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
-  Position = poScreenCenter
+  Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object grp1: TGroupBox
+  object GroupBoxgrp1: TGroupBox
     Left = 0
     Top = 0
     Width = 442
@@ -29,10 +29,10 @@ object FormGoodsSearch: TFormGoodsSearch
     object Label1: TLabel
       Left = 245
       Top = 25
-      Width = 189
+      Width = 195
       Height = 13
       AutoSize = False
-      Caption = #9733#21830#21697#21517#31216#12289#26465#24418#30721#12289#20379#36135#21830#21517#31216
+      Caption = #9733#21517#31216#12289#30005#35805#12289#23478#24237#20303#22336#12289#21150#20844#22320#22336
       Font.Charset = ANSI_CHARSET
       Font.Color = clRed
       Font.Height = -11
@@ -359,15 +359,15 @@ object FormGoodsSearch: TFormGoodsSearch
       Caption = #21517#31216#65306
       TabOrder = 1
     end
-    object ChkGoodsType: TCheckBox
+    object ChkAssociatorType: TCheckBox
       Left = 24
       Top = 57
       Width = 80
       Height = 17
-      Caption = #21830#21697#31867#21035#65306
+      Caption = #20250#21592#31867#22411#65306
       TabOrder = 2
     end
-    object CbbGoodsType: TComboBox
+    object CbbAssociatorType: TComboBox
       Left = 107
       Top = 55
       Width = 133
@@ -376,7 +376,7 @@ object FormGoodsSearch: TFormGoodsSearch
       TabOrder = 3
     end
   end
-  object grp2: TGroupBox
+  object GroupBoxgrp2: TGroupBox
     Left = 0
     Top = 97
     Width = 442
@@ -384,28 +384,28 @@ object FormGoodsSearch: TFormGoodsSearch
     Align = alClient
     Caption = #26597#35810#32467#26524#65288#21452#20987#36873#25321#65289
     TabOrder = 1
-    object cxGridGoods: TcxGrid
+    object cxGridCustomer: TcxGrid
       Left = 2
       Top = 15
       Width = 438
       Height = 232
       Align = alClient
       TabOrder = 0
-      object cxGridGoodsDBTableView1: TcxGridDBTableView
-        OnDblClick = cxGridGoodsDBTableView1DblClick
+      object cxGridCustomerDBTableView1: TcxGridDBTableView
+        OnDblClick = cxGridCustomerDBTableView1DblClick
         NavigatorButtons.ConfirmDelete = False
-        DataController.DataSource = DSGoods
+        DataController.DataSource = DSCustomer
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsView.GroupByBox = False
       end
-      object cxGridGoodsLevel1: TcxGridLevel
-        GridView = cxGridGoodsDBTableView1
+      object cxGridCustomerLevel1: TcxGridLevel
+        GridView = cxGridCustomerDBTableView1
       end
     end
   end
-  object DSGoods: TDataSource
+  object DSCustomer: TDataSource
     Left = 96
     Top = 273
   end

@@ -30,14 +30,17 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure BtnOKClick(Sender: TObject);
     procedure BtnCancelClick(Sender: TObject);
+    procedure cxGridGoodsDBTableView1DblClick(Sender: TObject);
   private
     { Private declarations }
 
     AdoQuery: TAdoquery;
     FCxGridHelper : TCxGridSet;
+    FBarCode: string;
     procedure AddcxGridViewField;
   public
     { Public declarations }
+  property BarCode: string read FBarCode write FBarCode;
   end;
 
 var
@@ -70,7 +73,8 @@ end;
 
 procedure TFormGoodsSearch.FormDestroy(Sender: TObject);
 begin
-//
+  AdoQuery.Free;
+  FCxGridHelper.Free;
 end;
 
 procedure TFormGoodsSearch.AddcxGridViewField;
@@ -94,9 +98,9 @@ begin
   if ChkName.Checked then
   begin
     lWhereStr:= lWhereStr +
-                ' and (BarCode like ''*' + EdtName.Text + '*''' +
-                ' or GoodsName like ''*' + EdtName.Text + '*''' +
-                ' or ProviderName like ''*' + EdtName.Text + '*''' + ')';
+                ' and (BarCode like ''%' + EdtName.Text + '%''' +
+                ' or GoodsName like ''%' + EdtName.Text + '%''' +
+                ' or ProviderName like ''%' + EdtName.Text + '%''' + ')';
   end;
   if ChkGoodsType.Checked then
   begin
@@ -122,6 +126,35 @@ end;
 procedure TFormGoodsSearch.BtnCancelClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TFormGoodsSearch.cxGridGoodsDBTableView1DblClick(
+  Sender: TObject);
+var
+  lBarCode_Index, lRecordIndex: Integer;
+begin
+  try
+    lBarCode_Index:=cxGridGoodsDBTableView1.GetColumnByFieldName('BarCode').Index;
+  except
+    Application.MessageBox('未获得"条形码"关键字！','提示',MB_OK	+MB_ICONINFORMATION);
+    exit;
+  end;
+  if cxGridGoodsDBTableView1.DataController.GetSelectedCount=0 then
+  begin
+    Application.MessageBox('请选择一条记录！！','提示',MB_OK	+MB_ICONINFORMATION);
+    Exit;
+  end;
+  if cxGridGoodsDBTableView1.DataController.GetSelectedCount>1 then
+  begin
+    Application.MessageBox('只能选择一条记录！！','提示',MB_OK	+MB_ICONINFORMATION);
+    Exit;
+  end;
+  if cxGridGoodsDBTableView1.DataController.GetSelectedCount=1 then
+  begin
+    lRecordIndex := cxGridGoodsDBTableView1.Controller.SelectedRows[0].RecordIndex;
+    FBarCode:= cxGridGoodsDBTableView1.DataController.GetValue(lRecordIndex,lBarCode_Index);;
+    ModalResult:= mrOk;
+  end;
 end;
 
 end.

@@ -27,6 +27,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
     Height = 6
     Cursor = crVSplit
     Align = alTop
+    Color = cl3DDkShadow
+    ParentColor = False
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -36,23 +38,23 @@ object FormOutDepotMgr: TFormOutDepotMgr
     Align = alClient
     Caption = #20986#24211#35814#32454#20449#24687
     TabOrder = 0
-    object cxGridDepot: TcxGrid
+    object cxGridDetails: TcxGrid
       Left = 2
       Top = 15
       Width = 867
       Height = 219
       Align = alClient
       TabOrder = 0
-      object cxGridDepotDBTableView1: TcxGridDBTableView
+      object cxGridDetailsDBTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
-        DataController.DataSource = DS1
+        DataController.DataSource = DSDetail
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsView.GroupByBox = False
       end
-      object cxGridDepotLevel1: TcxGridLevel
-        GridView = cxGridDepotDBTableView1
+      object cxGridDetailsLevel1: TcxGridLevel
+        GridView = cxGridDetailsDBTableView1
       end
     end
   end
@@ -63,7 +65,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
     Height = 169
     Align = alTop
     TabOrder = 1
-    object GroupBox2: TGroupBox
+    object GroupBoxOutDepot: TGroupBox
       Left = 1
       Top = 1
       Width = 424
@@ -107,9 +109,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Enabled = False
       end
       object BtnGoodsSearch: TSpeedButton
-        Left = 221
+        Left = 224
         Top = 15
-        Width = 35
+        Width = 32
         Height = 20
         Caption = #26597#25214
         Flat = True
@@ -573,7 +575,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         OnKeyPress = EdtOutDepotNumKeyPress
       end
     end
-    object GroupBox3: TGroupBox
+    object GroupBoxGoodsInfo: TGroupBox
       Left = 425
       Top = 1
       Width = 445
@@ -703,30 +705,52 @@ object FormOutDepotMgr: TFormOutDepotMgr
     Width = 871
     Height = 136
     Align = alTop
-    Caption = #20986#24211#21382#21490#35760#24405
+    Caption = #23458#25143#36141#20080#21382#21490#35760#24405
     TabOrder = 2
-    object cxGrid1: TcxGrid
+    object cxGridHistory: TcxGrid
       Left = 2
       Top = 15
       Width = 867
       Height = 119
       Align = alClient
       TabOrder = 0
-      object cxGridDBTableView1: TcxGridDBTableView
+      object cxGridHistoryTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
-        DataController.DataSource = DS1
+        DataController.DataSource = DSHistory
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        DataController.OnDetailExpanding = cxGridHistoryTableView1DataControllerDetailExpanding
+        OptionsView.GroupByBox = False
+      end
+      object cxGridHistoryDetailTableView1: TcxGridDBTableView
+        NavigatorButtons.ConfirmDelete = False
+        DataController.DataSource = DSHistoryDetail
+        DataController.DetailKeyFieldNames = 'OrderBH'
+        DataController.MasterKeyFieldNames = 'OrderBH'
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
         OptionsView.GroupByBox = False
       end
-      object cxGridLevel1: TcxGridLevel
-        GridView = cxGridDBTableView1
+      object cxGridHistoryLevel1: TcxGridLevel
+        GridView = cxGridHistoryTableView1
+        object cxGridHistoryLevel2: TcxGridLevel
+          GridView = cxGridHistoryDetailTableView1
+        end
       end
     end
   end
-  object DS1: TDataSource
-    Left = 512
+  object DSDetail: TDataSource
+    Left = 480
     Top = 409
+  end
+  object DSHistory: TDataSource
+    Left = 456
+    Top = 201
+  end
+  object DSHistoryDetail: TDataSource
+    Left = 456
+    Top = 249
   end
 end
