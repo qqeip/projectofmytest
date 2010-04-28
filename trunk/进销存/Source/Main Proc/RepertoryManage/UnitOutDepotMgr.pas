@@ -8,7 +8,7 @@ uses
   cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls, ADODB, Grids, CxGridUnit,
-  DBGrids;
+  DBGrids, UnitRepertoryManager;
 
 type
   TFormOutDepotMgr = class(TForm)
@@ -91,6 +91,9 @@ type
     FDepotID, FGoodsID, FCustomerID : Integer;
     FPercent, FSalePrice, FDiscount: Double; //营业员提成比例 , 销售单价 , 会员享受折扣
     FGoodsTotalNum: Integer; //商品的库存总数量
+    FGoodsTotalMoney: Double; //商品的库存总金额
+
+    FRepertoryMgr: TRepertoryMgr;
 
     procedure GetCustomerOutDepotSummary;
     procedure GetOutDepotDetails(aAdoQuery: TADOQuery; Ds: TDataSource; aOrderBH: string);
@@ -195,7 +198,7 @@ end;
 
 procedure TFormOutDepotMgr.BtnSubmitClick(Sender: TObject);
 var
-  lTotalNum: Integer;
+  lTotalNum, i: Integer;
   lTotalmoney: Double;
   lSqlStr: string;
   function GetTotalNum(aOrderBH: string): Boolean;
@@ -280,6 +283,37 @@ begin
       FOrderID:= GetID('OrderBH', 'OutDepotSummary');
       //计算积分
 
+      //计算库存剩余数量
+      for i:= 0 to FRepertoryMgr.GetCount-1 do
+      begin
+//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID;
+//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).TotalNum;
+//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).SalePrice;
+//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum;
+//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastMoney;
+        with FAdoEdit do
+        begin
+          try
+            Active:= False;
+            Connection:= DM.ADOConnection;
+            SQL.Clear;
+            if TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum=0 then
+              SQL.Text:= 'delete from Repertory' +
+                         ' Where GoodsID=' +
+                          IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID)
+            else
+              SQL.Text:= 'update Repertory set GoodsNUM=' +
+                          IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum) + ',' +
+                         'GoodsAmount=' +
+                          FloatToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum*TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).SalePrice) +
+                         ' Where GoodsID=' +
+                          IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID);
+            ExecSQL;
+          finally
+          end;
+        end;
+      end;
+      FreeAndNil(FrepertoryMgr);
       Application.MessageBox('结算完成！','提示',MB_OK+64);
     finally
     end;
@@ -315,6 +349,9 @@ begin
     finally
     end;
   end;
+  if Assigned(FrepertoryMgr) then
+    FreeAndNil(FrepertoryMgr);
+  BtnSubmit.Enabled:= False;
 end;
 
 procedure TFormOutDepotMgr.Btn1Click(Sender: TObject);
@@ -357,6 +394,7 @@ begin
           FDepotID:= FieldByName('DepotID').AsInteger;
           FGoodsID:= FieldByName('GoodsID').AsInteger;
           FGoodsTotalNum:= FieldByName('GoodsNum').AsInteger; //商品库存总数量，用于判断出库数量是否小于库存
+          FGoodsTotalMoney:= FieldByName('GoodsAmount').AsInteger; //商品库存总金额，用于计算库存剩余金额
           FSalePrice:= FieldByName('SalePrice').AsFloat; //商品销售单价
           FPercent:= FieldByName('Percent').AsFloat;     //营业员提成比例
           EdtGoodsID.Text:= FieldByName('GoodsID').AsString;
@@ -419,7 +457,7 @@ begin
       begin
         EdtCustomerID.Text:= CustomerID;
         EdtCustomerID.SelectAll;
-        EdtBarCode.OnKeyDown(Self,lKey,[]);
+        EdtCustomerID.OnKeyDown(Self,lKey,[]);   
       end;
     finally
       Free;
@@ -512,14 +550,22 @@ begin
       Exit;
     end;
     //lOrderID:= GetID('OrderBH', 'OutDepotSummary');
-    EdtBarCode.Clear;
-    EdtBarCode.SetFocus;
 //    if GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)=1001 then //如果是零售出库
+
+    lNum:= StrToInt(EdtOutDepotNum.Text);
+    lSaleMoney:= lNum*FSalePrice;
+    if not Assigned(FRepertoryMgr) then
+      FRepertoryMgr:= TRepertoryMgr.Create;
+    if FRepertoryMgr.ISRepertoryNull(FGoodsID, FGoodsTotalNum, FGoodsTotalNum-lNum)<0 then
+    begin
+      Application.MessageBox(PChar('库存数量不足！库存还剩'+inttostr(FRepertoryMgr.OverOutRepertory_LastNum(FGoodsID))),'提示',MB_OK+64);
+      Exit;
+    end;
+    FRepertoryMgr.LoadRepertory(FGoodsID, FGoodsTotalNum, FGoodsTotalNum-lNum, FSalePrice, FGoodsTotalMoney - lSaleMoney);
+
     with FAdoEdit do
     begin
       try
-        lNum:= StrToInt(EdtOutDepotNum.Text);
-        lSaleMoney:= lNum*FSalePrice;
         Active:= False;
         Connection:= DM.ADOConnection;
         SQL.Clear;
@@ -569,6 +615,8 @@ begin
       end;
     end;
     BtnSubmit.Enabled:= True;
+    EdtBarCode.Clear;
+    EdtBarCode.SetFocus;
   end;
 end;
 
