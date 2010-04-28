@@ -7,7 +7,7 @@ unit UnitPublicResourceManager;
 interface
 
 uses
-  SysUtils, UnitUserManager;
+  SysUtils, UnitUserManager, UnitRepertoryManager;
 
 var
   CurUser: TUser;
@@ -26,5 +26,7 @@ implementation
   begin
     FreeAndNil(CurUser);
   end;
+
+
 
 end.

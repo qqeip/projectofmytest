@@ -55,6 +55,8 @@ type
     NClose: TMenuItem;
     NInDepotChangeStat: TMenuItem;
     NGoodsTypeMgr: TMenuItem;
+    BtnBackup: TToolButton;
+    btn2: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -93,6 +95,7 @@ type
       var AllowChange: Boolean);
     procedure NInDepotChangeStatClick(Sender: TObject);
     procedure NGoodsTypeMgrClick(Sender: TObject);
+    procedure BtnBackupClick(Sender: TObject);
   private
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
@@ -757,6 +760,11 @@ begin
     SetTabIndex(FormInDepotChangeStat);
   FormInDepotChangeStat.WindowState:=wsMaximized;
   FormInDepotChangeStat.Show;
+end;
+
+procedure TFormMain.BtnBackupClick(Sender: TObject);
+begin
+//
 end;
 
 end.

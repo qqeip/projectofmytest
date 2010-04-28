@@ -54,7 +54,7 @@ object FormMain: TFormMain
     Height = 36
     AutoSize = True
     ButtonHeight = 36
-    ButtonWidth = 55
+    ButtonWidth = 67
     Caption = 'ToolBar1'
     EdgeInner = esNone
     EdgeOuter = esNone
@@ -70,22 +70,37 @@ object FormMain: TFormMain
       OnClick = ToolBtnInDepotClick
     end
     object ToolBtnOutDepot: TToolButton
-      Left = 55
+      Left = 67
       Top = 0
       Caption = #20986#24211#31649#29702
       ImageIndex = 1
       OnClick = ToolBtnOutDepotClick
     end
     object ToolButton2: TToolButton
-      Left = 110
+      Left = 134
       Top = 0
       Width = 8
       Caption = 'ToolButton2'
       ImageIndex = 1
       Style = tbsSeparator
     end
+    object BtnBackup: TToolButton
+      Left = 142
+      Top = 0
+      Caption = #25968#25454#24211#22791#20221
+      ImageIndex = 2
+      OnClick = BtnBackupClick
+    end
+    object btn2: TToolButton
+      Left = 209
+      Top = 0
+      Width = 8
+      Caption = 'btn2'
+      ImageIndex = 2
+      Style = tbsSeparator
+    end
     object ToolBtnExit: TToolButton
-      Left = 118
+      Left = 217
       Top = 0
       Caption = 'Exit'
       ImageIndex = 1
