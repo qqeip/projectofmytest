@@ -1,0 +1,113 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = ProjectCFMS_Server.exe ProjectCFMS_Client.exe \
+  AlarmAndSolutionMgr.dll RoleMgr.dll ShieldMgr.dll SendRuleSet.dll \
+  ShieldLook.dll AreaMgr.dll DevGatherDistribute.dll CompanyMgr.dll \
+  TotalShieldMgr.dll UserMgr.dll UserCustomSet.dll UserFieldSetMgr.dll DictMgr.dll \
+  FieldGroupMgr.dll  AlarmContentMgr.dll RingMgr.dll SysConfigMgr.dll \
+  AlarmStateLookMgr.dll CompanyCheck.dll \
+  AlarmSearchMgr.dll BreakSiteStat.dll CapacityMonitor.dll \
+  AlarmTrackerMgr.dll AlarmExceptMgr.dll AlarmManpower.dll \
+  AlarmManualMgr.dll AlarmStayMgr.dll RepeatAlarmMgr.dll
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+ProjectCFMS_Server.exe: ..\服务端\ProjectCFMS_Server.dpr
+  $(DCC)
+
+ProjectCFMS_Client.exe: ProjectCFMS_Client.dpr
+  $(DCC)
+
+AlarmAndSolutionMgr.dll: 系统管理\故障原因及派障方法管理\AlarmAndSolutionMgr.dpr
+  $(DCC)
+
+RoleMgr.dll: 系统管理\角色管理\RoleMgr.dpr
+  $(DCC)
+
+ShieldMgr.dll: 系统管理\绝对屏蔽\ShieldMgr.dpr
+  $(DCC)
+
+SendRuleSet.dll: 系统管理\派障规则设置\SendRuleSet.dpr
+  $(DCC)
+
+ShieldLook.dll: 系统管理\屏蔽查看\ShieldLook.dpr
+  $(DCC)
+
+AreaMgr.dll: 系统管理\区域管理\AreaMgr.dpr
+  $(DCC)
+
+DevGatherDistribute.dll: 系统管理\设备集划分\DevGatherDistribute.dpr
+  $(DCC)
+
+CompanyMgr.dll: 系统管理\维护单位管理\CompanyMgr.dpr
+  $(DCC)
+
+TotalShieldMgr.dll: 系统管理\相对屏蔽\TotalShieldMgr.dpr
+  $(DCC)
+
+UserMgr.dll: 系统管理\用户管理\UserMgr.dpr
+  $(DCC)
+
+UserCustomSet.dll: 系统管理\用户自定义设置\UserCustomSet.dpr
+  $(DCC)
+
+UserFieldSetMgr.dll: 系统管理\用户字段设置\UserFieldSetMgr.dpr
+  $(DCC)
+
+DictMgr.dll: 系统管理\字典管理\DictMgr.dpr
+  $(DCC)
+
+FieldGroupMgr.dll: 系统管理\字段分组\FieldGroupMgr.dpr
+  $(DCC)
+
+AlarmContentMgr.dll: 系统管理\告警内容管理\AlarmContentMgr.dpr
+  $(DCC)
+
+RingMgr.dll: 系统管理\响铃设置\RingMgr.dpr
+  $(DCC)
+
+SysConfigMgr.dll: 系统管理\配置选项\SysConfigMgr.dpr
+  $(DCC)
+
+AlarmStateLookMgr.dll: 系统管理\告警状态查询\AlarmStateLookMgr.dpr
+  $(DCC)
+
+CompanyCheck.dll: 系统管理\维护单位勾选\CompanyCheck.dpr
+  $(DCC)
+
+AlarmSearchMgr.dll: 查询与报表\综合查询\AlarmSearchMgr.dpr
+  $(DCC)
+
+BreakSiteStat.dll: 查询与报表\断站率统计\BreakSiteStat.dpr
+  $(DCC)
+
+CapacityMonitor.dll: 查询与报表\断站率流量监控\CapacityMonitor.dpr
+  $(DCC)
+
+AlarmTrackerMgr.dll: 故障处理\故障监视\AlarmTrackerMgr.dpr
+  $(DCC)
+
+AlarmExceptMgr.dll: 故障处理\派障异常处理\AlarmExceptMgr.dpr
+  $(DCC)
+
+AlarmManpower.dll: 故障处理\干预派障\AlarmManpower.dpr
+  $(DCC)
+
+AlarmManualMgr.dll: 故障处理\人工派障\AlarmManualMgr.dpr
+  $(DCC)
+
+AlarmStayMgr.dll: 故障处理\疑难告警管理\AlarmStayMgr.dpr
+  $(DCC)
+
+RepeatAlarmMgr.dll: 故障处理\重复告警展现\RepeatAlarmMgr.dpr
+  $(DCC)
