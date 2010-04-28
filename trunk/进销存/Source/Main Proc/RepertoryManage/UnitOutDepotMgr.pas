@@ -388,7 +388,10 @@ begin
 end;
 
 procedure TFormOutDepotMgr.BtnGoodsSearchClick(Sender: TObject);
-begin  
+var
+  lkey: word;
+begin
+  lkey:= 13;
   with TFormGoodsSearch.Create(nil) do
   begin
     try
@@ -396,7 +399,7 @@ begin
       begin
         EdtBarCode.Text:= BarCode;
         EdtBarCode.SelectAll;
-//        EdtBarCode.OnKeyDown(nil,13,[]);
+        EdtBarCode.OnKeyDown(self,lkey,[]);
       end;
     finally
       Free;
@@ -405,7 +408,10 @@ begin
 end;
 
 procedure TFormOutDepotMgr.BtnCustomerSearchClick(Sender: TObject);
+var
+  lKey: Word;
 begin
+  lKey:= 13;
   with TFormCustomerSearch.Create(nil) do
   begin
     try
@@ -413,7 +419,7 @@ begin
       begin
         EdtCustomerID.Text:= CustomerID;
         EdtCustomerID.SelectAll;
-//        EdtBarCode.OnKeyDown(nil,13,[]);
+        EdtBarCode.OnKeyDown(Self,lKey,[]);
       end;
     finally
       Free;
