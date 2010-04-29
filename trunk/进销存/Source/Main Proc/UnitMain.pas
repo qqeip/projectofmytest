@@ -57,6 +57,7 @@ type
     NGoodsTypeMgr: TMenuItem;
     BtnBackup: TToolButton;
     btn2: TToolButton;
+    btn1: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -96,6 +97,7 @@ type
     procedure NInDepotChangeStatClick(Sender: TObject);
     procedure NGoodsTypeMgrClick(Sender: TObject);
     procedure BtnBackupClick(Sender: TObject);
+    procedure btn1Click(Sender: TObject);
   private
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
@@ -131,7 +133,8 @@ uses UnitLogIn, UnitPublicResourceManager, UnitResource,
   UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
   UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr,
-  UnitInDepotStat, UnitInDepotChangeStat, UnitGoodsTypeMgr;
+  UnitInDepotStat, UnitInDepotChangeStat, UnitGoodsTypeMgr,
+  UnitOutDepotStat, UnitRepertoryStat;
 
 {$R *.dfm}
 
@@ -453,7 +456,15 @@ end;
 
 procedure TFormMain.NRepertoryQueryClick(Sender: TObject);
 begin
-//
+  if not assigned(FormRepertoryStat) then
+  begin
+    FormRepertoryStat:=TFormRepertoryStat.Create(self);
+    AddToTab(FormRepertoryStat);
+  end
+  else
+    SetTabIndex(FormRepertoryStat);
+  FormRepertoryStat.WindowState:=wsMaximized;
+  FormRepertoryStat.Show;
 end;
 
 procedure TFormMain.NRepertoryStatClick(Sender: TObject);
@@ -502,7 +513,15 @@ end;
 
 procedure TFormMain.NOutDepotStatClick(Sender: TObject);
 begin
-//
+  if not assigned(FormOutDepotStat) then
+  begin
+    FormOutDepotStat:=TFormOutDepotStat.Create(self);
+    AddToTab(FormOutDepotStat);
+  end
+  else
+    SetTabIndex(FormOutDepotStat);
+  FormOutDepotStat.WindowState:=wsMaximized;
+  FormOutDepotStat.Show;
 end;
 
 procedure TFormMain.NCustomAnalyseClick(Sender: TObject);
@@ -684,12 +703,17 @@ end;
 
 procedure TFormMain.ToolBtnInDepotClick(Sender: TObject);
 begin
-//
+  NInDepotMgrClick(Self);
 end;
 
 procedure TFormMain.ToolBtnOutDepotClick(Sender: TObject);
 begin
-//
+  NOutDepotMgrClick(Self);
+end;
+
+procedure TFormMain.btn1Click(Sender: TObject);
+begin
+  NRepertoryQueryClick(Self);
 end;
 
 procedure TFormMain.NRestoreClick(Sender: TObject);

@@ -66,18 +66,25 @@ object FormMain: TFormMain
       Left = 0
       Top = 0
       Caption = #20837#24211#31649#29702
-      ImageIndex = 0
+      ImageIndex = 16
       OnClick = ToolBtnInDepotClick
     end
     object ToolBtnOutDepot: TToolButton
       Left = 67
       Top = 0
       Caption = #20986#24211#31649#29702
-      ImageIndex = 1
+      ImageIndex = 29
       OnClick = ToolBtnOutDepotClick
     end
-    object ToolButton2: TToolButton
+    object btn1: TToolButton
       Left = 134
+      Top = 0
+      Caption = #24211#23384#26597#35810
+      ImageIndex = 124
+      OnClick = btn1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 201
       Top = 0
       Width = 8
       Caption = 'ToolButton2'
@@ -85,14 +92,14 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object BtnBackup: TToolButton
-      Left = 142
+      Left = 209
       Top = 0
       Caption = #25968#25454#24211#22791#20221
-      ImageIndex = 2
+      ImageIndex = 63
       OnClick = BtnBackupClick
     end
     object btn2: TToolButton
-      Left = 209
+      Left = 276
       Top = 0
       Width = 8
       Caption = 'btn2'
@@ -100,10 +107,10 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object ToolBtnExit: TToolButton
-      Left = 217
+      Left = 284
       Top = 0
-      Caption = 'Exit'
-      ImageIndex = 1
+      Caption = #36864#20986#31995#32479
+      ImageIndex = 13
       OnClick = ToolBtnExitClick
     end
   end
