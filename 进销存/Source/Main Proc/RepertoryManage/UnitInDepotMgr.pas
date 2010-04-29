@@ -148,9 +148,15 @@ type
     AdoQuery, AdoEdit: TAdoquery;
     FCxGridHelper : TCxGridSet;
     IsRecordChanged: Boolean;
+    FSalePrice: Double; //商品销售价格
 
     procedure AddcxGridViewField;
     procedure LoadInDepotInfo;
+    //一种商品只能存在一个仓库中 返回库存编号来判断是否商品又存入其他仓库 返回-1表示无库存
+    function ISExitOtherRepertory(aGoodsID: Integer): Integer;
+    procedure GetSalePrice(aGoodsID: Integer);
+    //是否允许修改 如果此商品入库后有此商品的出库记录了 则不允许在进行修改删除操作了
+    function IsAllowModify(aGoodsID: Integer; aDateTime: TDateTime): Boolean;
   public
     { Public declarations }
   end;
@@ -187,10 +193,10 @@ procedure TFormInDepotMgr.FormClose(Sender: TObject;
 begin
   FormMain.RemoveForm(FormInDepotMgr);
 //  Action:= caFree;
-  ClearTStrings(CbbDepot.Properties.Items);
-  ClearTStrings(CbbGoodsType.Properties.Items);
-  ClearTStrings(CbbGoods.Properties.Items);
-  ClearTStrings(CbbInDepotType.Properties.Items);
+//  ClearTStrings(CbbDepot.Properties.Items);
+//  ClearTStrings(CbbGoodsType.Properties.Items);
+//  ClearTStrings(CbbGoods.Properties.Items);
+//  ClearTStrings(CbbInDepotType.Properties.Items);
 end;
 
 procedure TFormInDepotMgr.FormDestroy(Sender: TObject);
@@ -199,6 +205,33 @@ begin
 end;
 
 procedure TFormInDepotMgr.Btn_AddClick(Sender: TObject);
+var
+  lGoodsID, lRepertoty_DepotID: Integer;
+  lTotalNum: Integer;
+  lTotalMoney: Double;
+  procedure QueryRepertory(aGoodsID: Integer);
+  begin
+    lTotalNum:= 0;
+    lTotalMoney:= 0;
+    with TADOQuery.Create(nil) do
+    begin
+      try
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'select * from Repertory where GoodsID=' +
+                   IntToStr(aGoodsID) ;
+        Active:= True;
+        if not IsEmpty then
+        begin
+          lTotalNum:= FieldByName('GoodsNUM').AsInteger;
+          lTotalMoney:= FieldByName('GoodsAmount').AsFloat;
+        end;
+      finally
+        Free;
+      end;
+    end;
+  end;
 begin
   if CbbDepot.ItemIndex=-1 then
   begin
@@ -220,10 +253,25 @@ begin
     Application.MessageBox('请先选择入库类型！','提示',MB_OK+64);
     Exit;
   end;
+  lGoodsID:= GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items);
+  lRepertoty_DepotID:= ISExitOtherRepertory(lGoodsID);
+  if (lRepertoty_DepotID<>-1) and
+     (lRepertoty_DepotID<>GetItemCode(CbbDepot.Text, CbbDepot.Properties.Items)) then
+  begin
+    Application.MessageBox(PChar('一种商品只能存入一个仓库中，此商品在仓库' +
+                           IntToStr(lRepertoty_DepotID) +
+                           '中已存在，请存入同一个仓库！'),'提示',MB_OK+64);
+    Exit;
+  end;
+
+  GetSalePrice(lGoodsID); //查询出商品销售价格
+  if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
   try
     IsRecordChanged:= True;
+    DM.ADOConnection.BeginTrans;
     with AdoEdit do
     begin
+      //插入入库记录表
       Active:= False;
       Connection:= DM.ADOConnection;
       SQL.Clear;
@@ -237,28 +285,34 @@ begin
                  EdtNum.Text + ',' +
                  'cdate(''' + DateTimeToStr(Now) + ''')' +
                  ')';
-
-      {SQL.Text:= 'insert into InDepot(' +
-                 'DepotID,GoodsID, UserID, InDepotTypeID, InDepotNum, CreateTime) ' +
-                 'values(:DepotID,:GoodsID,:UserID,:InDepotTypeID,:InDepotNum,:CreateTime)';
-      Parameters.ParamByName('DepotID').DataType:= ftInteger;
-      Parameters.ParamByName('DepotID').Direction:=pdInput;
-      Parameters.ParamByName('GoodsID').DataType:= ftInteger;
-      Parameters.ParamByName('UserID').DataType:= ftInteger;
-      Parameters.ParamByName('InDepotTypeID').DataType:= ftInteger;
-      Parameters.ParamByName('InDepotNum').DataType:= ftString;
-      Parameters.ParamByName('CreateTime').DataType:= ftDateTime;
-
-      Parameters.ParamByName('DepotID').Value:= GetItemCode(CbbDepot.Text, CbbDepot.Items);
-      Parameters.ParamByName('GoodsID').Value:= GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items);
-      Parameters.ParamByName('UserID').Value:= CurUser.UserID;
-      Parameters.ParamByName('InDepotTypeID').Value:= GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items);
-      Parameters.ParamByName('InDepotNum').Value:= StrToInt(EdtNum.Text);
-      Parameters.ParamByName('CreateTime').Value:= Now; }
+      ExecSQL;
+      //修改库存表数量
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      if lRepertoty_DepotID=-1 then //如果此商品存在库存 则update
+        SQL.Text:= 'insert into Repertory(' +
+                   'DepotID,GoodsID, GoodsNUM, GoodsAmount) ' +
+                   'values(' +
+                   IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Properties.Items)) + ',' +
+                   IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items)) + ',' +
+                   EdtNum.Text + ',' +
+                   FloatToStr(StrToInt(EdtNum.Text)*FSalePrice) +
+                   ')'
+      else // 不存在库存 则insert
+      begin
+        QueryRepertory(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items));
+        lTotalNum:= lTotalNum + StrToInt(EdtNum.Text);
+        lTotalMoney:= lTotalMoney + StrToInt(EdtNum.Text)*FSalePrice;
+        SQL.Text:= 'update Repertory set ' +
+                   ' GoodsNUM=' + IntToStr(lTotalNum) + ',' +
+                   ' GoodsAmount=' + FloatToStr(lTotalMoney);
+      end;
       ExecSQL;
     end;
     IsRecordChanged:= False;
     LoadInDepotInfo;
+    DM.ADOConnection.CommitTrans;
     Application.MessageBox('新增成功！','提示',MB_OK+64);
   except
     Application.MessageBox('新增失败！','提示',MB_OK+64);
@@ -266,6 +320,8 @@ begin
 end;
 
 procedure TFormInDepotMgr.Btn_ModifyClick(Sender: TObject);
+var
+  lDiffNum: Integer;
 begin
   if CbbDepot.ItemIndex=-1 then
   begin
@@ -282,6 +338,12 @@ begin
     Application.MessageBox('请先选择入库类型！','提示',MB_OK+64);
     Exit;
   end;
+  if not IsAllowModify(AdoQuery.FieldByName('GoodsID').AsInteger,AdoQuery.FieldByName('CreateTime').AsDateTime) then
+  begin
+    Application.MessageBox('此商品已有出库记录，不再允许修改删除操作！','提示',MB_OK+64);
+    Exit;
+  end;
+  GetSalePrice(AdoQuery.FieldByName('GoodsID').AsInteger);
   if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
   try
     IsRecordChanged:= True;
@@ -323,6 +385,16 @@ begin
                  'ModifyTime=cdate(''' + DateTimeToStr(Now) + ''')' +
                  ' where ID=' + AdoQuery.FieldByName('ID').AsString;
       ExecSQL;
+      //修改入库记录后 在修改库存数量
+      lDiffNum:= AdoQuery.FieldByName('InDepotNum').AsInteger-StrToInt(EdtNum.Text);
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'update Repertory set ' +
+                 'GoodsNUM=GoodsNUM-' + IntToStr(lDiffNum) + ',' +
+                 'GoodsAmount= GoodsAmount-' + FloatToStr(lDiffNum * FSalePrice) +
+                 ' where GoodsID=' + IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items));
+      ExecSQL;
     end;
     IsRecordChanged:= False;
     LoadInDepotInfo;
@@ -337,7 +409,14 @@ end;
 procedure TFormInDepotMgr.Btn_DeleteClick(Sender: TObject);
 var
   lSqlStr: string;
+  lNum: Integer;
 begin
+  if not IsAllowModify(AdoQuery.FieldByName('GoodsID').AsInteger,AdoQuery.FieldByName('CreateTime').AsDateTime) then
+  begin
+    Application.MessageBox('此商品已有出库记录，不再允许修改删除操作！','提示',MB_OK+64);
+    Exit;
+  end;
+  GetSalePrice(AdoQuery.FieldByName('GoodsID').AsInteger);
   if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
   try
     DM.ADOConnection.BeginTrans;
@@ -366,6 +445,17 @@ begin
       Connection:= DM.ADOConnection;
       SQL.Clear;
       lSqlStr:= 'delete from InDepot where ID=' + AdoQuery.FieldByName('ID').AsString;
+      SQL.Add(lSqlStr);
+      ExecSQL;
+      //删除后更新库存数量
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      lNum:= AdoQuery.FieldByName('InDepotNum').AsInteger;
+      lSqlStr:= 'update Repertory set ' +
+                 'GoodsNUM=GoodsNUM-' + IntToStr(lNum) + ',' +
+                 'GoodsAmount= GoodsAmount-' + FloatToStr(lNum * FSalePrice) +
+                 ' where GoodsID=' + AdoQuery.FieldByName('GoodsID').AsString;
       SQL.Add(lSqlStr);
       ExecSQL;
     end;
@@ -525,6 +615,74 @@ begin
   end
   else
     SetItemCode('Goods', 'GoodsID', 'GoodsName', ' ', CbbGoods.Properties.Items);
+end;
+
+function TFormInDepotMgr.ISExitOtherRepertory(aGoodsID: Integer): Integer;
+begin
+  Result:= -1;
+  with TAdoQuery.Create(nil) do
+  begin
+    try
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'select * from Repertory where GoodsID=' +
+                 IntToStr(aGoodsID) ;
+      Active:= True;
+      if IsEmpty then
+        Result:= -1
+      else
+        Result:= FieldByName('DepotID').AsInteger;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TFormInDepotMgr.GetSalePrice(aGoodsID: Integer);
+begin
+  FSalePrice:= 0;
+  with TADOQuery.Create(nil) do
+  begin
+    try
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'select * from Goods where GoodsID=' +
+                 IntToStr(aGoodsID) ;
+      Active:= True;
+      if not IsEmpty then
+        FSalePrice:= FieldByName('SalePrice').AsFloat;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+function TFormInDepotMgr.IsAllowModify(aGoodsID: Integer;
+  aDateTime: TDateTime): Boolean;
+begin
+  Result:= False;
+  with TADOQuery.Create(nil) do
+  begin
+    try
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'select * from OutDepotDetails where GoodsID=' +
+                 IntToStr(aGoodsID) +
+                 ' and CreateTime>=' +
+                 'cdate(''' + DateTimeToStr(aDateTime) + ''')';
+      Active:= True;
+      if IsEmpty then
+        Result:= True
+      else
+        Result:= False;
+    finally
+      Free;
+    end;
+  end;
+
 end;
 
 end.

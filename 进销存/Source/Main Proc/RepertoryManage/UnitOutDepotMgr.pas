@@ -8,7 +8,8 @@ uses
   cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls, ADODB, Grids, CxGridUnit,
-  DBGrids, UnitRepertoryManager;
+  DBGrids, UnitRepertoryManager, ppBands, ppClass, ppCtrls, ppVar,
+  ppPrnabl, ppCache, ppProd, ppReport, ppComm, ppRelatv, ppDB, ppDBPipe;
 
 type
   TFormOutDepotMgr = class(TForm)
@@ -62,6 +63,35 @@ type
     cxGridHistoryDetailTableView1: TcxGridDBTableView;
     cxGridHistoryLevel1: TcxGridLevel;
     cxGridHistoryLevel2: TcxGridLevel;
+    ppDBPipeline: TppDBPipeline;
+    ppReport: TppReport;
+    ppHeaderBand2: TppHeaderBand;
+    ppLabel19: TppLabel;
+    ppLabel20: TppLabel;
+    ppSystemVariable4: TppSystemVariable;
+    ppLabel21: TppLabel;
+    ppLabel22: TppLabel;
+    ppSystemVariable5: TppSystemVariable;
+    ppLabel23: TppLabel;
+    ppLabel25: TppLabel;
+    ppLabel27: TppLabel;
+    ppLabel29: TppLabel;
+    ppLabel31: TppLabel;
+    ppDetailBand2: TppDetailBand;
+    ppDBText16: TppDBText;
+    ppDBText18: TppDBText;
+    ppDBText20: TppDBText;
+    ppDBText22: TppDBText;
+    ppFooterBand2: TppFooterBand;
+    ppSummaryBand2: TppSummaryBand;
+    ppDBCalc8: TppDBCalc;
+    ppDBCalc9: TppDBCalc;
+    ppLine65: TppLine;
+    ppLabel35: TppLabel;
+    ChkIsPrint: TCheckBox;
+    ppLine1: TppLine;
+    ppLabel33: TppLabel;
+    ppSystemVariable6: TppSystemVariable;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -119,7 +149,7 @@ begin
   FAdoQueryHistory:= TADOQuery.Create(Self);
   FAdoQueryHistoryDetail:= TADOQuery.Create(Self);
   FAdoEdit:= TADOQuery.Create(Self);
-  SetItemCode('OutDepotType', 'OutDepotTypeID', 'OutDepotTypeNAME', '', CbbOutDepotType.Items);
+  SetItemCode('OutDepotType', 'OutDepotTypeID', 'OutDepotTypeNAME', ' where OutDepotTypeID<>1004', CbbOutDepotType.Items);
 
   FCxGridHelper:=TCxGridSet.Create;
   FCxGridHelper.SetGridStyle(cxGridDetails,true,false,true);
@@ -238,9 +268,12 @@ begin
     Exit;
   end;
 
-  with FAdoEdit do
-  begin
-    try
+  if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
+  try
+    DM.ADOConnection.BeginTrans;
+    with FAdoEdit do
+    begin
+    
       Active:= False;
       Connection:= DM.ADOConnection;
       SQL.Clear;
@@ -286,37 +319,34 @@ begin
       //计算库存剩余数量
       for i:= 0 to FRepertoryMgr.GetCount-1 do
       begin
-//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID;
-//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).TotalNum;
-//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).SalePrice;
-//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum;
-//        TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastMoney;
-        with FAdoEdit do
-        begin
-          try
-            Active:= False;
-            Connection:= DM.ADOConnection;
-            SQL.Clear;
-            if TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum=0 then
-              SQL.Text:= 'delete from Repertory' +
-                         ' Where GoodsID=' +
-                          IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID)
-            else
-              SQL.Text:= 'update Repertory set GoodsNUM=' +
-                          IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum) + ',' +
-                         'GoodsAmount=' +
-                          FloatToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum*TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).SalePrice) +
-                         ' Where GoodsID=' +
-                          IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID);
-            ExecSQL;
-          finally
-          end;
+        try
+          Active:= False;
+          Connection:= DM.ADOConnection;
+          SQL.Clear;
+          if TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum=0 then
+            SQL.Text:= 'delete from Repertory' +
+                       ' Where GoodsID=' +
+                        IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID)
+          else
+            SQL.Text:= 'update Repertory set GoodsNUM=' +
+                        IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum) + ',' +
+                       'GoodsAmount=' +
+                        FloatToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).LastNum*TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).SalePrice) +
+                       ' Where GoodsID=' +
+                        IntToStr(TRepertory(FRepertoryMgr.RepertoryList.Objects[i]).GoodsID);
+          ExecSQL;
+        finally
         end;
       end;
+      DM.ADOConnection.CommitTrans;
       FreeAndNil(FrepertoryMgr);
       Application.MessageBox('结算完成！','提示',MB_OK+64);
-    finally
+      if ChkIsPrint.Checked then
+      begin
+        ppReport.Print;
+      end;
     end;
+  finally
   end;
 end;
 
