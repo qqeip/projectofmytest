@@ -29,7 +29,10 @@ uses
   UnitInDepotChangeStat in 'RepertoryManage\UnitInDepotChangeStat.pas' {FormInDepotChangeStat},
   UnitGoodsTypeMgr in 'BasicInfoMgr\UnitGoodsTypeMgr.pas' {FormGoodsTypeMgr},
   UnitGoodsSearch in 'RepertoryManage\UnitGoodsSearch.pas' {FormGoodsSearch},
-  UnitCustomerSearch in 'RepertoryManage\UnitCustomerSearch.pas' {FormCustomerSearch};
+  UnitCustomerSearch in 'RepertoryManage\UnitCustomerSearch.pas' {FormCustomerSearch},
+  UnitRepertoryManager in '..\Common\UnitRepertoryManager.pas',
+  UnitRepertoryStat in 'RepertoryManage\UnitRepertoryStat.pas' {FormRepertoryStat},
+  UnitOutDepotStat in 'RepertoryManage\UnitOutDepotStat.pas' {FormOutDepotStat};
 
 {$R *.res}
 var

@@ -2,7 +2,7 @@ unit UnitPublic;
 
 interface
 
-uses Classes, SysUtils, cxGridDBTableView, cxGridTableView, cxTreeView, cxDataStorage, ADODB;
+uses Classes, SysUtils, cxGridDBTableView, cxGridTableView, cxTreeView, cxDataStorage, ADODB, IniFiles;
 
 type
   TItemObj = class
@@ -13,6 +13,19 @@ type
   published
     property FieldID: Integer read FFieldID write FFieldID;
   end;
+
+type
+  TIniOptions = class(TObject)
+  private
+
+  public
+    procedure LoadSettings(Ini: TIniFile);
+    procedure SaveSettings(Ini: TIniFile);
+
+    procedure LoadFromFile(const FileName: string);
+    procedure SaveToFile(const FileName: string);
+end;
+
   
   //¸øcxGrid¼Ó×Ö¶Î
   procedure AddViewField(aView : TcxGridDBTableView;aFieldName, aCaption : String; aWidth: integer=65);overload;
@@ -25,7 +38,7 @@ type
   
 implementation
 
-uses UnitDataModule;
+uses UnitDataModule, UnitPublicResourceManager, UnitResource;
 
    { TItemObj }
 constructor TItemObj.Create(aFieldID: Integer);
@@ -33,6 +46,50 @@ begin
   FFieldID:= aFieldID;
 end;
 
+{ TIniOptions }
+
+procedure TIniOptions.LoadFromFile(const FileName: string);
+var
+  Ini: TIniFile;
+begin
+  if FileExists(FileName) then
+  begin
+    Ini := TIniFile.Create(FileName);
+    try
+      LoadSettings(Ini);
+    finally
+      Ini.Free;
+    end;
+  end;
+end;
+
+procedure TIniOptions.LoadSettings(Ini: TIniFile);
+begin
+  if Ini <> nil then
+  begin
+    CurBackUPDir  := Ini.ReadString(sIniSectionName,sIniFilePath,'');
+  end;
+end;
+
+procedure TIniOptions.SaveSettings(Ini: TIniFile);
+begin
+  if Ini <> nil then
+  begin
+    Ini.WriteString(sIniSectionName,sIniFilePath,CurBackUPDir);
+  end;
+end;
+
+procedure TIniOptions.SaveToFile(const FileName: string);
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(FileName);
+  try
+    SaveSettings(Ini);
+  finally
+    Ini.Free;
+  end;
+end;
 
   procedure AddViewField(aView : TcxGridDBTableView;aFieldName, aCaption : String; aWidth: integer=65);overload;
   begin

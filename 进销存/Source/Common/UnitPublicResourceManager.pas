@@ -11,6 +11,7 @@ uses
 
 var
   CurUser: TUser;
+  CurBackUPDir: string;
 
   procedure initAllScreenAndFormResources;
   procedure freeAllScreenAndFormResources;

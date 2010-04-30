@@ -24,6 +24,10 @@ resourcestring
   sDeveloperTelephone = '15068719265';
   sHelpFileName = 'Help.chm';
 
+  sIniSectionName = 'BackUpDirSec';
+  sIniFilePath = 'BackUpDirPath';
+  sIniFileName = 'ConfigInfo.ini';
+
 const
   sDispFontSize =8;
   sDispCharset  =DEFAULT_CHARSET;// ANSI_CHARSET;
