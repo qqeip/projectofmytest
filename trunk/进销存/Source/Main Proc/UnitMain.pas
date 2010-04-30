@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, WinSkinData, cxGraphics, ImgList, ComCtrls, ToolWin,
-  cxControls, dxStatusBar, ExtCtrls, ShellAPI, Tabs;
+  cxControls, dxStatusBar, ExtCtrls, ShellAPI, Tabs, FileCtrl, UnitPublic;
 
 type
   TFormMain = class(TForm)
@@ -99,6 +99,7 @@ type
     procedure BtnBackupClick(Sender: TObject);
     procedure btn1Click(Sender: TObject);
   private
+    IniOptions : TIniOptions;
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
     procedure SetTabIndex(Form: TForm);
@@ -130,7 +131,7 @@ implementation
 
 uses UnitLogIn, UnitPublicResourceManager, UnitResource,
      UnitUserManager, UnitAbout, UnitDataModule, UnitDepotInfoMgr,
-  UnitPublic, UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
+  UnitAssociatorTypeMgr, UnitProviderMgr, UnitCustomerMgr,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
   UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr,
   UnitInDepotStat, UnitInDepotChangeStat, UnitGoodsTypeMgr,
@@ -154,6 +155,7 @@ begin
   Font.Charset :=sDispCharset;
 
   CurUser.LonInType:= 1;
+  IniOptions.LoadFromFile(ExtractFilePath(Application.ExeName)+sIniFileName);
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -787,8 +789,19 @@ begin
 end;
 
 procedure TFormMain.BtnBackupClick(Sender: TObject);
+var
+  lOldFile, TempStr: string;
 begin
-//
+  if selectdirectory('请选择目录',PChar(CurBackUPDir),TempStr) then
+  begin
+    CurBackUPDir:= TempStr;
+    IniOptions.SaveToFile(ExtractFilePath(Application.ExeName)+sIniFileName);
+    lOldFile:= ExtractFilePath(ParamStr(0)) + 'Data\Stockpile System.mdb';
+    if CopyFile(PChar(lOldFile),PChar(CurBackUPDir + '\Backup' + DateToStr(Now) + '.mdb'), False) then
+      Application.MessageBox('数据备份成功！','提示',MB_OK)
+    else
+      Application.MessageBox('数据备份失败！','提示',MB_OK)
+  end;
 end;
 
 end.
