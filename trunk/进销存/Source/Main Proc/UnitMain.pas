@@ -32,7 +32,7 @@ type
     NAssociatorTypeInfoMgr: TMenuItem;
     NProviderInfoMgr: TMenuItem;
     NCustomerInfoMgr: TMenuItem;
-    NGoodsTypeInfoMgr: TMenuItem;
+    NGoodsMgr: TMenuItem;
     NInDepotTypeMgr: TMenuItem;
     NOutDepotTypeMgr: TMenuItem;
     SystemStatusBar: TdxStatusBar;
@@ -57,7 +57,9 @@ type
     NGoodsTypeMgr: TMenuItem;
     BtnBackup: TToolButton;
     btn2: TToolButton;
-    btn1: TToolButton;
+    BtnRepertoryQuery: TToolButton;
+    NSalaryMgr: TMenuItem;
+    NAttendanceMgr: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -70,7 +72,7 @@ type
     procedure NAssociatorTypeInfoMgrClick(Sender: TObject);
     procedure NProviderInfoMgrClick(Sender: TObject);
     procedure NCustomerInfoMgrClick(Sender: TObject);
-    procedure NGoodsTypeInfoMgrClick(Sender: TObject);
+    procedure NGoodsMgrClick(Sender: TObject);
     procedure NInDepotTypeMgrClick(Sender: TObject);
     procedure NOutDepotTypeMgrClick(Sender: TObject);
     procedure NRepertoryQueryClick(Sender: TObject);
@@ -97,7 +99,9 @@ type
     procedure NInDepotChangeStatClick(Sender: TObject);
     procedure NGoodsTypeMgrClick(Sender: TObject);
     procedure BtnBackupClick(Sender: TObject);
-    procedure btn1Click(Sender: TObject);
+    procedure BtnRepertoryQueryClick(Sender: TObject);
+    procedure NSalaryMgrClick(Sender: TObject);
+    procedure NAttendanceMgrClick(Sender: TObject);
   private
     IniOptions : TIniOptions;
     procedure CheckUserRights(aRights: string);
@@ -135,7 +139,8 @@ uses UnitLogIn, UnitPublicResourceManager, UnitResource,
   UnitGoodsMgr, UnitInDepotTypeMgr, UnitOutDepotTypeMgr, UnitUserManage,
   UnitChangePWD, UnitLockSystem, UnitInDepotMgr, UnitOutDepotMgr,
   UnitInDepotStat, UnitInDepotChangeStat, UnitGoodsTypeMgr,
-  UnitOutDepotStat, UnitRepertoryStat;
+  UnitOutDepotStat, UnitRepertoryStat, UnitSalaryMgr, UnitAttendanceMgr,
+  UnitBalanceAnalyse;
 
 {$R *.dfm}
 
@@ -178,6 +183,7 @@ begin
             SystemStatusBar.Panels.Items[0].Text:= sStatusVersionStr + sVersion;
             SystemStatusBar.Panels.Items[1].Text:= sStatusUserStr + CurUser.UserName;
             NOutDepotMgrClick(Sender);
+            OnWorkRegister;
             Break;
           end
           else
@@ -245,6 +251,7 @@ begin
   begin
     CanClose:= True;
     CurUser.LonInType:= 2;
+    OffWorkRegister;
   end;
     Exit;
   end
@@ -263,16 +270,22 @@ begin
   NAssociatorTypeInfoMgr.Visible := False;
   NProviderInfoMgr.Visible := False;
   NCustomerInfoMgr.Visible := False;
-  NGoodsTypeInfoMgr.Visible := False;
+  NGoodsTypeMgr.Visible := False;
+  NGoodsMgr.Visible := False;
+  NInDepotTypeMgr.Visible := False;
   NOutDepotTypeMgr.Visible := False;
 
   NRepertoryQuery.Visible := False;
+  BtnRepertoryQuery.Visible:= False;//库存查询按钮
   NRepertoryStat.Visible := False;
 
   NInDepotMgr.Visible := False;
+  ToolBtnInDepot.Visible:= False;//入库按钮
   NInDepotStat.Visible := False;
+  NInDepotChangeStat.Visible := False;
 
   NOutDepotMgr.Visible := False;
+  ToolBtnOutDepot.Visible:= False; //出库按钮
   NOutDepotStat.Visible := False;
 
   NCustomAnalyse.Visible := False;
@@ -283,6 +296,8 @@ begin
   NUserChangePass.Visible := False;
   NSystemLock.Visible := False;
   NLogOut.Visible := False;
+  NSalaryMgr.Visible := False;
+  NAttendanceMgr.Visible := False;
 
   for iIndex :=1 to Length(aRights) do
   begin
@@ -295,53 +310,71 @@ begin
     else if UpperCase(Copy(aRights,iIndex,1)) = 'D' then
       NCustomerInfoMgr.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'E' then
-      NGoodsTypeInfoMgr.Visible := True
+      NGoodsTypeMgr.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'F' then
-      NInDepotTypeMgr.Visible := True
+      NGoodsMgr.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'G' then
+      NInDepotTypeMgr.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'H' then
       NOutDepotTypeMgr.Visible := True
 
-    else if UpperCase(Copy(aRights,iIndex,1)) = 'H' then
-      NRepertoryQuery.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'I' then
+    begin
+      NRepertoryQuery.Visible := True;
+      BtnRepertoryQuery.Visible := True;
+    end
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'J' then
       NRepertoryStat.Visible := True
 
-    else if UpperCase(Copy(aRights,iIndex,1)) = 'J' then
-      NInDepotMgr.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'K' then
-      NInDepotStat.Visible := True
-
+    begin
+      NInDepotMgr.Visible := True;
+      ToolBtnInDepot.Visible := True;
+    end
     else if UpperCase(Copy(aRights,iIndex,1)) = 'L' then
-      NOutDepotMgr.Visible := True
+      NInDepotStat.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'M' then
-      NOutDepotStat.Visible := True
+      NInDepotChangeStat.Visible := True
 
     else if UpperCase(Copy(aRights,iIndex,1)) = 'N' then
-      NCustomAnalyse.Visible := True
+    begin
+      NOutDepotMgr.Visible := True;
+      ToolBtnOutDepot.Visible := True;
+    end
     else if UpperCase(Copy(aRights,iIndex,1)) = 'O' then
-      NBalanceAnalyse.Visible := True
+      NOutDepotStat.Visible := True
+
     else if UpperCase(Copy(aRights,iIndex,1)) = 'P' then
+      NCustomAnalyse.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'Q' then
+      NBalanceAnalyse.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'R' then
       NRepertoryAnalyse.Visible := True
 
-    else if UpperCase(Copy(aRights,iIndex,1)) = 'Q' then
-      NUserMgr.Visible := True
-    else if UpperCase(Copy(aRights,iIndex,1)) = 'R' then
-      NUserChangePass.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'S' then
-      NSystemLock.Visible := True
+      NUserMgr.Visible := True
     else if UpperCase(Copy(aRights,iIndex,1)) = 'T' then
-      NLogOut.Visible := True;
+      NUserChangePass.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'U' then
+      NSystemLock.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'V' then
+      NLogOut.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'W' then
+      NSalaryMgr.Visible := True
+    else if UpperCase(Copy(aRights,iIndex,1)) = 'X' then
+      NAttendanceMgr.Visible := True;
   end;
 
   if (not NDepotInfoMgr.Visible) and (not NAssociatorTypeInfoMgr.Visible) and
      (not NProviderInfoMgr.Visible) and (not NCustomerInfoMgr.Visible) and
-     (not NGoodsTypeInfoMgr.Visible) and (not NOutDepotTypeMgr.Visible) then
+     (not NGoodsTypeMgr.Visible) and (not NGoodsMgr.Visible) and
+     (not NInDepotTypeMgr.Visible) and (not NOutDepotTypeMgr.Visible) then
     MenuInformationMgr.Visible:= False;
 
   if (not NRepertoryQuery.Visible) and (not NRepertoryStat.Visible) then
     MenuRepertoryMgr.Visible:= False;
 
-  if (not NInDepotMgr.Visible) and (not NInDepotStat.Visible) then
+  if (not NInDepotMgr.Visible) and (not NInDepotStat.Visible) and (not NInDepotChangeStat.Visible) then
     MenuInDepotMgr.Visible:= False;
 
   if (not NOutDepotMgr.Visible) and (not NOutDepotStat.Visible) then
@@ -350,7 +383,9 @@ begin
   if (not NCustomAnalyse.Visible) and (not NBalanceAnalyse.Visible) and (not NRepertoryAnalyse.Visible) then
     MenuDataAnalyse.Visible:= False;
 
-  if (not NUserMgr.Visible) and (not NUserChangePass.Visible) and (not NSystemLock.Visible) and (not NLogOut.Visible) then
+  if (not NUserMgr.Visible) and (not NUserChangePass.Visible) and
+     (not NSystemLock.Visible) and (not NLogOut.Visible) and
+     (not NSalaryMgr.Visible) and (not NAttendanceMgr.Visible) then
     MenuUserMgr.Visible:= False;
 end;
 
@@ -420,7 +455,7 @@ begin
   end;
 end;
 
-procedure TFormMain.NGoodsTypeInfoMgrClick(Sender: TObject);
+procedure TFormMain.NGoodsMgrClick(Sender: TObject);
 begin
   with TFormGoodsMgr.Create(nil) do
   begin
@@ -533,7 +568,14 @@ end;
 
 procedure TFormMain.NBalanceAnalyseClick(Sender: TObject);
 begin
-//
+  with TFormBalanceAnalyse.Create(nil) do
+  begin
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 procedure TFormMain.NRepertoryAnalyseClick(Sender: TObject);
@@ -647,9 +689,34 @@ end;
 
 procedure TFormMain.NLogOutClick(Sender: TObject);
 begin
-  CurUser.LonInType:= 3;
-  Self.Hide;
-  Self.Show;
+//  CurUser.LonInType:= 3;
+//  Self.Hide;
+//  Self.Show;
+
+end;
+
+procedure TFormMain.NSalaryMgrClick(Sender: TObject);
+begin
+  with TFormSalaryMgr.Create(nil) do
+  begin
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TFormMain.NAttendanceMgrClick(Sender: TObject);
+begin
+  with TFormAttendanceMgr.Create(nil) do
+  begin
+    try
+      ShowModal;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 procedure TFormMain.NHelpClick(Sender: TObject);
@@ -713,7 +780,7 @@ begin
   NOutDepotMgrClick(Self);
 end;
 
-procedure TFormMain.btn1Click(Sender: TObject);
+procedure TFormMain.BtnRepertoryQueryClick(Sender: TObject);
 begin
   NRepertoryQueryClick(Self);
 end;

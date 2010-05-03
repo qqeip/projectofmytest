@@ -27,7 +27,7 @@ type
     CHKAssociatorTypeInfoMgr: TCheckBox;
     CHKProviderInfoMgr: TCheckBox;
     CHKCustomerInfoMgr: TCheckBox;
-    CHKGoodsTypeInfo: TCheckBox;
+    ChkGoodsTypeInfoMgr: TCheckBox;
     CHKInDepotTypeMgr: TCheckBox;
     CHKOutDepotTypeMgr: TCheckBox;
     GRPInDepotMgr: TGroupBox;
@@ -46,7 +46,9 @@ type
     CHKSystemLock: TCheckBox;
     CHKLogOut: TCheckBox;
     ChkInDepotChangeStat: TCheckBox;
-    ChkOutDepotChangeStat: TCheckBox;
+    ChkGoodsInfoMgr: TCheckBox;
+    ChkSalaryMgr: TCheckBox;
+    ChkAttendanceMgr: TCheckBox;
     procedure cbbUserLevelChange(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
@@ -103,47 +105,50 @@ begin
       else if UpperCase(Copy(aRights,iIndex,1)) = 'D' then
         Dlg.CHKCustomerInfoMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'E' then
-        Dlg.CHKGoodsTypeInfo.Checked := True
+        Dlg.CHKGoodsTypeInfoMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'F' then
-        Dlg.CHKInDepotTypeMgr.Checked := True
+        Dlg.ChkGoodsInfoMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'G' then
+        Dlg.CHKInDepotTypeMgr.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'H' then
         Dlg.CHKOutDepotTypeMgr.Checked := True
 
-      else if UpperCase(Copy(aRights,iIndex,1)) = 'H' then
-        Dlg.CHKRepertoryQuery.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'I' then
+        Dlg.CHKRepertoryQuery.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'J' then
         Dlg.CHKRepertoryStat.Checked := True
 
-      else if UpperCase(Copy(aRights,iIndex,1)) = 'J' then
-        Dlg.CHKInDepotMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'K' then
-        Dlg.CHKInDepotStat.Checked := True
-
+        Dlg.CHKInDepotMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'L' then
-        Dlg.CHKOutDepotMgr.Checked := True
+        Dlg.CHKInDepotStat.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'M' then
-        Dlg.CHKOutDepotStat.Checked := True
+        Dlg.ChkInDepotChangeStat.Checked := True
 
       else if UpperCase(Copy(aRights,iIndex,1)) = 'N' then
-        Dlg.CHKCustomAnalyse.Checked := True
+        Dlg.CHKOutDepotMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'O' then
-        Dlg.CHKBalanceAnalyse.Checked := True
+        Dlg.CHKOutDepotStat.Checked := True
+
       else if UpperCase(Copy(aRights,iIndex,1)) = 'P' then
+        Dlg.CHKCustomAnalyse.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'Q' then
+        Dlg.CHKBalanceAnalyse.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'R' then
         Dlg.CHKRepertoryAnalyse.Checked := True
 
-      else if UpperCase(Copy(aRights,iIndex,1)) = 'Q' then
-        Dlg.CHKUserMgr.Checked := True
-      else if UpperCase(Copy(aRights,iIndex,1)) = 'R' then
-        Dlg.CHKUserChangePass.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'S' then
-        Dlg.CHKSystemLock.Checked := True
+        Dlg.CHKUserMgr.Checked := True
       else if UpperCase(Copy(aRights,iIndex,1)) = 'T' then
+        Dlg.CHKUserChangePass.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'U' then
+        Dlg.CHKSystemLock.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'V' then
         Dlg.CHKLogOut.Checked := True
-      //后加功能
-      else if UpperCase(Copy(aRights,iIndex,1)) = 'O' then
-        Dlg.ChkInDepotChangeStat.Checked := True
-      else if UpperCase(Copy(aRights,iIndex,1)) = 'P' then
-        Dlg.ChkOutDepotChangeStat.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'W' then
+        Dlg.CHKSalaryMgr.Checked := True
+      else if UpperCase(Copy(aRights,iIndex,1)) = 'X' then
+        Dlg.CHKAttendanceMgr.Checked := True
     end;
 
     if Dlg.ShowModal = mrOk then begin
@@ -157,48 +162,52 @@ begin
         aRights := aRights + 'C';
       if Dlg.CHKCustomerInfoMgr.Checked then
         aRights := aRights + 'D';
-      if Dlg.CHKGoodsTypeInfo.Checked then
+      if Dlg.ChkGoodsTypeInfoMgr.Checked then
         aRights := aRights + 'E';
-      if Dlg.CHKInDepotTypeMgr.Checked then
+      if Dlg.ChkGoodsInfoMgr.Checked then
         aRights := aRights + 'F';
-      if Dlg.CHKOutDepotTypeMgr.Checked then
+      if Dlg.CHKInDepotTypeMgr.Checked then
         aRights := aRights + 'G';
+      if Dlg.CHKOutDepotTypeMgr.Checked then
+        aRights := aRights + 'H';
 
       if Dlg.CHKRepertoryQuery.Checked then
-        aRights := aRights + 'H';
-      if Dlg.CHKRepertoryStat.Checked then
         aRights := aRights + 'I';
+      if Dlg.CHKRepertoryStat.Checked then
+        aRights := aRights + 'J';
 
       if Dlg.CHKInDepotMgr.Checked then
-        aRights := aRights + 'J';
-      if Dlg.CHKInDepotStat.Checked then
         aRights := aRights + 'K';
-
-      if Dlg.CHKOutDepotMgr.Checked then
+      if Dlg.CHKInDepotStat.Checked then
         aRights := aRights + 'L';
-      if Dlg.CHKOutDepotStat.Checked then
+      if Dlg.ChkInDepotChangeStat.Checked then
         aRights := aRights + 'M';
 
-      if Dlg.CHKCustomAnalyse.Checked then
+      if Dlg.CHKOutDepotMgr.Checked then
         aRights := aRights + 'N';
-      if Dlg.CHKBalanceAnalyse.Checked then
+      if Dlg.CHKOutDepotStat.Checked then
         aRights := aRights + 'O';
-      if Dlg.CHKRepertoryAnalyse.Checked then
+
+      if Dlg.CHKCustomAnalyse.Checked then
         aRights := aRights + 'P';
+      if Dlg.CHKBalanceAnalyse.Checked then
+        aRights := aRights + 'Q';
+      if Dlg.CHKRepertoryAnalyse.Checked then
+        aRights := aRights + 'R';
 
       if Dlg.CHKUserMgr.Checked then
-        aRights := aRights + 'Q';
-      if Dlg.CHKUserChangePass.Checked then
-        aRights := aRights + 'R';
-      if Dlg.CHKSystemLock.Checked then
         aRights := aRights + 'S';
-      if Dlg.CHKLogOut.Checked then
+      if Dlg.CHKUserChangePass.Checked then
         aRights := aRights + 'T';
-      //后加功能
-      if Dlg.ChkInDepotChangeStat.Checked then
-        aRights := aRights + 'O';
-      if Dlg.ChkOutDepotChangeStat.Checked then
-        aRights := aRights + 'P';
+      if Dlg.CHKSystemLock.Checked then
+        aRights := aRights + 'U';
+      if Dlg.CHKLogOut.Checked then
+        aRights := aRights + 'V';
+      if Dlg.ChkSalaryMgr.Checked then
+        aRights := aRights + 'W';
+      if Dlg.ChkAttendanceMgr.Checked then
+        aRights := aRights + 'X';
+
 
       case aOperate of
         eumAdd: lSqlStr:= 'insert into User(UserName,UserPWD,UserType,UserRights) values(:Name,:PWD,:Type,:Rights)';
@@ -283,14 +292,15 @@ begin
   end;
   if cbbUserLevel.ItemIndex=1 then
   begin
-    for i:=0 to GRPInDepotMgr.ControlCount -1 do
-      if (GRPInDepotMgr.Controls[i] is TCheckBox) then
-        (GRPInDepotMgr.Controls[i] as TCheckBox).Checked:= True;
+//    for i:=0 to GRPInDepotMgr.ControlCount -1 do
+//      if (GRPInDepotMgr.Controls[i] is TCheckBox) then
+//        (GRPInDepotMgr.Controls[i] as TCheckBox).Checked:= True;
     for i:=0 to GRPOutDepotMgr.ControlCount -1 do
       if (GRPOutDepotMgr.Controls[i] is TCheckBox) then
         (GRPOutDepotMgr.Controls[i] as TCheckBox).Checked:= True;
+    CHKUserChangePass.Checked:= True;
     CHKSystemLock.Checked:= True;
-    CHKLogOut.Checked:= True;
+//    CHKLogOut.Checked:= True;
   end;
 end;
 

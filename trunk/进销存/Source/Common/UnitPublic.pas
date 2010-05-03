@@ -2,7 +2,8 @@ unit UnitPublic;
 
 interface
 
-uses Classes, SysUtils, cxGridDBTableView, cxGridTableView, cxTreeView, cxDataStorage, ADODB, IniFiles;
+uses Classes, SysUtils, cxGridDBTableView, cxGridTableView, cxTreeView, cxDataStorage,
+     ADODB, IniFiles, DateUtils;
 
 type
   TItemObj = class
@@ -35,6 +36,9 @@ end;
   function IsExistID(aFieldID, aTableName, aFieldValue: string): Boolean; //添加、修改操作时-判断编号是否已存在
   function GetID(aFieldID, aTableName: string): string;     //获取ID
   procedure InPutChar(var key: Char); //输入框只允许输入【0..9,.】不允许输入字母
+
+  procedure OnWorkRegister;
+  procedure OffWorkRegister;
   
 implementation
 
@@ -223,6 +227,116 @@ end;
     if not (key in ['0'..'9',#8,#13,#38,#40]) then
     begin
       Key := #0;
+    end;
+  end;
+
+  procedure OnWorkRegister;
+  var
+    lSqlStr: string;
+  begin
+    with TADOQuery.Create(nil) do
+    begin
+      try
+        Active:= False;
+        Connection:= dm.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT * FROM Attendance WHERE UserID=' + IntToStr(CurUser.UserID) +
+                   ' AND Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
+        Active:= True;
+        if IsEmpty then
+          with TADOQuery.Create(nil) do
+          begin
+            try
+              Active:= False;
+              Connection:= dm.ADOConnection;
+              SQL.Clear;
+              lSqlStr:= 'Insert into Attendance(UserID, OnWork, CreateDate) Values (' +
+                         IntToStr(CurUser.UserID) + ',' +
+                         'Format(''' + TimeToStr(Time) + ''',''hh:mm:ss'')' + ',' +
+                         'Format(''' + IntToStr(YearOf(Now))+'-'+IntToStr(MonthOf(Now))+'-'+IntToStr(DayOf(Now)) + ''',''YYYY-MM-DD'')' + ')' ;
+              SQL.Text:= lSqlStr;
+              ExecSQL;
+            finally
+              Free;
+            end;
+          end
+        else
+        begin
+          IF FieldByName('OnWork').AsDateTime>Time then
+            with TADOQuery.Create(nil) do
+            begin
+              try
+                Active:= False;
+                Connection:= dm.ADOConnection;
+                SQL.Clear;
+                lSqlStr:= 'Update Attendance Set OnWork=' +
+                           'Format(''' + TimeToStr(Time) + ''',''hh:mm:ss'')' +
+                           ' Where Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
+                SQL.Text:= lSqlStr;
+                ExecSQL;
+              finally
+                Free;
+              end;
+            end
+        end;
+      finally
+        Free;
+      end;
+    end;
+  end;
+
+  procedure OffWorkRegister;
+  var
+    lSqlStr: string;
+  begin
+    with TADOQuery.Create(nil) do
+    begin
+      try
+        Active:= False;
+        Connection:= dm.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT * FROM Attendance WHERE UserID=' + IntToStr(CurUser.UserID) +
+                   ' AND Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
+        Active:= True;
+        if IsEmpty then
+          with TADOQuery.Create(nil) do
+          begin
+            try
+              Active:= False;
+              Connection:= dm.ADOConnection;
+              SQL.Clear;
+              lSqlStr:= 'Insert into Attendance(UserID, OffWork, CreateDate) Values (' +
+                         IntToStr(CurUser.UserID) + ',' +
+                         'Format(''' + TimeToStr(Time) + ''',''hh:mm:ss'')' + ',' +                          
+                         'Format(''' + IntToStr(YearOf(Now))+'-'+IntToStr(MonthOf(Now))+'-'+IntToStr(DayOf(Now)) + ''',''YYYY-MM-DD'')' + ')' ;
+              SQL.Text:= lSqlStr;
+              ExecSQL;
+            finally
+              Free;
+            end;
+          end
+        else
+        begin
+          IF FieldByName('OffWork').AsDateTime<Time then
+            with TADOQuery.Create(nil) do
+            begin
+              try
+                Active:= False;
+                Connection:= dm.ADOConnection;
+                SQL.Clear;
+                lSqlStr:= 'Update Attendance Set OffWork=' +
+                           'Format(''' + TimeToStr(Time) + ''',''hh:mm:ss'')' +
+                           ' Where Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
+                SQL.Text:= lSqlStr;
+                ExecSQL;
+              finally
+                Free;
+              end;
+            end
+        end;
+      finally
+        Free;
+      end;
     end;
   end;
 

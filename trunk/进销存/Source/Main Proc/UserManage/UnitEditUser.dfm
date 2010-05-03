@@ -1,6 +1,6 @@
 object FormEditUser: TFormEditUser
-  Left = 341
-  Top = 291
+  Left = 312
+  Top = 167
   Width = 393
   Height = 413
   Caption = #32534#35793#29992#25143
@@ -19,7 +19,7 @@ object FormEditUser: TFormEditUser
     Top = 6
     Width = 378
     Height = 338
-    ActivePage = ts2
+    ActivePage = ts1
     Style = tsFlatButtons
     TabOrder = 0
     object ts1: TTabSheet
@@ -143,7 +143,7 @@ object FormEditUser: TFormEditUser
           Caption = #23458#25143#36164#26009#31649#29702
           TabOrder = 3
         end
-        object CHKGoodsTypeInfo: TCheckBox
+        object ChkGoodsTypeInfoMgr: TCheckBox
           Left = 125
           Top = 37
           Width = 115
@@ -152,20 +152,28 @@ object FormEditUser: TFormEditUser
           TabOrder = 4
         end
         object CHKInDepotTypeMgr: TCheckBox
-          Left = 240
-          Top = 37
+          Left = 11
+          Top = 58
           Width = 115
           Height = 17
           Caption = #20837#24211#31867#22411#31649#29702
           TabOrder = 5
         end
         object CHKOutDepotTypeMgr: TCheckBox
-          Left = 11
+          Left = 125
           Top = 58
           Width = 115
           Height = 17
           Caption = #20986#24211#31867#22411#31649#29702
           TabOrder = 6
+        end
+        object ChkGoodsInfoMgr: TCheckBox
+          Left = 240
+          Top = 37
+          Width = 115
+          Height = 17
+          Caption = #21830#21697#31649#29702
+          TabOrder = 7
         end
       end
       object GRPInDepotMgr: TGroupBox
@@ -255,14 +263,6 @@ object FormEditUser: TFormEditUser
           Caption = #20986#24211#20449#24687#32479#35745
           TabOrder = 1
         end
-        object ChkOutDepotChangeStat: TCheckBox
-          Left = 240
-          Top = 16
-          Width = 115
-          Height = 17
-          Caption = #20986#24211#20462#25913#32479#35745
-          TabOrder = 2
-        end
       end
       object GRPUserMgr: TGroupBox
         Left = 1
@@ -288,20 +288,36 @@ object FormEditUser: TFormEditUser
           TabOrder = 1
         end
         object CHKSystemLock: TCheckBox
-          Left = 11
-          Top = 32
+          Left = 240
+          Top = 16
           Width = 115
           Height = 17
           Caption = #38145#23450#31995#32479
           TabOrder = 2
         end
         object CHKLogOut: TCheckBox
-          Left = 125
+          Left = 11
           Top = 32
           Width = 115
           Height = 17
           Caption = #27880#38144#29992#25143
           TabOrder = 3
+        end
+        object ChkSalaryMgr: TCheckBox
+          Left = 125
+          Top = 32
+          Width = 115
+          Height = 17
+          Caption = #24037#36164#31649#29702
+          TabOrder = 4
+        end
+        object ChkAttendanceMgr: TCheckBox
+          Left = 240
+          Top = 32
+          Width = 115
+          Height = 17
+          Caption = #32771#21220#31649#29702
+          TabOrder = 5
         end
       end
     end
