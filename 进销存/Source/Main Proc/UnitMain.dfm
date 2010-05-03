@@ -76,12 +76,12 @@ object FormMain: TFormMain
       ImageIndex = 29
       OnClick = ToolBtnOutDepotClick
     end
-    object btn1: TToolButton
+    object BtnRepertoryQuery: TToolButton
       Left = 134
       Top = 0
       Caption = #24211#23384#26597#35810
       ImageIndex = 124
-      OnClick = btn1Click
+      OnClick = BtnRepertoryQueryClick
     end
     object ToolButton2: TToolButton
       Left = 201
@@ -154,9 +154,9 @@ object FormMain: TFormMain
         Caption = #21830#21697#31867#21035#31649#29702
         OnClick = NGoodsTypeMgrClick
       end
-      object NGoodsTypeInfoMgr: TMenuItem
+      object NGoodsMgr: TMenuItem
         Caption = #21830#21697#31649#29702
-        OnClick = NGoodsTypeInfoMgrClick
+        OnClick = NGoodsMgrClick
       end
       object NInDepotTypeMgr: TMenuItem
         Caption = #20837#24211#31867#22411#31649#29702
@@ -234,8 +234,16 @@ object FormMain: TFormMain
         OnClick = NSystemLockClick
       end
       object NLogOut: TMenuItem
-        Caption = #27880#38144#29992#25143
+        Caption = #27880#38144
         OnClick = NLogOutClick
+      end
+      object NSalaryMgr: TMenuItem
+        Caption = #24037#36164#31649#29702
+        OnClick = NSalaryMgrClick
+      end
+      object NAttendanceMgr: TMenuItem
+        Caption = #32771#21220#31649#29702
+        OnClick = NAttendanceMgrClick
       end
     end
     object MenuHelp: TMenuItem

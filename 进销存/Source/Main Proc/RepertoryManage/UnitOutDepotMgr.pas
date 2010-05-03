@@ -92,6 +92,44 @@ type
     ppLine1: TppLine;
     ppLabel33: TppLabel;
     ppSystemVariable6: TppSystemVariable;
+    ppReportCustomer: TppReport;
+    ppHeaderBand1: TppHeaderBand;
+    ppLabel1: TppLabel;
+    ppLabel2: TppLabel;
+    ppSystemVariable1: TppSystemVariable;
+    ppLabel3: TppLabel;
+    ppLabel4: TppLabel;
+    ppSystemVariable2: TppSystemVariable;
+    ppLabel5: TppLabel;
+    ppLabel6: TppLabel;
+    ppLabel7: TppLabel;
+    ppLabel8: TppLabel;
+    ppLabel9: TppLabel;
+    ppLine2: TppLine;
+    ppLabel10: TppLabel;
+    ppSystemVariable3: TppSystemVariable;
+    ppDetailBand1: TppDetailBand;
+    ppDBText1: TppDBText;
+    ppDBText2: TppDBText;
+    ppDBText3: TppDBText;
+    ppDBText4: TppDBText;
+    ppFooterBand1: TppFooterBand;
+    ppSummaryBand1: TppSummaryBand;
+    ppDBCalc1: TppDBCalc;
+    ppDBCalc2: TppDBCalc;
+    ppLine3: TppLine;
+    ppLabel11: TppLabel;
+    ppLabel12: TppLabel;
+    ppLabel13: TppLabel;
+    ppLabel14: TppLabel;
+    ppLabel15: TppLabel;
+    ppLabel16: TppLabel;
+    ppDBText8: TppDBText;
+    ppLabel17: TppLabel;
+    ppDBText9: TppDBText;
+    ppLabelCustomerName: TppLabel;
+    ppLabelDiscount: TppLabel;
+    ppLabelActualMoney: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -229,7 +267,8 @@ end;
 procedure TFormOutDepotMgr.BtnSubmitClick(Sender: TObject);
 var
   lTotalNum, i: Integer;
-  lTotalmoney: Double;
+  lTotalmoney: string;
+  lTotalUserPersent: Double; //一笔售出 用户总提成
   lSqlStr: string;
   function GetTotalNum(aOrderBH: string): Boolean;
   begin
@@ -240,7 +279,8 @@ var
         Active:= False;
         Connection:= DM.ADOConnection;
         SQL.Clear;
-        SQL.Text:= 'SELECT GetNum.* FROM (SELECT OrderBH, sum(Num) AS TotalNum, sum(SaleMoney) AS TotalSaleMoney ' +
+        SQL.Text:= 'SELECT GetNum.* FROM ' +
+                   ' (SELECT OrderBH, sum(Num) AS TotalNum, sum(SaleMoney) AS TotalSaleMoney, sum(UserPercent) AS TotalUserPercent ' +
                    ' FROM OutDepotDetails' +
                    ' WHERE OrderBH=''' + FOrderID +
                    ''' GROUP BY OrderBH) AS GetNum';
@@ -248,10 +288,11 @@ var
         if not IsEmpty then
         begin
           lTotalNum:= FieldByName('TotalNum').AsInteger;
+          lTotalUserPersent:= FieldByName('TotalUserPercent').AsFloat;
           if ISExsitCustomer then
-            lTotalmoney:= FieldByName('TotalSaleMoney').AsFloat / 100 * FDiscount
+            lTotalmoney:= FormatFloat('0.00',FieldByName('TotalSaleMoney').AsFloat / 100 * FDiscount)
           else
-            lTotalmoney:= FieldByName('TotalSaleMoney').AsFloat;
+            lTotalmoney:= FormatFloat('0.00',FieldByName('TotalSaleMoney').AsFloat);
           Result:= True;
         end
         else
@@ -285,6 +326,7 @@ begin
                    'OutDepotTypeID,' +
                    'TotalNum,' +
                    'TotalMoney,' +
+                   'UserPercent,' +
                    'CreateTime) ' +
                    'Values(''' +
                    FOrderID + ''',' +
@@ -292,7 +334,8 @@ begin
                    IntToStr(FCustomerID) + ',' +
                    IntToStr(GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)) + ',' +
                    IntToStr(lTotalNum) + ',' +
-                   FloatToStr(lTotalmoney) + ',' +
+                   lTotalmoney + ',' +
+                   FloatToStr(lTotalUserPersent) + ',' +
                    'cdate(''' + DateTimeToStr(Now) + ''')' +
                    ')'
       else
@@ -302,13 +345,15 @@ begin
                    'OutDepotTypeID,' +
                    'TotalNum,' +
                    'TotalMoney,' +
+                   'UserPercent,' +
                    'CreateTime) ' +
                    'Values(''' +
                    FOrderID + ''',' +
                    IntToStr(CurUser.UserID) + ',' +
                    IntToStr(GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)) + ',' +
                    IntToStr(lTotalNum) + ',' +
-                   FloatToStr(lTotalmoney) + ',' +
+                   lTotalmoney + ',' +
+                   FloatToStr(lTotalUserPersent) + ',' +
                    'cdate(''' + DateTimeToStr(Now) + ''')' +
                    ')';
       SQL.Text:= lSqlStr;
@@ -343,7 +388,15 @@ begin
       Application.MessageBox('结算完成！','提示',MB_OK+64);
       if ChkIsPrint.Checked then
       begin
-        ppReport.Print;
+        if ISExsitCustomer then
+        begin
+          ppLabelCustomerName.Caption:= EdtCustomerName.Text;
+          ppLabelDiscount.Caption:= FloatToStr(FDiscount);
+          ppLabelActualMoney.Caption:= lTotalmoney;
+          ppReportCustomer.Print;
+        end
+        else
+          ppReport.Print;
       end;
     end;
   finally
@@ -607,6 +660,7 @@ begin
                    'OutDepotTypeID,' +
                    'Num,' +
                    'SaleMoney,' +
+                   'UserPercent,' +
                    'CreateTime) ' +
                    'Values(''' +
                    FOrderID + ''',' +
@@ -616,6 +670,7 @@ begin
                    IntToStr(GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)) + ',' +
                    EdtOutDepotNum.Text + ',' +
                    FloatToStr(lSaleMoney) + ',' +
+                   FormatFloat('0.00',lSaleMoney*FPercent/100) + ',' +
                    'cdate(''' + DateTimeToStr(Now) + ''')' +
                    ')';
 //          SQL.Text:= 'insert into OutDepotDetails(OrderBH,DepotID,GoodsID,UserID,OutDepotTypeID,Num,SaleMoney,CreateTime) ' +

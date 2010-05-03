@@ -29,6 +29,7 @@ type
     procedure ClearListView;
     procedure GetUserInfo;
     procedure ListViewAddNode(aUser: Tuser; aUserRightsStr: string);
+    function IsExistUserRecord(aUserID: Integer): Boolean;
   public
     { Public declarations }
   end;
@@ -110,6 +111,11 @@ begin
       Application.MessageBox('不能删除自己！','提示',MB_OK+64);
       Exit;
     end;
+    if IsExistUserRecord(TUser(lListItem.Data).UserID) then
+    begin
+      Application.MessageBox('此操作员存在出库操作记录,不能删除！','提示',MB_OK+64);
+      Exit;
+    end;
     with AdoEdit do
     begin
       Active:= False;
@@ -178,6 +184,27 @@ begin
   lNewListItem.Data:= aUser;
   lNewListItem.Caption:= aUser.UserName;
   lNewListItem.SubItems.Add(aUserRightsStr);
+end;
+
+function TFormUserManage.IsExistUserRecord(aUserID: Integer): Boolean;
+begin
+  Result:= False;
+  with TADOQuery.Create(nil) do
+  begin
+    try
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'select * from OutDepotSummary where userid=' + IntToStr(aUserID);
+      Active:= True;
+      if IsEmpty then
+        Result:= False
+      else
+        Result:= True;
+    finally
+      Free;
+    end;
+  end;
 end;
 
 end.

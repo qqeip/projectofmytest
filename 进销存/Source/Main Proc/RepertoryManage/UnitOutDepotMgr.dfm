@@ -803,7 +803,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
     DataPipelineName = 'ppDBPipeline'
     object ppHeaderBand2: TppHeaderBand
       mmBottomOffset = 0
-      mmHeight = 24342
+      mmHeight = 26194
       mmPrintPosition = 0
       object ppLabel19: TppLabel
         UserName = 'Label1'
@@ -972,7 +972,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         mmHeight = 3217
         mmLeft = 8467
-        mmTop = 20373
+        mmTop = 21960
         mmWidth = 20373
         BandType = 0
       end
@@ -994,7 +994,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         mmHeight = 3217
         mmLeft = 39952
-        mmTop = 20373
+        mmTop = 21960
         mmWidth = 16404
         BandType = 0
       end
@@ -1016,7 +1016,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         mmHeight = 3217
         mmLeft = 58208
-        mmTop = 20373
+        mmTop = 21960
         mmWidth = 16404
         BandType = 0
       end
@@ -1038,7 +1038,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         mmHeight = 3217
         mmLeft = 76465
-        mmTop = 20373
+        mmTop = 21960
         mmWidth = 21167
         BandType = 0
       end
@@ -1052,7 +1052,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Weight = 0.750000000000000000
         mmHeight = 265
         mmLeft = 6350
-        mmTop = 24077
+        mmTop = 25929
         mmWidth = 95250
         BandType = 0
       end
@@ -1070,12 +1070,11 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Name = #23435#20307
         Font.Size = 8
         Font.Style = []
-        TextAlignment = taCentered
         Transparent = True
-        mmHeight = 3175
-        mmLeft = 8996
+        mmHeight = 2910
+        mmLeft = 8467
         mmTop = 15610
-        mmWidth = 15346
+        mmWidth = 13758
         BandType = 0
       end
       object ppSystemVariable6: TppSystemVariable
@@ -1094,15 +1093,60 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 24871
+        mmLeft = 23019
         mmTop = 15610
         mmWidth = 32279
+        BandType = 0
+      end
+      object ppLabel16: TppLabel
+        UserName = 'Label16'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #25805#20316#21592#65306
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 64823
+        mmTop = 15610
+        mmWidth = 11113
+        BandType = 0
+      end
+      object ppDBText8: TppDBText
+        UserName = 'DBText1'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'UserName'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 76465
+        mmTop = 15610
+        mmWidth = 21167
         BandType = 0
       end
     end
     object ppDetailBand2: TppDetailBand
       mmBottomOffset = 0
-      mmHeight = 5821
+      mmHeight = 3175
       mmPrintPosition = 0
       object ppDBText16: TppDBText
         UserName = 'DBText2'
@@ -1122,7 +1166,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
         mmLeft = 8467
-        mmTop = 1323
+        mmTop = 0
         mmWidth = 29898
         BandType = 4
       end
@@ -1145,7 +1189,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
         mmLeft = 39952
-        mmTop = 1323
+        mmTop = 0
         mmWidth = 16403
         BandType = 4
       end
@@ -1168,7 +1212,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
         mmLeft = 58208
-        mmTop = 1323
+        mmTop = 0
         mmWidth = 16404
         BandType = 4
       end
@@ -1191,7 +1235,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
         mmLeft = 76465
-        mmTop = 1323
+        mmTop = 0
         mmWidth = 21166
         BandType = 4
       end
@@ -1284,6 +1328,707 @@ object FormOutDepotMgr: TFormOutDepotMgr
         mmLeft = 8467
         mmTop = 1323
         mmWidth = 20373
+        BandType = 7
+      end
+    end
+  end
+  object ppReportCustomer: TppReport
+    AutoStop = False
+    DataPipeline = ppDBPipeline
+    PrinterSetup.BinName = 'Default'
+    PrinterSetup.DocumentName = 'Report'
+    PrinterSetup.PaperName = 'Letter'
+    PrinterSetup.PrinterName = 'Default'
+    PrinterSetup.mmMarginBottom = 6350
+    PrinterSetup.mmMarginLeft = 6350
+    PrinterSetup.mmMarginRight = 6350
+    PrinterSetup.mmMarginTop = 6350
+    PrinterSetup.mmPaperHeight = 279401
+    PrinterSetup.mmPaperWidth = 215900
+    PrinterSetup.PaperSize = 1
+    DeviceType = 'Screen'
+    OutlineSettings.CreateNode = True
+    OutlineSettings.CreatePageNodes = True
+    OutlineSettings.Enabled = True
+    OutlineSettings.Visible = True
+    TextSearchSettings.DefaultString = '<FindText>'
+    TextSearchSettings.Enabled = True
+    Left = 226
+    Top = 199
+    Version = '9.03'
+    mmColumnWidth = 0
+    DataPipelineName = 'ppDBPipeline'
+    object ppHeaderBand1: TppHeaderBand
+      mmBottomOffset = 0
+      mmHeight = 24871
+      mmPrintPosition = 0
+      object ppLabel1: TppLabel
+        UserName = 'Label1'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #38144#21806#23567#31080
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 12
+        Font.Style = [fsBold]
+        TextAlignment = taCentered
+        Transparent = True
+        mmHeight = 4763
+        mmLeft = 38100
+        mmTop = 3969
+        mmWidth = 25400
+        BandType = 0
+      end
+      object ppLabel2: TppLabel
+        UserName = 'Label3'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #20849
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 67469
+        mmTop = 10848
+        mmWidth = 2910
+        BandType = 0
+      end
+      object ppSystemVariable1: TppSystemVariable
+        UserName = 'SystemVariable2'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        VarType = vtPageCount
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 70908
+        mmTop = 10848
+        mmWidth = 6350
+        BandType = 0
+      end
+      object ppLabel3: TppLabel
+        UserName = 'Label4'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #39029
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 77788
+        mmTop = 10848
+        mmWidth = 2910
+        BandType = 0
+      end
+      object ppLabel4: TppLabel
+        UserName = 'Label5'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #31532
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 84402
+        mmTop = 10848
+        mmWidth = 2910
+        BandType = 0
+      end
+      object ppSystemVariable2: TppSystemVariable
+        UserName = 'SystemVariable3'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        VarType = vtPageNo
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 87842
+        mmTop = 10848
+        mmWidth = 6350
+        BandType = 0
+      end
+      object ppLabel5: TppLabel
+        UserName = 'Label6'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #39029
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 94721
+        mmTop = 10848
+        mmWidth = 2910
+        BandType = 0
+      end
+      object ppLabel6: TppLabel
+        UserName = 'Label8'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #21830'  '#21697
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 8467
+        mmTop = 20638
+        mmWidth = 20373
+        BandType = 0
+      end
+      object ppLabel7: TppLabel
+        UserName = 'Label10'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #25968'  '#37327
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 39952
+        mmTop = 20638
+        mmWidth = 16404
+        BandType = 0
+      end
+      object ppLabel8: TppLabel
+        UserName = 'Label12'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #21333'  '#20215
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 58208
+        mmTop = 20638
+        mmWidth = 16404
+        BandType = 0
+      end
+      object ppLabel9: TppLabel
+        UserName = 'Label14'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #37329'  '#39069
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 76465
+        mmTop = 20638
+        mmWidth = 21167
+        BandType = 0
+      end
+      object ppLine2: TppLine
+        UserName = 'Line1'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 6350
+        mmTop = 24606
+        mmWidth = 95250
+        BandType = 0
+      end
+      object ppLabel10: TppLabel
+        UserName = 'Label2'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #25171#21360#26085#26399#65306
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 8467
+        mmTop = 15610
+        mmWidth = 13494
+        BandType = 0
+      end
+      object ppSystemVariable3: TppSystemVariable
+        UserName = 'SystemVariable1'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        VarType = vtDateTime
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 23283
+        mmTop = 15610
+        mmWidth = 32279
+        BandType = 0
+      end
+      object ppLabel17: TppLabel
+        UserName = 'Label13'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #25805#20316#21592#65306
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 63765
+        mmTop = 15610
+        mmWidth = 12171
+        BandType = 0
+      end
+      object ppDBText9: TppDBText
+        UserName = 'DBText9'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'UserName'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 76465
+        mmTop = 15610
+        mmWidth = 21167
+        BandType = 0
+      end
+    end
+    object ppDetailBand1: TppDetailBand
+      mmBottomOffset = 0
+      mmHeight = 4498
+      mmPrintPosition = 0
+      object ppDBText1: TppDBText
+        UserName = 'DBText2'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'GoodsName'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 8467
+        mmTop = 0
+        mmWidth = 29898
+        BandType = 4
+      end
+      object ppDBText2: TppDBText
+        UserName = 'DBText4'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'Num'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 39952
+        mmTop = 0
+        mmWidth = 16403
+        BandType = 4
+      end
+      object ppDBText3: TppDBText
+        UserName = 'DBText6'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'SalePrice'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 58208
+        mmTop = 0
+        mmWidth = 16404
+        BandType = 4
+      end
+      object ppDBText4: TppDBText
+        UserName = 'DBText8'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'SaleMoney'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 76465
+        mmTop = 0
+        mmWidth = 21166
+        BandType = 4
+      end
+    end
+    object ppFooterBand1: TppFooterBand
+      mmBottomOffset = 0
+      mmHeight = 0
+      mmPrintPosition = 0
+    end
+    object ppSummaryBand1: TppSummaryBand
+      mmBottomOffset = 0
+      mmHeight = 23813
+      mmPrintPosition = 0
+      object ppDBCalc1: TppDBCalc
+        UserName = 'DBCalc2'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'SaleMoney'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = 'Courier New'
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 76465
+        mmTop = 1323
+        mmWidth = 21166
+        BandType = 7
+      end
+      object ppDBCalc2: TppDBCalc
+        UserName = 'DBCalc3'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        DataField = 'Num'
+        DataPipeline = ppDBPipeline
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        DataPipelineName = 'ppDBPipeline'
+        mmHeight = 3175
+        mmLeft = 39952
+        mmTop = 1323
+        mmWidth = 16404
+        BandType = 7
+      end
+      object ppLine3: TppLine
+        UserName = 'Line35'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Weight = 0.750000000000000000
+        mmHeight = 265
+        mmLeft = 6350
+        mmTop = 0
+        mmWidth = 95250
+        BandType = 7
+      end
+      object ppLabel11: TppLabel
+        UserName = 'Label17'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #21512'  '#35745#65306
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 8467
+        mmTop = 1323
+        mmWidth = 20373
+        BandType = 7
+      end
+      object ppLabel12: TppLabel
+        UserName = 'Label7'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #24212#25910#37329#39069':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 60325
+        mmTop = 1323
+        mmWidth = 15610
+        BandType = 7
+      end
+      object ppLabel13: TppLabel
+        UserName = 'Label9'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #20250#21592#21517#31216':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 22490
+        mmTop = 6615
+        mmWidth = 12700
+        BandType = 7
+      end
+      object ppLabel14: TppLabel
+        UserName = 'Label11'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #20139#21463#25240#25187':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 60325
+        mmTop = 6615
+        mmWidth = 15610
+        BandType = 7
+      end
+      object ppLabel15: TppLabel
+        UserName = 'Label15'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #23454#25910#37329#39069':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = [fsBold]
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3175
+        mmLeft = 60325
+        mmTop = 10848
+        mmWidth = 15611
+        BandType = 7
+      end
+      object ppLabelCustomerName: TppLabel
+        UserName = 'LabelCustomerName'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        Transparent = True
+        mmHeight = 3133
+        mmLeft = 35719
+        mmTop = 6615
+        mmWidth = 23537
+        BandType = 7
+      end
+      object ppLabelDiscount: TppLabel
+        UserName = 'LabelDiscount'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3133
+        mmLeft = 76465
+        mmTop = 6615
+        mmWidth = 21167
+        BandType = 7
+      end
+      object ppLabelActualMoney: TppLabel
+        UserName = 'LabelActualMoney'
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3133
+        mmLeft = 76465
+        mmTop = 10848
+        mmWidth = 21167
         BandType = 7
       end
     end
