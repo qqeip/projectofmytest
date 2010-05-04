@@ -32,7 +32,10 @@ uses
   UnitCustomerSearch in 'RepertoryManage\UnitCustomerSearch.pas' {FormCustomerSearch},
   UnitRepertoryManager in '..\Common\UnitRepertoryManager.pas',
   UnitRepertoryStat in 'RepertoryManage\UnitRepertoryStat.pas' {FormRepertoryStat},
-  UnitOutDepotStat in 'RepertoryManage\UnitOutDepotStat.pas' {FormOutDepotStat};
+  UnitOutDepotStat in 'RepertoryManage\UnitOutDepotStat.pas' {FormOutDepotStat},
+  UnitBalanceAnalyse in 'RepertoryManage\UnitBalanceAnalyse.pas' {FormBalanceAnalyse},
+  UnitSalaryMgr in 'UserManage\UnitSalaryMgr.pas' {FormSalaryMgr},
+  UnitAttendanceMgr in 'UserManage\UnitAttendanceMgr.pas' {FormAttendanceMgr};
 
 {$R *.res}
 var
