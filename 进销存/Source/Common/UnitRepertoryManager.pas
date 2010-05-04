@@ -15,9 +15,10 @@ type
   TRepertory = class(TObject)
   private
     FGoodsID: Integer;
-    FTotalNum: Integer;
+    FNum: Integer;
+    FTotalNum: Integer; //出库前库存总量
     FSalePrice: Double;
-    FLastNum: Integer;
+    FLastNum: Integer;  //出库后库存总量
     FLastMoney: Double;
     procedure SetGoodsID(const Value: Integer);
     procedure SetLastMoney(const Value: Double);
@@ -27,6 +28,7 @@ type
   public
     //destructor Destroy; override;
   property GoodsID: Integer read FGoodsID write SetGoodsID;
+  property Num: Integer read FNum write FNum;
   property TotalNum: Integer read FTotalNum write SetTotalNum;
   property SalePrice: Double read FSalePrice write SetSalePrice;
   property LastNum: Integer  read FLastNum write SetLastNum;
@@ -41,10 +43,11 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure LoadRepertory(aGoodsID, aTotalNum, aLastNum: Integer; aSalePrice, LastMoney: Double);
+    procedure LoadRepertory(aGoodsID, aTotalNum, aLastNum: Integer; aSalePrice, aLastMoney: Double);
     function GetCount: Integer;
     function ISRepertoryNull(aGoodsID, aTotalNum, aLastNum: Integer): Integer; //一次出库时有同一商品出多次时 判断库存是否够出库数量
     function OverOutRepertory_LastNum(aGoodsID: Integer): Integer; //一次出库时有同一商品出多次时 库存数量剩多少
+    procedure DelDetail(aGoodsID, aNum: Integer; aMoney: Double);  //结算前右键删除出库记录，在对象中删除，如果是同一商品出库多次，则修改出库数量。
   property RepertoryList: TStrings read FRepertoryList write FRepertoryList;
   end;
 
@@ -112,7 +115,7 @@ begin
       Result:= plg.FLastNum;
 end;
 
-procedure TRepertoryMgr.LoadRepertory(aGoodsID, aTotalNum, aLastNum: Integer; aSalePrice, LastMoney: Double);
+procedure TRepertoryMgr.LoadRepertory(aGoodsID, aTotalNum, aLastNum: Integer; aSalePrice, aLastMoney: Double);
 var
   plg: TRepertory;
 begin
@@ -123,10 +126,11 @@ begin
   begin
     with plg do
     begin
-      FTotalNum:= FLastNum;
+      FNum:= aTotalNum - aLastNum;
+      //FTotalNum:= FLastNum;
       FSalePrice:= aSalePrice;
-      FLastNum:= FTotalNum-(aTotalNum - aLastNum);
-      FLastMoney:= LastMoney;
+      FLastNum:= FLastNum-FNum;
+      FLastMoney:= aLastMoney;
     end
   end
   else//看此出库商品信息是否存在，不存在新建;
@@ -135,14 +139,39 @@ begin
     with plg do
     begin
       FGoodsID:= aGoodsID;
+      FNum:= aTotalNum - aLastNum;
       FTotalNum:= aTotalNum;
       FSalePrice:= aSalePrice;
       FLastNum:= aLastNum;
-      FLastMoney:= LastMoney;
+      FLastMoney:= aLastMoney;
       FRepertoryList.AddObject(IntToStr(aGoodsID), plg);
     end;
   end;
 
+end;
+
+procedure TRepertoryMgr.DelDetail(aGoodsID, aNum: Integer; aMoney: Double);
+var
+  plg: TRepertory;
+begin
+  //取得出库商品对象信息并将其装入到池中。
+  plg := FindRepertory(IntToStr(aGoodsID));
+  //看此出库商品信息对象是否存在，如果存在，修改数量和金额。
+  if not (plg = nil) then
+  begin
+    with plg do
+    begin
+      if FNum=aNum then begin
+        plg.Free;
+        FRepertoryList.Delete(FRepertoryList.IndexOf(IntToStr(aGoodsID)));
+      end
+      else
+      begin
+        FLastNum:= FLastNum + aNum;
+        FLastMoney:= FLastMoney + aMoney;
+      end;
+    end
+  end
 end;
 
 { TRepertory }
