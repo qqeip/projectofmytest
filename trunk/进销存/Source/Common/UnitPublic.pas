@@ -271,7 +271,8 @@ end;
                 SQL.Clear;
                 lSqlStr:= 'Update Attendance Set OnWork=' +
                            'Format(''' + TimeToStr(Time) + ''',''hh:mm:ss'')' +
-                           ' Where Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
+                           ' Where UserID=' + IntToStr(CurUser.UserID) +
+                           '   AND Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
                 SQL.Text:= lSqlStr;
                 ExecSQL;
               finally
@@ -326,7 +327,8 @@ end;
                 SQL.Clear;
                 lSqlStr:= 'Update Attendance Set OffWork=' +
                            'Format(''' + TimeToStr(Time) + ''',''hh:mm:ss'')' +
-                           ' Where Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
+                           ' Where UserID=' + IntToStr(CurUser.UserID) +
+                           '   AND Format(Attendance.CreateDate,''YYYY-MM-DD'')=Format(''' + DateToStr(Now) + ''',''YYYY-MM-DD'')';
                 SQL.Text:= lSqlStr;
                 ExecSQL;
               finally
