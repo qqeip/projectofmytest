@@ -459,6 +459,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
           B7D9BFB2D7BBADD3B6A7D0B09FCDAB99CAA693C6A08CC39A85BF947EBD9079BA
           8B73B8886FB6846BB48267B27E64B27C6200}
         ParentFont = False
+        Visible = False
         OnClick = Btn1Click
       end
       object LabelDiscount: TLabel

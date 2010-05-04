@@ -9,7 +9,7 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGrid, StdCtrls, Buttons, ExtCtrls, ADODB, Grids, CxGridUnit,
   DBGrids, UnitRepertoryManager, ppBands, ppClass, ppCtrls, ppVar,
-  ppPrnabl, ppCache, ppProd, ppReport, ppComm, ppRelatv, ppDB, ppDBPipe;
+  ppPrnabl, ppCache, ppProd, ppReport, ppComm, ppRelatv, ppDB, ppDBPipe, Menus;
 
 type
   TFormOutDepotMgr = class(TForm)
@@ -153,6 +153,7 @@ type
   private
     { Private declarations }
     FCxGridHelper : TCxGridSet;
+    FMenuDel: TMenuItem;
     FAdoQueryDetail, FAdoQueryHistory, FAdoQueryHistoryDetail, FAdoEdit: TAdoquery;
     FOrderID: string;     //订单号 或 出库流水号
     ISExsitCustomer: Boolean; //是否存在客户
@@ -166,6 +167,7 @@ type
     procedure GetCustomerOutDepotSummary;
     procedure GetOutDepotDetails(aAdoQuery: TADOQuery; Ds: TDataSource; aOrderBH: string);
     procedure AddcxGridViewField;
+    procedure DeleteDetail(Sender: TObject);
   public
     { Public declarations }
   end;
@@ -193,6 +195,9 @@ begin
   FCxGridHelper.SetGridStyle(cxGridDetails,true,false,true);
   FCxGridHelper.SetGridStyle(cxGridHistory,true,false,true);
   AddcxGridViewField;
+
+  FMenuDel:= FCxGridHelper.AppendMenuItem('删除', DeleteDetail);
+  FMenuDel.Enabled:= False;
 end;
 
 procedure TFormOutDepotMgr.FormShow(Sender: TObject);
@@ -386,6 +391,8 @@ begin
       DM.ADOConnection.CommitTrans;
       FreeAndNil(FrepertoryMgr);
       Application.MessageBox('结算完成！','提示',MB_OK+64);
+      BtnSubmit.Enabled:= False;
+      FMenuDel.Enabled:= False;
       if ChkIsPrint.Checked then
       begin
         if ISExsitCustomer then
@@ -702,6 +709,7 @@ begin
     BtnSubmit.Enabled:= True;
     EdtBarCode.Clear;
     EdtBarCode.SetFocus;
+    FMenuDel.Enabled:= True;
   end;
 end;
 
@@ -785,6 +793,49 @@ begin
     exit;
   end;
   GetOutDepotDetails(FAdoQueryHistoryDetail, DSHistoryDetail, lOrderBH);
+end;
+
+procedure TFormOutDepotMgr.DeleteDetail(Sender: TObject);
+var
+  i, lID_Index, lRecordIndex, lID,
+  lGoodsID_Index, lGoodsID,
+  lNum_Index, lNum: Integer;
+begin
+  try
+    lID_Index:= cxGridDetailsDBTableView1.GetColumnByFieldName('ID').Index;
+    lGoodsID_Index:= cxGridDetailsDBTableView1.GetColumnByFieldName('GoodsID').Index;
+    lNum_Index:= cxGridDetailsDBTableView1.GetColumnByFieldName('Num').Index;
+  except
+    Application.MessageBox('未获得"内部编号,商品编号"！','提示',MB_OK	+MB_ICONINFORMATION);
+    exit;
+  end;
+  Screen.Cursor := crHourGlass;
+  if DM.ADOConnection.InTransaction then  DM.ADOConnection.CommitTrans;
+  DM.ADOConnection.BeginTrans;
+  with TADOQuery.Create(nil) do
+  begin
+    try
+      for i := cxGridDetailsDBTableView1.DataController.GetSelectedCount -1 downto 0 do
+      begin
+        lRecordIndex := cxGridDetailsDBTableView1.Controller.SelectedRows[i].RecordIndex;
+        lID := cxGridDetailsDBTableView1.DataController.GetValue(lRecordIndex,lID_Index);
+        lGoodsID := cxGridDetailsDBTableView1.DataController.GetValue(lRecordIndex,lGoodsID_Index);
+        lNum := cxGridDetailsDBTableView1.DataController.GetValue(lRecordIndex,lNum_Index);
+        Active:= False;
+        Connection:= dm.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'DELETE FROM OutDepotDetails WHERE ID=' + IntToStr(lID);
+        ExecSQL;
+        if Assigned(FrepertoryMgr) then
+          FrepertoryMgr.DelDetail(lGoodsID, lNum, lNum*FSalePrice);
+      end;
+      DM.ADOConnection.CommitTrans;
+      GetOutDepotDetails(FAdoQueryDetail, DSDetail, FOrderID);
+    finally
+      Free;
+      Screen.Cursor := crDefault;
+    end;
+  end;
 end;
 
 end.
