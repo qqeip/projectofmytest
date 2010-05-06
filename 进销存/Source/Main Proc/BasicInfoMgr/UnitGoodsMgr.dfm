@@ -615,7 +615,7 @@ object FormGoodsMgr: TFormGoodsMgr
     Width = 576
     Height = 119
     Align = alBottom
-    Caption = #23458#25143#20449#24687#35774#32622
+    Caption = #21830#21697#20449#24687#35774#32622
     TabOrder = 1
     object Label1: TLabel
       Left = 205
@@ -798,7 +798,7 @@ object FormGoodsMgr: TFormGoodsMgr
     Width = 576
     Height = 192
     Align = alClient
-    Caption = #23458#25143#35814#32454#20449#24687
+    Caption = #21830#21697#35814#32454#20449#24687
     TabOrder = 2
     object cxGridGoods: TcxGrid
       Left = 2

@@ -3,7 +3,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
   Top = 235
   Width = 584
   Height = 398
-  Caption = #21830#21697#22823#31867#31649#29702
+  Caption = #21830#21697#31867#21035#31649#29702
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -24,7 +24,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
     Width = 576
     Height = 217
     Align = alClient
-    Caption = #21830#21697#22823#31867#35814#32454#20449#24687
+    Caption = #21830#21697#31867#21035#35814#32454#20449#24687
     TabOrder = 0
     object cxGridGoodsType: TcxGrid
       Left = 2
@@ -645,7 +645,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
     Width = 576
     Height = 94
     Align = alBottom
-    Caption = #21830#21697#22823#31867#20449#24687#35774#32622
+    Caption = #21830#21697#31867#21035#20449#24687#35774#32622
     TabOrder = 2
     object LabelDepotID: TLabel
       Left = 14
@@ -653,7 +653,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       Width = 90
       Height = 13
       AutoSize = False
-      Caption = #21830#21697#22823#31867#32534#21495#65306
+      Caption = #21830#21697#31867#21035#32534#21495#65306
     end
     object Label2: TLabel
       Left = 14
@@ -661,7 +661,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       Width = 90
       Height = 13
       AutoSize = False
-      Caption = #21830#21697#22823#31867#35828#26126#65306
+      Caption = #21830#21697#31867#21035#35828#26126#65306
     end
     object LabelDepotName: TLabel
       Left = 190
@@ -669,7 +669,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       Width = 90
       Height = 13
       AutoSize = False
-      Caption = #21830#21697#22823#31867#21517#31216#65306
+      Caption = #21830#21697#31867#21035#21517#31216#65306
     end
     object Label1: TLabel
       Left = 398
