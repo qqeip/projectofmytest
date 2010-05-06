@@ -220,13 +220,13 @@ begin
   Result:= '';
   lStr:= '';
   if ChkDepot.Checked then
-    lStr:= lStr + ' and DepotID=' + IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items));
+    lStr:= lStr + ' and Old_DepotID=' + IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Items));
   if ChkGoodsType.Checked then
-    lStr:= lStr + ' and GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
+    lStr:= lStr + ' and OldGoods.GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
   if ChkGoods.Checked then
-    lStr:= lStr + ' and GoodsID=' + IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Items));
+    lStr:= lStr + ' and Old_GoodsID=' + IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Items));
   if ChkInDepotType.Checked then
-    lStr:= lStr + ' and InDepotTypeID=' + IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items));
+    lStr:= lStr + ' and Old_InDepotTypeID=' + IntToStr(GetItemCode(CbbInDepotType.Text, CbbInDepotType.Items));
   if ChkCreateDate.Checked then
   begin
     lBeginDateTime:= DateTimeToStr(cxDateEditBegin.EditingValue);

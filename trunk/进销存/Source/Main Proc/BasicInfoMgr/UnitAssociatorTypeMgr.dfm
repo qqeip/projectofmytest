@@ -615,7 +615,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     Width = 526
     Height = 94
     Align = alBottom
-    Caption = #20250#21592#31867#22411#20449#24687#35774#32622
+    Caption = #20250#21592#32423#21035#20449#24687#35774#32622
     TabOrder = 1
     object LabelAssociatorTypeID: TLabel
       Left = 29
@@ -715,7 +715,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     Width = 526
     Height = 196
     Align = alClient
-    Caption = #20250#21592#31867#22411#35814#32454#20449#24687
+    Caption = #20250#21592#32423#21035#35814#32454#20449#24687
     TabOrder = 2
     object cxGridAssociatorType: TcxGrid
       Left = 2
