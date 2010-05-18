@@ -143,7 +143,7 @@ object FormMain: TFormMain
         OnClick = NAssociatorTypeInfoMgrClick
       end
       object NProviderInfoMgr: TMenuItem
-        Caption = #36827#36135#21830#20449#24687#31649#29702
+        Caption = #20379#36135#21830#20449#24687#31649#29702
         OnClick = NProviderInfoMgrClick
       end
       object NCustomerInfoMgr: TMenuItem
@@ -8293,5 +8293,12 @@ object FormMain: TFormMain
       Caption = #20851#38381
       OnClick = NCloseClick
     end
+  end
+  object SaveDialog: TSaveDialog
+    DefaultExt = '*.mdb'
+    Filter = '*.mdb|*.mdb|*.*|*.*'
+    FilterIndex = 0
+    Left = 112
+    Top = 224
   end
 end

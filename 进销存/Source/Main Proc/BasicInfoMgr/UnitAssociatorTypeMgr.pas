@@ -32,6 +32,10 @@ type
     EdtDiscount: TEdit;
     Label3: TLabel;
     EdtIntegralRuler: TEdit;
+    Label4: TLabel;
+    CbbUpgrade: TComboBox;
+    Label5: TLabel;
+    EdtIntegralFull: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -46,7 +50,7 @@ type
       ANewItemRecordFocusingChanged: Boolean);
   private
     { Private declarations }
-    AdoQuery: TAdoquery;
+    AdoQuery, AdoEdit: TAdoquery;
     FCxGridHelper : TCxGridSet;
     IsRecordChanged: Boolean;
 
@@ -68,8 +72,10 @@ uses UnitDataModule, UnitPublic;
 procedure TFormAssociatorTypeMgr.FormCreate(Sender: TObject);
 begin
   AdoQuery:= TADOQuery.Create(Self);
+  AdoEdit:= TADOQuery.Create(Self);
   FCxGridHelper:=TCxGridSet.Create;
   FCxGridHelper.SetGridStyle(cxGridAssociatorType,true,false,true);
+  SetItemCode('AssociatorType', 'AssociatorTypeID', 'AssociatorTypeName', '', CbbUpgrade.Items);
 end;
 
 procedure TFormAssociatorTypeMgr.FormShow(Sender: TObject);
@@ -95,6 +101,8 @@ begin
   AddViewField(cxGridAssociatorTypeDBTableView1,'AssociatorTypeName','会员类型名称', 85);
   AddViewField(cxGridAssociatorTypeDBTableView1,'Discount','享受折扣');
   AddViewField(cxGridAssociatorTypeDBTableView1,'IntegralRuler','积分规则');
+  AddViewField(cxGridAssociatorTypeDBTableView1,'IntegralFull','积分满分');
+  AddViewField(cxGridAssociatorTypeDBTableView1,'UpgradeName','满分升级为');
   AddViewField(cxGridAssociatorTypeDBTableView1,'COMMENT','会员类型说明', 208);
 end;
 
@@ -105,7 +113,9 @@ begin
     Connection:= DM.ADOConnection;
     Active:= False;
     SQL.Clear;
-    SQL.Text:= 'select * from AssociatorType order by AssociatorTypeID';
+    SQL.Text:= 'SELECT a.*,b.AssociatorTypeName AS UpgradeName from AssociatorType a ' +
+               '  LEFT JOIN AssociatorType b ON a.Upgrade=b.AssociatorTypeID ' +
+               ' Order By a.AssociatorTypeID';
     Active:= True;
     DataSourceAssociatorType.DataSet:= AdoQuery;
   end;
@@ -130,15 +140,46 @@ begin
   end;
   try
     IsRecordChanged:= True;
-    AdoQuery.Append;
-    AdoQuery.FieldByName('AssociatorTypeID').AsString:= EdtAssociatorTypeID.Text;
-    AdoQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
-    AdoQuery.FieldByName('Discount').AsString:= EdtDiscount.Text;
-    AdoQuery.FieldByName('IntegralRuler').AsInteger:= StrToInt(EdtIntegralRuler.Text);
-    AdoQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
-    AdoQuery.Post;
+//    AdoQuery.Append;
+//    AdoQuery.FieldByName('AssociatorTypeID').AsString:= EdtAssociatorTypeID.Text;
+//    AdoQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
+//    AdoQuery.FieldByName('Discount').AsString:= EdtDiscount.Text;
+//    AdoQuery.FieldByName('IntegralRuler').AsInteger:= StrToInt(EdtIntegralRuler.Text);
+//    AdoQuery.FieldByName('IntegralFull').AsInteger:= StrToInt(EdtIntegralFull.Text);
+//    AdoQuery.FieldByName('Upgrade').AsInteger:= GetItemCode(CbbUpgrade.Text, CbbUpgrade.Items);
+//    AdoQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
+//    AdoQuery.Post;
+    with AdoEdit do
+    begin
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'Insert into AssociatorType(AssociatorTypeID,AssociatorTypeName,Discount, ' +
+                 'IntegralRuler,IntegralFull,Upgrade,Comment)' +
+                 ' values(:ID,:Name,:Discount,:IntegralRuler,:IntegralFull,:Upgrade,:Comment)';
+      Parameters.ParamByName('ID').DataType:= ftInteger;
+      Parameters.ParamByName('ID').Direction:=pdInput;
+      Parameters.ParamByName('name').DataType:= ftString;
+      Parameters.ParamByName('name').Direction:=pdInput;
+      Parameters.ParamByName('Discount').DataType:= ftString;
+      Parameters.ParamByName('IntegralRuler').DataType:= ftInteger;
+      Parameters.ParamByName('IntegralFull').DataType:= ftInteger;
+      Parameters.ParamByName('Upgrade').DataType:= ftInteger;
+      Parameters.ParamByName('Comment').DataType:= ftString;
+
+      Parameters.ParamByName('ID').Value:= StrToInt(EdtAssociatorTypeID.Text);
+      Parameters.ParamByName('name').Value:= EdtAssociatorTypeName.Text;
+      Parameters.ParamByName('Discount').Value:= EdtDiscount.Text;
+      Parameters.ParamByName('IntegralRuler').Value:= StrToInt(EdtIntegralRuler.Text);
+      Parameters.ParamByName('IntegralFull').Value:= StrToInt(EdtIntegralFull.Text);
+      Parameters.ParamByName('Upgrade').Value:= GetItemCode(CbbUpgrade.Text, CbbUpgrade.Items);
+      Parameters.ParamByName('Comment').Value:= EdtAssociatorTypeComment.Text;
+      ExecSQL;
+    end;
     IsRecordChanged:= False;
     Application.MessageBox('新增成功！','提示',MB_OK+64);
+    LoadAssociatorTypeInfo;
+    SetItemCode('AssociatorType', 'AssociatorTypeID', 'AssociatorTypeName', '', CbbUpgrade.Items);
   except
     Application.MessageBox('新增失败！','提示',MB_OK+64);
   end;
@@ -164,15 +205,35 @@ begin
     end;
   try
     IsRecordChanged:= True;
-    AdoQuery.Edit;
-    AdoQuery.FieldByName('AssociatorTypeID').AsString:= EdtAssociatorTypeID.Text;
-    AdoQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
-    AdoQuery.FieldByName('Discount').AsString:= EdtDiscount.Text;
-    AdoQuery.FieldByName('IntegralRuler').AsInteger:= StrToInt(EdtIntegralRuler.Text);
-    AdoQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
-    AdoQuery.Post;
+//    AdoQuery.Edit;
+//    AdoQuery.FieldByName('AssociatorTypeID').AsString:= EdtAssociatorTypeID.Text;
+//    AdoQuery.FieldByName('AssociatorTypeName').AsString:= EdtAssociatorTypeName.Text;
+//    AdoQuery.FieldByName('Discount').AsString:= EdtDiscount.Text;
+//    AdoQuery.FieldByName('IntegralRuler').AsInteger:= StrToInt(EdtIntegralRuler.Text);
+//    AdoQuery.FieldByName('IntegralFull').AsInteger:= StrToInt(EdtIntegralFull.Text);
+//    AdoQuery.FieldByName('Upgrade').AsInteger:= GetItemCode(CbbUpgrade.Text, CbbUpgrade.Items);
+//    AdoQuery.FieldByName('COMMENT').AsString:= EdtAssociatorTypeComment.Text;
+//    AdoQuery.Post;
+    with AdoEdit do
+    begin
+      Active:= False;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'update AssociatorType set ' +
+                 'AssociatorTypeID=' + EdtAssociatorTypeID.Text + ',' +
+                 'AssociatorTypeName=''' + EdtAssociatorTypeName.Text + ''',' +
+                 'Discount=''' + EdtDiscount.text + ''',' +
+                 'IntegralRuler=' + EdtIntegralRuler.text + ',' +
+                 'Upgrade=' + IntToStr(GetItemCode(CbbUpgrade.Text, CbbUpgrade.Items)) + ',' +
+                 'IntegralFull=' + EdtIntegralFull.Text + ',' +
+                 'COMMENT=''' + EdtAssociatorTypeComment.Text +
+                 ''' where AssociatorTypeID=' + AdoQuery.FieldByName('AssociatorTypeID').AsString;
+      ExecSQL;
+    end;
     IsRecordChanged:= False;
     Application.MessageBox('修改成功！','提示',MB_OK+64);
+    LoadAssociatorTypeInfo;
+    SetItemCode('AssociatorType', 'AssociatorTypeID', 'AssociatorTypeName', '', CbbUpgrade.Items);
   except
     Application.MessageBox('修改失败！','提示',MB_OK+64);
   end;
@@ -205,6 +266,8 @@ begin
   EdtAssociatorTypeName.Text:= AdoQuery.fieldbyname('AssociatorTypeName').AsString;
   EdtDiscount.Text:= AdoQuery.FieldByName('Discount').AsString;
   EdtIntegralRuler.Text:= IntToStr(AdoQuery.FieldByName('IntegralRuler').AsInteger);
+  EdtIntegralFull.Text:= AdoQuery.FieldByName('IntegralFull').AsString;
+  CbbUpgrade.ItemIndex:= CbbUpgrade.Items.IndexOf(AdoQuery.FieldByName('UpgradeName').AsString);
   EdtAssociatorTypeComment.Text:= AdoQuery.fieldbyname('COMMENT').AsString;
 end;
 

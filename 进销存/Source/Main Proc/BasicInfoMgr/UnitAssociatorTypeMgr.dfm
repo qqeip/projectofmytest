@@ -611,23 +611,23 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 196
+    Top = 171
     Width = 526
-    Height = 94
+    Height = 119
     Align = alBottom
     Caption = #20250#21592#32423#21035#20449#24687#35774#32622
     TabOrder = 1
     object LabelAssociatorTypeID: TLabel
       Left = 29
-      Top = 21
+      Top = 19
       Width = 90
       Height = 13
       AutoSize = False
-      Caption = #20250#21592#31867#22411#21517#31216#65306
+      Caption = #20250#21592#31867#22411#32534#21495#65306
     end
     object Label2: TLabel
-      Left = 29
-      Top = 69
+      Left = 28
+      Top = 91
       Width = 90
       Height = 13
       AutoSize = False
@@ -635,7 +635,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     end
     object LabelAssociatorTypeName: TLabel
       Left = 268
-      Top = 21
+      Top = 19
       Width = 90
       Height = 13
       AutoSize = False
@@ -643,7 +643,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     end
     object Label1: TLabel
       Left = 29
-      Top = 45
+      Top = 43
       Width = 90
       Height = 13
       AutoSize = False
@@ -651,15 +651,31 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
     end
     object Label3: TLabel
       Left = 268
-      Top = 45
+      Top = 43
       Width = 90
       Height = 13
       AutoSize = False
       Caption = #20250#21592#31215#20998#35268#21017#65306
     end
+    object Label4: TLabel
+      Left = 29
+      Top = 67
+      Width = 90
+      Height = 13
+      AutoSize = False
+      Caption = #20998#28385#21319#32423#20026#65306
+    end
+    object Label5: TLabel
+      Left = 268
+      Top = 67
+      Width = 90
+      Height = 13
+      AutoSize = False
+      Caption = #20250#21592#31867#22411#28385#20998#65306
+    end
     object EdtAssociatorTypeID: TEdit
-      Left = 116
-      Top = 18
+      Left = 120
+      Top = 16
       Width = 121
       Height = 19
       Ctl3D = False
@@ -667,8 +683,8 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       TabOrder = 0
     end
     object EdtAssociatorTypeComment: TEdit
-      Left = 116
-      Top = 66
+      Left = 120
+      Top = 88
       Width = 361
       Height = 19
       Ctl3D = False
@@ -676,8 +692,8 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       TabOrder = 4
     end
     object EdtAssociatorTypeName: TEdit
-      Left = 356
-      Top = 18
+      Left = 360
+      Top = 16
       Width = 121
       Height = 19
       Ctl3D = False
@@ -685,8 +701,8 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       TabOrder = 1
     end
     object EdtDiscount: TEdit
-      Left = 116
-      Top = 42
+      Left = 120
+      Top = 40
       Width = 121
       Height = 19
       Hint = #22914#65306'85'#25240'='#24635#37329#39069#215'0.85'
@@ -697,23 +713,44 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       TabOrder = 2
     end
     object EdtIntegralRuler: TEdit
-      Left = 356
-      Top = 42
+      Left = 360
+      Top = 40
       Width = 121
       Height = 19
-      Hint = #28385'100'#20803#31215#22810#23569#31215#20998
+      Hint = '1'#20803#31215#22810#23569#31215#20998#65288#40664#35748'1'#20803'1'#20998#65289
       Ctl3D = False
       ParentCtl3D = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
+      Text = '1'
+    end
+    object CbbUpgrade: TComboBox
+      Left = 120
+      Top = 64
+      Width = 123
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 5
+    end
+    object EdtIntegralFull: TEdit
+      Left = 360
+      Top = 64
+      Width = 121
+      Height = 19
+      Hint = #28385#22810#23569#31215#20998#27492#20250#21592#21319#32423
+      Ctl3D = False
+      ParentCtl3D = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 6
     end
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
     Width = 526
-    Height = 196
+    Height = 171
     Align = alClient
     Caption = #20250#21592#32423#21035#35814#32454#20449#24687
     TabOrder = 2
@@ -721,7 +758,7 @@ object FormAssociatorTypeMgr: TFormAssociatorTypeMgr
       Left = 2
       Top = 15
       Width = 522
-      Height = 179
+      Height = 154
       Align = alClient
       TabOrder = 0
       object cxGridAssociatorTypeDBTableView1: TcxGridDBTableView

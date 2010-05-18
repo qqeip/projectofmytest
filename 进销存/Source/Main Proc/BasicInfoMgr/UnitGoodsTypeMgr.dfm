@@ -656,7 +656,7 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       Caption = #21830#21697#31867#21035#32534#21495#65306
     end
     object Label2: TLabel
-      Left = 14
+      Left = 190
       Top = 56
       Width = 90
       Height = 13
@@ -687,6 +687,14 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       AutoSize = False
       Caption = '%'#27599#20214
     end
+    object Label4: TLabel
+      Left = 14
+      Top = 56
+      Width = 90
+      Height = 13
+      AutoSize = False
+      Caption = #21830#21697#20379#36135#25240#25187#65306
+    end
     object EdtGoodsTypeName: TEdit
       Left = 282
       Top = 28
@@ -697,9 +705,9 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       TabOrder = 1
     end
     object EdtGoodsTypeComment: TEdit
-      Left = 104
+      Left = 282
       Top = 53
-      Width = 417
+      Width = 239
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
@@ -727,6 +735,16 @@ object FormGoodsTypeMgr: TFormGoodsTypeMgr
       ShowHint = True
       TabOrder = 3
       Text = '0'
+      OnKeyPress = EdtPercentKeyPress
+    end
+    object EdtProvideDiscount: TEdit
+      Left = 104
+      Top = 53
+      Width = 80
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 4
       OnKeyPress = EdtPercentKeyPress
     end
   end

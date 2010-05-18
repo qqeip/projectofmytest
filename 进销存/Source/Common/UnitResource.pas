@@ -16,6 +16,7 @@ resourcestring
   sDatabaseUserPWD   = '888666';
   sRepeatLogInSystem = '程序已运行，请不要重复打开！';
   sExitSystemQuery = '确定要退出系统么?';
+  sExitSystemBackupDB = '退出系统前是否要备份数据库?';
   sStatusVersionStr = '当前版本号：';
   sStatusUserStr = '操作员：';
   sVersion = '1.0';

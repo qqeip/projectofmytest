@@ -54,6 +54,9 @@ type
       Sender: TcxCustomGridTableView; APrevFocusedRecord,
       AFocusedRecord: TcxCustomGridRecord;
       ANewItemRecordFocusingChanged: Boolean);
+    procedure EdtSalePriceExit(Sender: TObject);
+    procedure EdtSalePriceKeyPress(Sender: TObject; var Key: Char);
+    procedure EdtGoodsIDKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     AdoQuery, AdoEdit: TAdoquery;
@@ -298,6 +301,45 @@ begin
     CBProvider.ItemIndex:= CBProvider.Items.IndexOf(FieldByName('ProviderName').AsString);
     EdtMeasureUnit.Text:= FieldByName('MeasureUnit').AsString;
     EdtSize.Text:= FieldByName('GoodsSize').AsString;
+  end;
+end;
+
+procedure TFormGoodsMgr.EdtSalePriceExit(Sender: TObject);
+var
+  lProvideDiscount: Double;
+begin
+  if CbbGoodsType.ItemIndex=-1 then
+  begin
+    Application.MessageBox('请先选择商品类别！','提示',MB_OK+64);
+    Exit;
+  end;
+  with TADOQuery.Create(nil) do
+  begin
+    Close;
+    Connection:= DM.ADOConnection;
+    SQL.Clear;
+    SQL.Text:= 'select * from GoodsType where GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
+    Open;
+    if RecordCount=1 then
+      lProvideDiscount:= StrToFloat(FieldByName('ProvideDiscount').AsString);
+    EdtCostPrice.Text:= FormatFloat('0.00',StrToFloat(EdtSalePrice.Text)*lProvideDiscount/100)
+  end;
+end;
+
+procedure TFormGoodsMgr.EdtSalePriceKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if not (key in ['0'..'9',#8,#13,#46]) then
+  begin
+    Key := #0;
+  end;
+end;
+
+procedure TFormGoodsMgr.EdtGoodsIDKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not (key in ['0'..'9',#8,#13]) then
+  begin
+    Key := #0;
   end;
 end;
 
