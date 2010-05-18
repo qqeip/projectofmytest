@@ -12,11 +12,13 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     procedure ConnectDatabase;
+
     { Private declarations }
   public
     { Public declarations }
     function LocateUser(aUserName, aUserPWD: string): Boolean;
     function ChangePWD(aNewPWD: string): Boolean;
+    function GetUserType(aUserName, aUserPWD: string): Boolean;
   end;
 
 var
@@ -67,6 +69,28 @@ begin
       CurUser.UserRights:= FieldByName('UserRights').AsString;
       result:= True;
     end;
+    Active:= False;
+  end;
+end;
+
+function TDM.GetUserType(aUserName, aUserPWD: string): Boolean;
+begin
+  result:= False;
+  with ADOQuery do
+  begin
+    Active:= False;
+    SQL.Clear;
+    SQL.Text:= 'select * from user where username=''' + aUserName + ''' and userpwd=''' + aUserPWD + '''';
+    Active:= True;
+    if recordcount=0 then
+    begin
+      Result:= False;
+      Exit;
+    end;
+    if (recordCount=1) and (FieldByName('UserType').AsInteger=0) then
+      result:= True
+    else
+      result:= False;
     Active:= False;
   end;
 end;

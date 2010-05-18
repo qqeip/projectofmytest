@@ -60,6 +60,7 @@ type
     BtnRepertoryQuery: TToolButton;
     NSalaryMgr: TMenuItem;
     NAttendanceMgr: TMenuItem;
+    SaveDialog: TSaveDialog;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -107,6 +108,7 @@ type
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
     procedure SetTabIndex(Form: TForm);
+    function BackupDB: Boolean;
 //    procedure LockSystem(aEnabled: Boolean);
     { Private declarations }
   public
@@ -226,6 +228,15 @@ var
   CheckUser: Boolean;
 //  TempUser: TUser;   //应在包中建立一个存取用户信息的类  所以此处没初始化 退出时会因为对象不存在而报错
 begin
+  //先提示用户是否备份数据库
+  if Application.MessageBox(PChar(sExitSystemBackupDB), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) = IDYES then
+  begin
+    if BackupDB then
+      Application.MessageBox('数据备份成功！','提示',MB_OK)
+    else
+      Application.MessageBox('数据备份失败！','提示',MB_OK);
+  end;
+
   CheckUser:= False;
   if Application.MessageBox(PChar(sExitSystemQuery), PChar(Application.Title), MB_YESNO or MB_ICONQUESTION or MB_DEFBUTTON2) <> IDYES then
   begin
@@ -237,6 +248,8 @@ begin
     try
       if ShowModal=mrok then
       begin
+        if DM.GetUserType(EditName.Text,EditPwd.Text) then
+          CheckUser:= True;
         if UpperCase(CurUser.UserName) = UpperCase(EditName.Text) then
           if UpperCase(CurUser.PassWord) = UpperCase(EditPwd.Text) then
             CheckUser:= True;
@@ -856,18 +869,32 @@ begin
 end;
 
 procedure TFormMain.BtnBackupClick(Sender: TObject);
-var
-  lOldFile, TempStr: string;
 begin
-  if selectdirectory('请选择目录',PChar(CurBackUPDir),TempStr) then
-  begin
-    CurBackUPDir:= TempStr;
-    IniOptions.SaveToFile(ExtractFilePath(Application.ExeName)+sIniFileName);
-    lOldFile:= ExtractFilePath(ParamStr(0)) + 'Data\Stockpile System.mdb';
-    if CopyFile(PChar(lOldFile),PChar(CurBackUPDir + '\Backup' + DateToStr(Now) + '.mdb'), False) then
-      Application.MessageBox('数据备份成功！','提示',MB_OK)
-    else
-      Application.MessageBox('数据备份失败！','提示',MB_OK)
+  if BackupDB then
+    Application.MessageBox('数据备份成功！','提示',MB_OK)
+  else
+    Application.MessageBox('数据备份失败！','提示',MB_OK);
+end;
+
+function TFormMain.BackupDB: Boolean;
+var
+  lOldFile: string;
+begin
+  Result:= False;
+  try
+    SaveDialog.FileName:= CurBackUPDir + 'Backup ' + DateToStr(Now) + '.mdb';
+    if SaveDialog.Execute then
+    begin
+      CurBackUPDir:= ExtractFilePath(SaveDialog.FileName);
+      IniOptions.SaveToFile(ExtractFilePath(Application.ExeName)+sIniFileName);
+      lOldFile:= ExtractFilePath(ParamStr(0)) + 'Data\Stockpile System.mdb';
+      if CopyFile(PChar(lOldFile),PChar(SaveDialog.FileName), False) then
+        Result:= True
+      else
+        Result:= False;
+    end;
+  except
+    Result:= False;
   end;
 end;
 

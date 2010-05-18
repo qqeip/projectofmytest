@@ -302,6 +302,13 @@ begin
     CHKSystemLock.Checked:= True;
 //    CHKLogOut.Checked:= True;
   end;
+  //µê³¤
+  if cbbUserLevel.ItemIndex=2 then
+  begin
+    for i:=0 to GRPUserMgr.ControlCount-1 do
+      if (GRPUserMgr.Controls[i] is TCheckBox) then
+        (GRPUserMgr.Controls[i] as TCheckBox).Checked:= True;
+  end;
 end;
 
 procedure TFormEditUser.btnOKClick(Sender: TObject);

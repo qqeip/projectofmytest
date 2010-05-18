@@ -19,7 +19,7 @@ object FormEditUser: TFormEditUser
     Top = 6
     Width = 378
     Height = 338
-    ActivePage = ts1
+    ActivePage = ts2
     Style = tsFlatButtons
     TabOrder = 0
     object ts1: TTabSheet
@@ -50,7 +50,8 @@ object FormEditUser: TFormEditUser
           OnChange = cbbUserLevelChange
           Items.Strings = (
             #31649#29702#21592
-            #33829#19994#21592)
+            #33829#19994#21592
+            #24215#38271)
         end
         object lbledtUserName: TLabeledEdit
           Left = 19

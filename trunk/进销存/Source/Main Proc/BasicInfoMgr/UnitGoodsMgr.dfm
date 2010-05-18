@@ -626,8 +626,8 @@ object FormGoodsMgr: TFormGoodsMgr
       Caption = #21830#21697#21517#31216#65306
     end
     object Label2: TLabel
-      Left = 32
-      Top = 46
+      Left = 380
+      Top = 22
       Width = 60
       Height = 13
       AutoSize = False
@@ -650,7 +650,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Caption = #35268#26684#22411#21495#65306
     end
     object Label5: TLabel
-      Left = 205
+      Left = 380
       Top = 46
       Width = 60
       Height = 13
@@ -658,7 +658,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Caption = #25104#26412#20215#26684#65306
     end
     object Label6: TLabel
-      Left = 380
+      Left = 205
       Top = 46
       Width = 60
       Height = 13
@@ -674,8 +674,8 @@ object FormGoodsMgr: TFormGoodsMgr
       Caption = #21830#21697#20135#22320#65306
     end
     object Label11: TLabel
-      Left = 380
-      Top = 22
+      Left = 32
+      Top = 69
       Width = 60
       Height = 13
       AutoSize = False
@@ -691,7 +691,7 @@ object FormGoodsMgr: TFormGoodsMgr
     end
     object Label9: TLabel
       Left = 32
-      Top = 69
+      Top = 45
       Width = 60
       Height = 13
       AutoSize = False
@@ -707,8 +707,8 @@ object FormGoodsMgr: TFormGoodsMgr
       TabOrder = 1
     end
     object CBProvider: TComboBox
-      Left = 442
-      Top = 19
+      Left = 93
+      Top = 66
       Width = 100
       Height = 21
       Style = csDropDownList
@@ -718,22 +718,25 @@ object FormGoodsMgr: TFormGoodsMgr
       TabOrder = 2
     end
     object EdtCostPrice: TEdit
-      Left = 267
-      Top = 43
-      Width = 100
-      Height = 19
-      Ctl3D = False
-      ParentCtl3D = False
-      TabOrder = 6
-    end
-    object EdtSalePrice: TEdit
       Left = 442
       Top = 43
       Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
+      TabOrder = 6
+      OnKeyPress = EdtSalePriceKeyPress
+    end
+    object EdtSalePrice: TEdit
+      Left = 267
+      Top = 43
+      Width = 100
+      Height = 19
+      Ctl3D = False
+      ParentCtl3D = False
       TabOrder = 7
+      OnExit = EdtSalePriceExit
+      OnKeyPress = EdtSalePriceKeyPress
     end
     object EdtProduceArea: TEdit
       Left = 93
@@ -745,13 +748,14 @@ object FormGoodsMgr: TFormGoodsMgr
       TabOrder = 8
     end
     object EdtBarCode: TEdit
-      Left = 93
-      Top = 43
+      Left = 442
+      Top = 19
       Width = 100
       Height = 19
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 3
+      OnKeyPress = EdtGoodsIDKeyPress
     end
     object EdtMeasureUnit: TEdit
       Left = 267
@@ -779,10 +783,11 @@ object FormGoodsMgr: TFormGoodsMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
+      OnKeyPress = EdtGoodsIDKeyPress
     end
     object CbbGoodsType: TComboBox
       Left = 93
-      Top = 66
+      Top = 42
       Width = 100
       Height = 21
       Style = csDropDownList

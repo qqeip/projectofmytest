@@ -31,6 +31,8 @@ type
     Label1: TLabel;
     EdtPercent: TEdit;
     Label3: TLabel;
+    Label4: TLabel;
+    EdtProvideDiscount: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -95,7 +97,8 @@ begin
   AddViewField(cxGridGoodsTypeDBTableView1,'GOODSTYPEID','商品类别编号',85);
   AddViewField(cxGridGoodsTypeDBTableView1,'GOODSTYPENAME','商品类别名称',85);
   AddViewField(cxGridGoodsTypeDBTableView1,'PERCENT','员工提成');
-  AddViewField(cxGridGoodsTypeDBTableView1,'GOODSTYPECOMMENT','商品类别说明', 313);
+  AddViewField(cxGridGoodsTypeDBTableView1,'ProvideDiscount','供货折扣');
+  AddViewField(cxGridGoodsTypeDBTableView1,'GOODSTYPECOMMENT','商品类别说明', 255);
 end;
 
 procedure TFormGoodsTypeMgr.LoadGoodsTypeInfo;
@@ -134,6 +137,7 @@ begin
     AdoDepotQuery.FieldByName('GOODSTYPEID').AsInteger:= StrToInt(EdtGoodsTypeID.Text);
     AdoDepotQuery.FieldByName('GOODSTYPENAME').AsString:= EdtGoodsTypeName.Text;
     AdoDepotQuery.FieldByName('PERCENT').AsString:= EdtPercent.Text;
+    AdoDepotQuery.FieldByName('ProvideDiscount').AsString:= EdtProvideDiscount.Text;
     AdoDepotQuery.FieldByName('GOODSTYPECOMMENT').AsString:= EdtGoodsTypeComment.Text;
     AdoDepotQuery.Post;
     IsRecordChanged:= False;
@@ -168,6 +172,7 @@ begin
     AdoDepotQuery.FieldByName('GOODSTYPEID').AsInteger:= StrToInt(EdtGoodsTypeID.Text);
     AdoDepotQuery.FieldByName('GOODSTYPENAME').AsString:= EdtGoodsTypeName.Text;
     AdoDepotQuery.FieldByName('PERCENT').AsString:= EdtPercent.Text;
+    AdoDepotQuery.FieldByName('ProvideDiscount').AsString:= EdtProvideDiscount.Text;
     AdoDepotQuery.FieldByName('GOODSTYPECOMMENT').AsString:= EdtGoodsTypeComment.Text;
     AdoDepotQuery.Post;
     IsRecordChanged:= False;
@@ -203,6 +208,7 @@ begin
   EdtGoodsTypeID.Text:= AdoDepotQuery.FieldByName('GOODSTYPEID').AsString;
   EdtGoodsTypeName.Text:= AdoDepotQuery.FieldByName('GOODSTYPENAME').AsString;
   EdtPercent.Text:= AdoDepotQuery.FieldByName('PERCENT').AsString;
+  EdtProvideDiscount.Text:= AdoDepotQuery.FieldByName('ProvideDiscount').AsString;
   EdtGoodsTypeComment.Text:= AdoDepotQuery.FieldByName('GOODSTYPECOMMENT').AsString;
 end;
 
