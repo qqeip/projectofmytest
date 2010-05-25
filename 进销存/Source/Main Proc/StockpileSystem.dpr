@@ -35,7 +35,8 @@ uses
   UnitOutDepotStat in 'RepertoryManage\UnitOutDepotStat.pas' {FormOutDepotStat},
   UnitBalanceAnalyse in 'RepertoryManage\UnitBalanceAnalyse.pas' {FormBalanceAnalyse},
   UnitSalaryMgr in 'UserManage\UnitSalaryMgr.pas' {FormSalaryMgr},
-  UnitAttendanceMgr in 'UserManage\UnitAttendanceMgr.pas' {FormAttendanceMgr};
+  UnitAttendanceMgr in 'UserManage\UnitAttendanceMgr.pas' {FormAttendanceMgr},
+  UnitRingPopupWindows in 'View\UnitRingPopupWindows.pas' {FormRingPopupWindows};
 
 {$R *.res}
 var

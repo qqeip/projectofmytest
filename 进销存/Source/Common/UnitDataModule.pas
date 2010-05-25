@@ -19,6 +19,7 @@ type
     function LocateUser(aUserName, aUserPWD: string): Boolean;
     function ChangePWD(aNewPWD: string): Boolean;
     function GetUserType(aUserName, aUserPWD: string): Boolean;
+    function CustomerBirthDayRemind: String;
   end;
 
 var
@@ -107,6 +108,29 @@ begin
     ExecSQL;
     Result:= True;
   end;
+end;
+
+function TDM.CustomerBirthDayRemind: String;
+var
+  lTempStr: string;
+begin
+  result:= '';
+  with ADOQuery do
+  begin
+    Active:= False;
+    SQL.Clear;
+    SQL.Text:= 'SELECT * from Customer where CustomerBirthday=cdate(''' + DateToStr(Now) + ''')';
+    Active:= True;
+    if IsEmpty then Exit;
+    First;
+    while Not Eof do
+    begin
+      lTempStr:= lTempStr + #13 + FieldByName('CustomerName').AsString ;
+      Next;
+    end;
+  end;
+  Delete(lTempStr,1,1);
+  Result:= lTempStr;
 end;
 
 end.
