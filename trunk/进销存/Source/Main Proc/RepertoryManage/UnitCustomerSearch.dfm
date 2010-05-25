@@ -3,7 +3,7 @@ object FormCustomerSearch: TFormCustomerSearch
   Top = 300
   Width = 450
   Height = 380
-  Caption = 'FormCustomerSearch'
+  Caption = #20250#21592#26597#35810
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

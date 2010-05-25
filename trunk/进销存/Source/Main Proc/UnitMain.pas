@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, WinSkinData, cxGraphics, ImgList, ComCtrls, ToolWin,
-  cxControls, dxStatusBar, ExtCtrls, ShellAPI, Tabs, FileCtrl, UnitPublic;
+  cxControls, dxStatusBar, ExtCtrls, ShellAPI, Tabs, FileCtrl, UnitPublic, UnitRingPopupWindows;
 
 type
   TFormMain = class(TForm)
@@ -105,6 +105,7 @@ type
     procedure NAttendanceMgrClick(Sender: TObject);
   private
     IniOptions : TIniOptions;
+    FormCustomerPopupWindowsSend: TFormRingPopupWindows;
     procedure CheckUserRights(aRights: string);
     procedure AddToTab(aForm: TForm);
     procedure SetTabIndex(Form: TForm);
@@ -186,6 +187,12 @@ begin
             SystemStatusBar.Panels.Items[1].Text:= sStatusUserStr + CurUser.UserName;
             NOutDepotMgrClick(Sender);
             OnWorkRegister;
+            if DM.CustomerBirthDayRemind<>'' then //有客户今天过生日，进行生日提醒
+            begin
+              if not Assigned(FormCustomerPopupWindowsSend) then
+                FormCustomerPopupWindowsSend:= TFormRingPopupWindows.Create(Application,DM.CustomerBirthDayRemind);
+              FormCustomerPopupWindowsSend.Show;
+            end;
             Break;
           end
           else
