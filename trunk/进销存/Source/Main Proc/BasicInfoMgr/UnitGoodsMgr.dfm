@@ -10,23 +10,25 @@ object FormGoodsMgr: TFormGoodsMgr
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 311
+    Top = 306
     Width = 576
-    Height = 53
+    Height = 58
     Align = alBottom
     TabOrder = 0
     object Btn_Add: TSpeedButton
       Left = 107
-      Top = 16
+      Top = 26
       Width = 65
       Height = 22
       Flat = True
@@ -172,7 +174,7 @@ object FormGoodsMgr: TFormGoodsMgr
     end
     object Btn_Modify: TSpeedButton
       Left = 208
-      Top = 16
+      Top = 26
       Width = 65
       Height = 22
       Flat = True
@@ -318,7 +320,7 @@ object FormGoodsMgr: TFormGoodsMgr
     end
     object Btn_Delete: TSpeedButton
       Left = 310
-      Top = 16
+      Top = 26
       Width = 65
       Height = 22
       Flat = True
@@ -464,7 +466,7 @@ object FormGoodsMgr: TFormGoodsMgr
     end
     object Btn_Close: TSpeedButton
       Left = 411
-      Top = 16
+      Top = 26
       Width = 65
       Height = 22
       Flat = True
@@ -608,10 +610,24 @@ object FormGoodsMgr: TFormGoodsMgr
         8B73B8886FB6846BB48267B27E64B27C6200}
       OnClick = Btn_CloseClick
     end
+    object Label10: TLabel
+      Left = 72
+      Top = 5
+      Width = 441
+      Height = 13
+      AutoSize = False
+      Caption = '* '#24555#25463#38190'F2'#28165#31354#20449#24687#20934#22791#28155#21152'    F5'#20445#23384#28155#21152#30340#20869#23481'  '#25110#20462#25913#21830#21697#20449#24687#30452#25509#28857#28155#21152#25353#38062
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
   end
-  object GroupBox2: TGroupBox
+  object GroupBoxGoodsInfo: TGroupBox
     Left = 0
-    Top = 192
+    Top = 187
     Width = 576
     Height = 119
     Align = alBottom
@@ -801,7 +817,7 @@ object FormGoodsMgr: TFormGoodsMgr
     Left = 0
     Top = 0
     Width = 576
-    Height = 192
+    Height = 187
     Align = alClient
     Caption = #21830#21697#35814#32454#20449#24687
     TabOrder = 2
@@ -809,7 +825,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Left = 2
       Top = 15
       Width = 572
-      Height = 175
+      Height = 170
       Align = alClient
       TabOrder = 0
       object cxGridGoodsDBTableView1: TcxGridDBTableView
