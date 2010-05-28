@@ -16,7 +16,7 @@ type
     Btn_Modify: TSpeedButton;
     Btn_Delete: TSpeedButton;
     Btn_Close: TSpeedButton;
-    GroupBox2: TGroupBox;
+    GroupBoxGoodsInfo: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -42,6 +42,7 @@ type
     EdtGoodsID: TEdit;
     Label9: TLabel;
     CbbGoodsType: TComboBox;
+    Label10: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -57,6 +58,8 @@ type
     procedure EdtSalePriceExit(Sender: TObject);
     procedure EdtSalePriceKeyPress(Sender: TObject; var Key: Char);
     procedure EdtGoodsIDKeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     AdoQuery, AdoEdit: TAdoquery;
@@ -340,6 +343,29 @@ begin
   if not (key in ['0'..'9',#8,#13]) then
   begin
     Key := #0;
+  end;
+end;
+
+procedure TFormGoodsMgr.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  i: Integer;
+begin
+  //点击F2键，清空所有文本框和下拉框内容
+  if Key=VK_F2 then
+  begin
+    for i:=0 to GroupBoxGoodsInfo.ControlCount-1 do
+    begin
+      if GroupBoxGoodsInfo.Controls[i] is TEdit then
+        TEdit(GroupBoxGoodsInfo.Controls[i]).Text:= '';
+      if GroupBoxGoodsInfo.Controls[i] is TComboBox then
+        TComboBox(GroupBoxGoodsInfo.Controls[i]).ItemIndex:= -1;
+    end;
+  end;
+  //点击F5键，添加商品信息
+  if Key=VK_F5 then
+  begin
+    Btn_AddClick(Sender);
   end;
 end;
 
