@@ -19,9 +19,9 @@ object FormCustomerMgr: TFormCustomerMgr
   TextHeight = 13
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 184
+    Top = 162
     Width = 576
-    Height = 127
+    Height = 149
     Align = alBottom
     Caption = #23458#25143#20449#24687#35774#32622
     TabOrder = 0
@@ -55,7 +55,7 @@ object FormCustomerMgr: TFormCustomerMgr
       Width = 60
       Height = 13
       AutoSize = False
-      Caption = #29983'    '#26085#65306
+      Caption = #23458#25143#29983#26085#65306
     end
     object Label5: TLabel
       Left = 203
@@ -120,6 +120,14 @@ object FormCustomerMgr: TFormCustomerMgr
       Height = 13
       AutoSize = False
       Caption = #23458#25143#32534#21495#65306
+    end
+    object Label13: TLabel
+      Left = 27
+      Top = 124
+      Width = 60
+      Height = 13
+      AutoSize = False
+      Caption = #23453#23453#29983#26085#65306
     end
     object EdtCustomerName: TEdit
       Left = 265
@@ -234,6 +242,16 @@ object FormCustomerMgr: TFormCustomerMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
+    end
+    object DTPBabyBirthday: TDateTimePicker
+      Left = 90
+      Top = 120
+      Width = 100
+      Height = 21
+      Date = 40260.968971527780000000
+      Format = 'yyyy-MM-dd'
+      Time = 40260.968971527780000000
+      TabOrder = 12
     end
   end
   object Panel1: TPanel
@@ -832,7 +850,7 @@ object FormCustomerMgr: TFormCustomerMgr
     Left = 0
     Top = 0
     Width = 576
-    Height = 184
+    Height = 162
     Align = alClient
     Caption = #23458#25143#35814#32454#20449#24687
     TabOrder = 2
@@ -840,7 +858,7 @@ object FormCustomerMgr: TFormCustomerMgr
       Left = 2
       Top = 15
       Width = 572
-      Height = 167
+      Height = 145
       Align = alClient
       TabOrder = 0
       object cxGridCustomerDBTableView1: TcxGridDBTableView

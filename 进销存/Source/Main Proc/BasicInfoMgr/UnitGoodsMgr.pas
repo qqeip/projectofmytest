@@ -60,6 +60,22 @@ type
     procedure EdtGoodsIDKeyPress(Sender: TObject; var Key: Char);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure EdtGoodsNameKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtBarCodeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CbbGoodsTypeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtSalePriceKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtCostPriceKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CBProviderKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtMeasureUnitKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtSizeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     AdoQuery, AdoEdit: TAdoquery;
@@ -138,22 +154,53 @@ begin
 end;
 
 procedure TFormGoodsMgr.Btn_AddClick(Sender: TObject);
-begin
-  if EdtGoodsID.Text='' then
+  function GetGoodsID: string;
+  var
+    i: Integer;
+    lID: string;
   begin
-    Application.MessageBox('商品编号不能为空！','提示',MB_OK+64);
+    Result:= IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items))+'0000';
+    with TAdoQuery.Create(nil) do
+    begin
+      try
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        SQL.Text:= 'SELECT iif(max(mid(goodsid,5,4))is null,0000,iif(max(mid(goodsid,5,4))is not null,max(mid(goodsid,5,4)))) AS NEWID from goods' +
+                   ' where GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
+        Active:= True;
+        lID:= IntToStr(FieldByName('NEWID').AsInteger + 1);
+        for i:= 0 to (3-(Length(lID))) do
+          lID:= '0' + lID;
+        Result:= IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items)) + lID;
+        Close;
+      finally
+        Free;
+      end;
+    end;
+  end;
+begin
+//  if EdtGoodsID.Text='' then
+//  begin
+//    Application.MessageBox('商品编号不能为空！','提示',MB_OK+64);
+//    Exit;
+//  end;
+  if CbbGoodsType.ItemIndex= -1 then
+  begin
+    Application.MessageBox('请先选择商品类别！','提示',MB_OK+64);
     Exit;
   end;
+
   if EdtGoodsName.Text='' then
   begin
     Application.MessageBox('商品名称不能为空！','提示',MB_OK+64);
     Exit;
   end;
-  if IsExistID('GoodsID', 'Goods', EdtGoodsID.Text) then
-  begin
-    Application.MessageBox('商品编号已存在！','提示',MB_OK+64);
-    Exit;
-  end;
+//  if IsExistID('GoodsID', 'Goods', EdtGoodsID.Text) then
+//  begin
+//    Application.MessageBox('商品编号已存在！','提示',MB_OK+64);
+//    Exit;
+//  end;
   if IsExistID('BarCode', 'Goods', ''''+EdtBarCode.Text+'''') then
   begin
     Application.MessageBox('此商品条形码已存在！','提示',MB_OK+64);
@@ -187,7 +234,7 @@ begin
       Parameters.ParamByName('MeasureUnit').DataType:= ftString;
       Parameters.ParamByName('GoodsSize').DataType:= ftString;
 
-      Parameters.ParamByName('ID').Value:= StrToInt(EdtGoodsID.Text);
+      Parameters.ParamByName('ID').Value:= StrToInt(GetGoodsID);
       Parameters.ParamByName('BarCode').Value:= EdtBarCode.Text;
       Parameters.ParamByName('Name').Value:=EdtGoodsName.Text;
       Parameters.ParamByName('GoodsTypeID').Value:= GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items);
@@ -308,25 +355,25 @@ begin
 end;
 
 procedure TFormGoodsMgr.EdtSalePriceExit(Sender: TObject);
-var
-  lProvideDiscount: Double;
+//var
+//  lProvideDiscount: Double;
 begin
-  if CbbGoodsType.ItemIndex=-1 then
-  begin
-    Application.MessageBox('请先选择商品类别！','提示',MB_OK+64);
-    Exit;
-  end;
-  with TADOQuery.Create(nil) do
-  begin
-    Close;
-    Connection:= DM.ADOConnection;
-    SQL.Clear;
-    SQL.Text:= 'select * from GoodsType where GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
-    Open;
-    if RecordCount=1 then
-      lProvideDiscount:= StrToFloat(FieldByName('ProvideDiscount').AsString);
-    EdtCostPrice.Text:= FormatFloat('0.00',StrToFloat(EdtSalePrice.Text)*lProvideDiscount/100)
-  end;
+//  if CbbGoodsType.ItemIndex=-1 then
+//  begin
+//    Application.MessageBox('请先选择商品类别！','提示',MB_OK+64);
+//    Exit;
+//  end;
+//  with TADOQuery.Create(nil) do
+//  begin
+//    Close;
+//    Connection:= DM.ADOConnection;
+//    SQL.Clear;
+//    SQL.Text:= 'select * from GoodsType where GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
+//    Open;
+//    if RecordCount=1 then
+//      lProvideDiscount:= StrToFloat(FieldByName('ProvideDiscount').AsString);
+//    EdtCostPrice.Text:= FormatFloat('0.00',StrToFloat(EdtSalePrice.Text)*lProvideDiscount/100)
+//  end;
 end;
 
 procedure TFormGoodsMgr.EdtSalePriceKeyPress(Sender: TObject;
@@ -340,7 +387,7 @@ end;
 
 procedure TFormGoodsMgr.EdtGoodsIDKeyPress(Sender: TObject; var Key: Char);
 begin
-  if not (key in ['0'..'9',#8,#13]) then
+  if not (key in ['0'..'9',#8]) then
   begin
     Key := #0;
   end;
@@ -367,6 +414,83 @@ begin
   begin
     Btn_AddClick(Sender);
   end;
+end;
+
+procedure TFormGoodsMgr.EdtGoodsNameKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=13 then
+    EdtBarCode.SetFocus;
+end;
+
+procedure TFormGoodsMgr.EdtBarCodeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=13 then
+    CbbGoodsType.SetFocus;
+end;
+
+procedure TFormGoodsMgr.CbbGoodsTypeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=13 then
+    EdtSalePrice.SetFocus;
+end;
+
+procedure TFormGoodsMgr.EdtSalePriceKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+  lProvideDiscount: Double;
+begin
+  if Key=13 then
+  begin
+    if CbbGoodsType.ItemIndex=-1 then
+    begin
+      Application.MessageBox('请先选择商品类别！','提示',MB_OK+64);
+      Exit;
+    end;
+    with TADOQuery.Create(nil) do
+    begin
+      Close;
+      Connection:= DM.ADOConnection;
+      SQL.Clear;
+      SQL.Text:= 'select * from GoodsType where GoodsTypeID=' + IntToStr(GetItemCode(CbbGoodsType.Text, CbbGoodsType.Items));
+      Open;
+      if RecordCount=1 then
+        lProvideDiscount:= StrToFloat(FieldByName('ProvideDiscount').AsString);
+      EdtCostPrice.Text:= FormatFloat('0.00',StrToFloat(EdtSalePrice.Text)*lProvideDiscount/100);
+      EdtCostPrice.SetFocus;
+    end;
+  end;
+end;
+
+
+procedure TFormGoodsMgr.EdtCostPriceKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=13 then
+    CBProvider.SetFocus;
+end;
+
+procedure TFormGoodsMgr.CBProviderKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=13 then
+    EdtMeasureUnit.SetFocus;
+end;
+
+procedure TFormGoodsMgr.EdtMeasureUnitKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if Key=13 then
+    EdtSize.SetFocus;
+end;
+
+procedure TFormGoodsMgr.EdtSizeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key=13 then
+    EdtProduceArea.SetFocus;
 end;
 
 end.
