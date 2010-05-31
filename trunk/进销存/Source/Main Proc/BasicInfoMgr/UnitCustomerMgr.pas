@@ -47,6 +47,8 @@ type
     EdtEmail: TEdit;
     Label12: TLabel;
     EdtCustomerID: TEdit;
+    Label13: TLabel;
+    DTPBabyBirthday: TDateTimePicker;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -120,6 +122,7 @@ begin
   AddViewField(cxGridCustomerDBTableView1,'CustomerEmail','Email');
   AddViewField(cxGridCustomerDBTableView1,'CustomerFamilyAddress','家庭住址');
   AddViewField(cxGridCustomerDBTableView1,'CustomerOfficeAddress','公司地址');
+  AddViewField(cxGridCustomerDBTableView1,'BabyBirthday','宝宝生日');
 end;
 
 procedure TFormCustomerMgr.LoadCustomerInfo;
@@ -165,15 +168,15 @@ begin
       SQL.Text:= 'insert into Customer(' +
                  'CustomerID,CustomerName, CustomerSex, CustomerBirthday, CustomerAssociatorTypeID, ' +
                  'CustomerIntegral, CustomerOfficePhone, CustomerFamilyPhone, CustomerMobilePhone, ' +
-                 'CustomerFamilyAddress, CustomerOfficeAddress, CustomerEmail) ' +
-                 'values(:ID,:name,:sex,:firthday,:associatortypeid,:integral,:officephone,:familyphone,' +
-                 ':mobilephone,:familyaddress,:officeaddress,:email)';
+                 'CustomerFamilyAddress, CustomerOfficeAddress, CustomerEmail, BabyBirthday) ' +
+                 'values(:ID,:name,:sex,:birthday,:associatortypeid,:integral,:officephone,:familyphone,' +
+                 ':mobilephone,:familyaddress,:officeaddress,:email,:BabyBirthday)';
       Parameters.ParamByName('ID').DataType:= ftInteger;
       Parameters.ParamByName('ID').Direction:=pdInput;
       Parameters.ParamByName('name').DataType:= ftString;
       Parameters.ParamByName('name').Direction:=pdInput;
       Parameters.ParamByName('sex').DataType:= ftInteger;
-      Parameters.ParamByName('firthday').DataType:= ftDate;
+      Parameters.ParamByName('birthday').DataType:= ftDate;
       Parameters.ParamByName('associatortypeid').DataType:= ftInteger;
       Parameters.ParamByName('integral').DataType:= ftInteger;
       Parameters.ParamByName('officephone').DataType:= ftString;
@@ -182,11 +185,12 @@ begin
       Parameters.ParamByName('familyaddress').DataType:= ftString;
       Parameters.ParamByName('officeaddress').DataType:= ftString;
       Parameters.ParamByName('email').DataType:= ftString;
+      Parameters.ParamByName('BabyBirthday').DataType:= ftDate;
 
       Parameters.ParamByName('ID').Value:= StrToInt(EdtCustomerID.Text);
       Parameters.ParamByName('name').Value:= EdtCustomerName.Text;
       Parameters.ParamByName('sex').Value:= CBCustomerSex.ItemIndex;
-      Parameters.ParamByName('firthday').Value:= DTPCustomerBirthday.Date;
+      Parameters.ParamByName('birthday').Value:= DTPCustomerBirthday.Date;
       Parameters.ParamByName('associatortypeid').Value:= GetItemCode(CBAssociatorType.Text, CBAssociatorType.Items);
       Parameters.ParamByName('integral').Value:= EdtCustomerIntegral.Text;
       Parameters.ParamByName('officephone').Value:= EdtOfficePhone.Text;
@@ -195,6 +199,7 @@ begin
       Parameters.ParamByName('familyaddress').Value:= EdtFamilyAddress.Text;
       Parameters.ParamByName('officeaddress').Value:= EdtOfficeAddress.Text;
       Parameters.ParamByName('email').Value:= EdtEmail.Text;
+      Parameters.ParamByName('BabyBirthday').Value:= DTPBabyBirthday.Date;
       ExecSQL;
     end;
     IsRecordChanged:= False;
@@ -245,7 +250,8 @@ begin
                  'CustomerMobilePhone=''' + EdtMobilePhone.Text + ''',' +
                  'CustomerFamilyAddress=''' + EdtFamilyAddress.Text + ''',' +
                  'CustomerOfficeAddress=''' + EdtOfficeAddress.Text + ''',' +
-                 'CustomerEmail=''' + EdtEmail.Text + '''' +
+                 'CustomerEmail=''' + EdtEmail.Text + ''',' +
+                 'BabyBirthday=cdate(''' + DateToStr(DTPBabyBirthday.Date) + ''')' +
                  ' where CustomerID=' + AdoQuery.FieldByName('CustomerID').AsString;
       SQL.Add(lSqlStr);
       ExecSQL;
@@ -306,6 +312,7 @@ begin
     EdtEmail.Text:= FieldByName('CustomerEmail').AsString;
     EdtFamilyAddress.Text:= FieldByName('CustomerFamilyAddress').AsString;
     EdtOfficeAddress.Text:= FieldByName('CustomerOfficeAddress').AsString;
+    DTPBabyBirthday.Date:= FieldByName('BabyBirthday').AsDateTime;
   end;
 end;
 

@@ -704,6 +704,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Height = 13
       AutoSize = False
       Caption = #21830#21697#32534#21495#65306
+      Enabled = False
     end
     object Label9: TLabel
       Left = 32
@@ -721,6 +722,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 1
+      OnKeyDown = EdtGoodsNameKeyDown
     end
     object CBProvider: TComboBox
       Left = 93
@@ -732,6 +734,7 @@ object FormGoodsMgr: TFormGoodsMgr
       ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 2
+      OnKeyDown = CBProviderKeyDown
     end
     object EdtCostPrice: TEdit
       Left = 442
@@ -741,6 +744,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 6
+      OnKeyDown = EdtCostPriceKeyDown
       OnKeyPress = EdtSalePriceKeyPress
     end
     object EdtSalePrice: TEdit
@@ -752,6 +756,7 @@ object FormGoodsMgr: TFormGoodsMgr
       ParentCtl3D = False
       TabOrder = 7
       OnExit = EdtSalePriceExit
+      OnKeyDown = EdtSalePriceKeyDown
       OnKeyPress = EdtSalePriceKeyPress
     end
     object EdtProduceArea: TEdit
@@ -771,6 +776,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 3
+      OnKeyDown = EdtBarCodeKeyDown
       OnKeyPress = EdtGoodsIDKeyPress
     end
     object EdtMeasureUnit: TEdit
@@ -781,6 +787,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 4
+      OnKeyDown = EdtMeasureUnitKeyDown
     end
     object EdtSize: TEdit
       Left = 442
@@ -790,6 +797,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 5
+      OnKeyDown = EdtSizeKeyDown
     end
     object EdtGoodsID: TEdit
       Left = 93
@@ -797,6 +805,7 @@ object FormGoodsMgr: TFormGoodsMgr
       Width = 100
       Height = 19
       Ctl3D = False
+      Enabled = False
       ParentCtl3D = False
       TabOrder = 0
       OnKeyPress = EdtGoodsIDKeyPress
@@ -811,6 +820,7 @@ object FormGoodsMgr: TFormGoodsMgr
       ItemHeight = 13
       ParentCtl3D = False
       TabOrder = 9
+      OnKeyDown = CbbGoodsTypeKeyDown
     end
   end
   object GroupBox1: TGroupBox
