@@ -45,6 +45,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
       Height = 219
       Align = alClient
       TabOrder = 0
+      OnEnter = cxGridDetailsEnter
+      OnExit = cxGridDetailsExit
       object cxGridDetailsDBTableView1: TcxGridDBTableView
         NavigatorButtons.ConfirmDelete = False
         DataController.DataSource = DSDetail
@@ -1932,6 +1934,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
       end
       object ppLabel14: TppLabel
         UserName = 'Label11'
+        AutoSize = False
         Border.BorderPositions = []
         Border.Color = clBlack
         Border.Style = psSolid
@@ -1945,7 +1948,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3175
+        mmHeight = 3217
         mmLeft = 60325
         mmTop = 6615
         mmWidth = 15610
@@ -1975,6 +1978,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
       end
       object ppLabelCustomerName: TppLabel
         UserName = 'LabelCustomerName'
+        AutoSize = False
         Border.BorderPositions = []
         Border.Color = clBlack
         Border.Style = psSolid
@@ -1994,6 +1998,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
       end
       object ppLabelDiscount: TppLabel
         UserName = 'LabelDiscount'
+        AutoSize = False
         Border.BorderPositions = []
         Border.Color = clBlack
         Border.Style = psSolid
@@ -2014,6 +2019,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
       end
       object ppLabelActualMoney: TppLabel
         UserName = 'LabelActualMoney'
+        AutoSize = False
         Border.BorderPositions = []
         Border.Color = clBlack
         Border.Style = psSolid
@@ -2029,6 +2035,92 @@ object FormOutDepotMgr: TFormOutDepotMgr
         mmHeight = 3133
         mmLeft = 76465
         mmTop = 10848
+        mmWidth = 21167
+        BandType = 7
+      end
+      object ppLabel18: TppLabel
+        UserName = 'Label18'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #26412#27425#31215#20998':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 24871
+        mmTop = 15875
+        mmWidth = 12700
+        BandType = 7
+      end
+      object ppLabelIntegral: TppLabel
+        UserName = 'LabelDiscount1'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 38100
+        mmTop = 15875
+        mmWidth = 21167
+        BandType = 7
+      end
+      object ppLabel26: TppLabel
+        UserName = 'Label26'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Caption = #32047#35745#31215#20998':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 60325
+        mmTop = 15875
+        mmWidth = 15611
+        BandType = 7
+      end
+      object ppLabelIntegral_Sum: TppLabel
+        UserName = 'LabelDiscount2'
+        AutoSize = False
+        Border.BorderPositions = []
+        Border.Color = clBlack
+        Border.Style = psSolid
+        Border.Visible = False
+        Border.Weight = 1.000000000000000000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Name = #23435#20307
+        Font.Size = 8
+        Font.Style = []
+        TextAlignment = taRightJustified
+        Transparent = True
+        mmHeight = 3217
+        mmLeft = 76465
+        mmTop = 15875
         mmWidth = 21167
         BandType = 7
       end

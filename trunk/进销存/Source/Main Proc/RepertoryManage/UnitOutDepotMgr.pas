@@ -130,6 +130,10 @@ type
     ppLabelCustomerName: TppLabel;
     ppLabelDiscount: TppLabel;
     ppLabelActualMoney: TppLabel;
+    ppLabel18: TppLabel;
+    ppLabelIntegral: TppLabel;
+    ppLabel26: TppLabel;
+    ppLabelIntegral_Sum: TppLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -150,6 +154,8 @@ type
     procedure cxGridHistoryTableView1DataControllerDetailExpanding(
       ADataController: TcxCustomDataController; ARecordIndex: Integer;
       var AAllow: Boolean);
+    procedure cxGridDetailsEnter(Sender: TObject);
+    procedure cxGridDetailsExit(Sender: TObject);
   private
     { Private declarations }
     FCxGridHelper : TCxGridSet;
@@ -157,7 +163,7 @@ type
     FAdoQueryDetail, FAdoQueryHistory, FAdoQueryHistoryDetail, FAdoEdit: TAdoquery;
     FOrderID: string;     //订单号 或 出库流水号
     ISExsitCustomer: Boolean; //是否存在客户
-    FDepotID, FGoodsID, FCustomerID : Integer;
+    FDepotID, FGoodsID, FCustomerID, FCustomerIntegral : Integer; //Integral 积分
     FPercent, FSalePrice, FDiscount: Double; //营业员提成比例 , 销售单价 , 会员享受折扣
     FGoodsTotalNum: Integer; //商品的库存总数量
     FGoodsTotalMoney: Double; //商品的库存总金额
@@ -271,7 +277,7 @@ end;
 
 procedure TFormOutDepotMgr.BtnSubmitClick(Sender: TObject);
 var
-  lTotalNum, i: Integer;
+  lTotalNum, i, FIntegral: Integer;  //本次客户产生的积分
   lTotalmoney: string;
   lTotalUserPersent: Double; //一笔售出 用户总提成
   lSqlStr: string;
@@ -365,7 +371,17 @@ begin
       ExecSQL;
       FOrderID:= GetID('OrderBH', 'OutDepotSummary');
       //计算积分
-
+      if ISExsitCustomer then
+      begin
+        FIntegral:= Trunc(StrToFloat(lTotalmoney));
+        Active:= False;
+        Connection:= DM.ADOConnection;
+        SQL.Clear;
+        lSqlStr:= 'update Customer set CustomerIntegral=' + IntToStr(FCustomerIntegral+FIntegral) +
+                  ' where CustomerID=' + IntToStr(FCustomerID);
+        SQL.Text:= lSqlStr;
+        ExecSQL;
+      end;
       //计算库存剩余数量
       for i:= 0 to FRepertoryMgr.GetCount-1 do
       begin
@@ -400,10 +416,12 @@ begin
           ppLabelCustomerName.Caption:= EdtCustomerName.Text;
           ppLabelDiscount.Caption:= FloatToStr(FDiscount);
           ppLabelActualMoney.Caption:= lTotalmoney;
-          ppReportCustomer.Print;
+          ppLabelIntegral.Caption:= IntToStr(FIntegral);//本次积分
+          ppLabelIntegral_Sum.Caption:= IntToStr(FCustomerIntegral+FIntegral);//总积分
+          ppReportCustomer.Print;    //客户的销售小票
         end
         else
-          ppReport.Print;
+          ppReport.Print;    //不是客户的销售小票
       end;
     end;
   finally
@@ -598,6 +616,7 @@ begin
           EdtAssociatorType.Text:= FieldByName('AssociatorTypeName').AsString;
           EdtDiscount.Text:= FloatToStr(FDiscount);
           EdtIntegral.Text:= FieldByName('CustomerIntegral').AsString;
+          FCustomerIntegral:= FieldByName('CustomerIntegral').AsInteger;
           GetCustomerOutDepotSummary;
           EdtBarCode.Clear;
           EdtBarCode.SetFocus;
@@ -836,6 +855,16 @@ begin
       Screen.Cursor := crDefault;
     end;
   end;
+end;
+
+procedure TFormOutDepotMgr.cxGridDetailsEnter(Sender: TObject);
+begin
+  FMenuDel.Enabled:= True;
+end;
+
+procedure TFormOutDepotMgr.cxGridDetailsExit(Sender: TObject);
+begin
+  FMenuDel.Enabled:= False;
 end;
 
 end.

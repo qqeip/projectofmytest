@@ -15,7 +15,7 @@ type
   TRepertory = class(TObject)
   private
     FGoodsID: Integer;
-    FNum: Integer;
+    FNum: Integer;      //本次出库数量
     FTotalNum: Integer; //出库前库存总量
     FSalePrice: Double;
     FLastNum: Integer;  //出库后库存总量
@@ -126,7 +126,7 @@ begin
   begin
     with plg do
     begin
-      FNum:= aTotalNum - aLastNum;
+      FNum:= aTotalNum - aLastNum; //出库数量=总数量-剩余数量
       //FTotalNum:= FLastNum;
       FSalePrice:= aSalePrice;
       FLastNum:= FLastNum-FNum;
@@ -161,7 +161,7 @@ begin
   begin
     with plg do
     begin
-      if FNum=aNum then begin
+      if (FTotalNum-FLastNum)=aNum then begin    //如有多次出库，FTotalNum-FLastNum=一共出库的数量
         plg.Free;
         FRepertoryList.Delete(FRepertoryList.IndexOf(IntToStr(aGoodsID)));
       end
