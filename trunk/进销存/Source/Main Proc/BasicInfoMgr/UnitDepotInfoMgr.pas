@@ -219,7 +219,7 @@ end;
 procedure TFormDepotInfoMgr.EdtDepotIDKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
-  if shift = [ssctrl] then
+  if shift = [ssctrl] then  //Ctrl+V
     case key of
       ord('V'): EdtDepotID.Text:= EdtDepotID.Text + Clipboard.asText;
     end;
