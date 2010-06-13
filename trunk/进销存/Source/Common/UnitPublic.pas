@@ -224,7 +224,7 @@ end;
 
   procedure InPutChar(var key: Char);
   begin
-    if not (key in ['0'..'9',#8,#13,#38,#40]) then
+    if not (key in ['0'..'9',#8,#13,#38,#40]) then  //#3-¸´ÖÆ,#22-Õ³Ìù
     begin
       Key := #0;
     end;
