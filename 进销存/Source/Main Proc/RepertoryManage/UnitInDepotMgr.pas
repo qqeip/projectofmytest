@@ -306,7 +306,9 @@ begin
         lTotalMoney:= lTotalMoney + StrToInt(EdtNum.Text)*FSalePrice;
         SQL.Text:= 'update Repertory set ' +
                    ' GoodsNUM=' + IntToStr(lTotalNum) + ',' +
-                   ' GoodsAmount=' + FloatToStr(lTotalMoney);
+                   ' GoodsAmount=' + FloatToStr(lTotalMoney) +
+                   ' Where GoodsID=' + IntToStr(GetItemCode(CbbGoods.Text, CbbGoods.Properties.Items)) +
+                   ' and DepotID=' + IntToStr(GetItemCode(CbbDepot.Text, CbbDepot.Properties.Items));
       end;
       ExecSQL;
     end;

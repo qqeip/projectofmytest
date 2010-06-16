@@ -783,15 +783,15 @@ object FormOutDepotMgr: TFormOutDepotMgr
     DataPipeline = ppDBPipeline
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Report'
-    PrinterSetup.PaperName = 'Letter'
+    PrinterSetup.PaperName = 'Custom'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.mmMarginBottom = 6350
     PrinterSetup.mmMarginLeft = 6350
     PrinterSetup.mmMarginRight = 6350
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 279401
-    PrinterSetup.mmPaperWidth = 215900
-    PrinterSetup.PaperSize = 1
+    PrinterSetup.mmPaperWidth = 56896
+    PrinterSetup.PaperSize = 256
     DeviceType = 'Screen'
     OutlineSettings.CreateNode = True
     OutlineSettings.CreatePageNodes = True
@@ -825,8 +825,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 4763
-        mmLeft = 38100
-        mmTop = 3969
+        mmLeft = 6350
+        mmTop = 1852
         mmWidth = 25400
         BandType = 0
       end
@@ -845,9 +845,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
+        Visible = False
         mmHeight = 3175
-        mmLeft = 67469
-        mmTop = 10848
+        mmLeft = 1058
+        mmTop = 8731
         mmWidth = 2910
         BandType = 0
       end
@@ -867,9 +868,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
+        Visible = False
         mmHeight = 3175
-        mmLeft = 70908
-        mmTop = 10848
+        mmLeft = 4498
+        mmTop = 8731
         mmWidth = 6350
         BandType = 0
       end
@@ -888,9 +890,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
+        Visible = False
         mmHeight = 3175
-        mmLeft = 77788
-        mmTop = 10848
+        mmLeft = 11377
+        mmTop = 8731
         mmWidth = 2910
         BandType = 0
       end
@@ -909,9 +912,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
+        Visible = False
         mmHeight = 3175
-        mmLeft = 84402
-        mmTop = 10848
+        mmLeft = 17992
+        mmTop = 8731
         mmWidth = 2910
         BandType = 0
       end
@@ -931,9 +935,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
+        Visible = False
         mmHeight = 3175
-        mmLeft = 87842
-        mmTop = 10848
+        mmLeft = 21431
+        mmTop = 8731
         mmWidth = 6350
         BandType = 0
       end
@@ -952,9 +957,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
+        Visible = False
         mmHeight = 3175
-        mmLeft = 94721
-        mmTop = 10848
+        mmLeft = 28310
+        mmTop = 8731
         mmWidth = 2910
         BandType = 0
       end
@@ -974,9 +980,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = [fsBold]
         Transparent = True
         mmHeight = 3217
-        mmLeft = 8467
+        mmLeft = 1058
         mmTop = 21960
-        mmWidth = 20373
+        mmWidth = 16510
         BandType = 0
       end
       object ppLabel27: TppLabel
@@ -987,7 +993,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #25968'  '#37327
+        Caption = #25968#37327
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -995,10 +1001,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = [fsBold]
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 39952
+        mmHeight = 3175
+        mmLeft = 18256
         mmTop = 21960
-        mmWidth = 16404
+        mmWidth = 7620
         BandType = 0
       end
       object ppLabel29: TppLabel
@@ -1009,7 +1015,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #21333'  '#20215
+        Caption = #21333#20215
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1018,9 +1024,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3217
-        mmLeft = 58208
+        mmLeft = 26723
         mmTop = 21960
-        mmWidth = 16404
+        mmWidth = 7620
         BandType = 0
       end
       object ppLabel31: TppLabel
@@ -1031,7 +1037,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #37329'  '#39069
+        Caption = #37329#39069
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1039,10 +1045,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = [fsBold]
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 76465
+        mmHeight = 3175
+        mmLeft = 35454
         mmTop = 21960
-        mmWidth = 21167
+        mmWidth = 6350
         BandType = 0
       end
       object ppLine1: TppLine
@@ -1054,7 +1060,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Weight = 1.000000000000000000
         Weight = 0.750000000000000000
         mmHeight = 265
-        mmLeft = 6350
+        mmLeft = 0
         mmTop = 25929
         mmWidth = 95250
         BandType = 0
@@ -1067,7 +1073,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #25171#21360#26085#26399#65306
+        Caption = #26085#26399':'
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1075,9 +1081,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         Transparent = True
         mmHeight = 2910
-        mmLeft = 8467
-        mmTop = 15610
-        mmWidth = 13758
+        mmLeft = 1058
+        mmTop = 16933
+        mmWidth = 6879
         BandType = 0
       end
       object ppSystemVariable6: TppSystemVariable
@@ -1096,8 +1102,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 23019
-        mmTop = 15610
+        mmLeft = 8467
+        mmTop = 16933
         mmWidth = 32279
         BandType = 0
       end
@@ -1118,8 +1124,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 64823
-        mmTop = 15610
+        mmLeft = 1058
+        mmTop = 12965
         mmWidth = 11113
         BandType = 0
       end
@@ -1141,8 +1147,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 76465
-        mmTop = 15610
+        mmLeft = 12700
+        mmTop = 12965
         mmWidth = 21167
         BandType = 0
       end
@@ -1168,9 +1174,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 8467
+        mmLeft = 1058
         mmTop = 0
-        mmWidth = 29898
+        mmWidth = 16510
         BandType = 4
       end
       object ppDBText18: TppDBText
@@ -1191,9 +1197,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 39952
+        mmLeft = 18256
         mmTop = 0
-        mmWidth = 16403
+        mmWidth = 7673
         BandType = 4
       end
       object ppDBText20: TppDBText
@@ -1214,9 +1220,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 58208
+        mmLeft = 26723
         mmTop = 0
-        mmWidth = 16404
+        mmWidth = 7620
         BandType = 4
       end
       object ppDBText22: TppDBText
@@ -1237,9 +1243,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 76465
+        mmLeft = 35454
         mmTop = 0
-        mmWidth = 21166
+        mmWidth = 8202
         BandType = 4
       end
     end
@@ -1270,9 +1276,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 76465
+        mmLeft = 35454
         mmTop = 1323
-        mmWidth = 21166
+        mmWidth = 8202
         BandType = 7
       end
       object ppDBCalc9: TppDBCalc
@@ -1293,9 +1299,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 39952
+        mmLeft = 18256
         mmTop = 1323
-        mmWidth = 16403
+        mmWidth = 7673
         BandType = 7
       end
       object ppLine65: TppLine
@@ -1307,7 +1313,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Weight = 1.000000000000000000
         Weight = 0.750000000000000000
         mmHeight = 265
-        mmLeft = 6350
+        mmLeft = 0
         mmTop = 5556
         mmWidth = 95250
         BandType = 7
@@ -1327,10 +1333,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Size = 8
         Font.Style = [fsBold]
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 8467
+        mmHeight = 3175
+        mmLeft = 1058
         mmTop = 1323
-        mmWidth = 20373
+        mmWidth = 13494
         BandType = 7
       end
     end
@@ -1338,17 +1344,18 @@ object FormOutDepotMgr: TFormOutDepotMgr
   object ppReportCustomer: TppReport
     AutoStop = False
     DataPipeline = ppDBPipeline
-    PrinterSetup.BinName = 'Default'
+    PrinterSetup.BinName = #40664#35748#32440#30418
     PrinterSetup.DocumentName = 'Report'
-    PrinterSetup.PaperName = 'Letter'
+    PrinterSetup.PaperName = 'Custom'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.mmMarginBottom = 6350
     PrinterSetup.mmMarginLeft = 6350
     PrinterSetup.mmMarginRight = 6350
     PrinterSetup.mmMarginTop = 6350
-    PrinterSetup.mmPaperHeight = 279401
-    PrinterSetup.mmPaperWidth = 215900
-    PrinterSetup.PaperSize = 1
+    PrinterSetup.mmPaperHeight = 297127
+    PrinterSetup.mmPaperWidth = 56896
+    PrinterSetup.PaperSize = 256
+    Template.FileName = 'C:\Documents and Settings\'#36868#26126#26480'\'#26700#38754'\1.rtm'
     DeviceType = 'Screen'
     OutlineSettings.CreateNode = True
     OutlineSettings.CreatePageNodes = True
@@ -1359,11 +1366,11 @@ object FormOutDepotMgr: TFormOutDepotMgr
     Left = 226
     Top = 199
     Version = '9.03'
-    mmColumnWidth = 0
+    mmColumnWidth = 44196
     DataPipelineName = 'ppDBPipeline'
     object ppHeaderBand1: TppHeaderBand
       mmBottomOffset = 0
-      mmHeight = 24871
+      mmHeight = 28046
       mmPrintPosition = 0
       object ppLabel1: TppLabel
         UserName = 'Label1'
@@ -1382,8 +1389,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taCentered
         Transparent = True
         mmHeight = 4763
-        mmLeft = 38100
-        mmTop = 3969
+        mmLeft = 16140
+        mmTop = 3175
         mmWidth = 25400
         BandType = 0
       end
@@ -1403,8 +1410,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 67469
-        mmTop = 10848
+        mmLeft = 794
+        mmTop = 12171
         mmWidth = 2910
         BandType = 0
       end
@@ -1425,8 +1432,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 70908
-        mmTop = 10848
+        mmLeft = 4233
+        mmTop = 12171
         mmWidth = 6350
         BandType = 0
       end
@@ -1446,8 +1453,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 77788
-        mmTop = 10848
+        mmLeft = 11113
+        mmTop = 12171
         mmWidth = 2910
         BandType = 0
       end
@@ -1467,8 +1474,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 84402
-        mmTop = 10848
+        mmLeft = 17727
+        mmTop = 12171
         mmWidth = 2910
         BandType = 0
       end
@@ -1489,8 +1496,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 87842
-        mmTop = 10848
+        mmLeft = 21167
+        mmTop = 12171
         mmWidth = 6350
         BandType = 0
       end
@@ -1510,8 +1517,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 94721
-        mmTop = 10848
+        mmLeft = 28046
+        mmTop = 12171
         mmWidth = 2910
         BandType = 0
       end
@@ -1523,17 +1530,17 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #21830'  '#21697
+        Caption = #21830#21697
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
         Font.Size = 8
         Font.Style = [fsBold]
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 8467
-        mmTop = 20638
-        mmWidth = 20373
+        mmHeight = 3175
+        mmLeft = 794
+        mmTop = 23813
+        mmWidth = 12965
         BandType = 0
       end
       object ppLabel7: TppLabel
@@ -1544,7 +1551,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #25968'  '#37327
+        Caption = #25968#37327
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1553,9 +1560,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3217
-        mmLeft = 39952
-        mmTop = 20638
-        mmWidth = 16404
+        mmLeft = 17992
+        mmTop = 23813
+        mmWidth = 6879
         BandType = 0
       end
       object ppLabel8: TppLabel
@@ -1566,7 +1573,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #21333'  '#20215
+        Caption = #21333#20215
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1575,9 +1582,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3217
-        mmLeft = 58208
-        mmTop = 20638
-        mmWidth = 16404
+        mmLeft = 25929
+        mmTop = 23813
+        mmWidth = 6350
         BandType = 0
       end
       object ppLabel9: TppLabel
@@ -1588,7 +1595,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #37329'  '#39069
+        Caption = #37329#39069
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1597,9 +1604,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3217
-        mmLeft = 76465
-        mmTop = 20638
-        mmWidth = 21167
+        mmLeft = 33338
+        mmTop = 23813
+        mmWidth = 7620
         BandType = 0
       end
       object ppLine2: TppLine
@@ -1611,9 +1618,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Weight = 1.000000000000000000
         Weight = 0.750000000000000000
         mmHeight = 265
-        mmLeft = 6350
-        mmTop = 24606
-        mmWidth = 95250
+        mmLeft = 254
+        mmTop = 27781
+        mmWidth = 56896
         BandType = 0
       end
       object ppLabel10: TppLabel
@@ -1624,17 +1631,17 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #25171#21360#26085#26399#65306
+        Caption = #26085#26399#65306
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
         Font.Size = 8
         Font.Style = []
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 8467
-        mmTop = 15610
-        mmWidth = 13494
+        mmHeight = 3175
+        mmLeft = 794
+        mmTop = 19579
+        mmWidth = 7144
         BandType = 0
       end
       object ppSystemVariable3: TppSystemVariable
@@ -1653,9 +1660,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 23283
-        mmTop = 15610
-        mmWidth = 32279
+        mmLeft = 8467
+        mmTop = 19579
+        mmWidth = 34131
         BandType = 0
       end
       object ppLabel17: TppLabel
@@ -1666,7 +1673,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #25805#20316#21592#65306
+        Caption = #25805#20316#21592':'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1675,9 +1682,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 63765
+        mmLeft = 794
         mmTop = 15610
-        mmWidth = 12171
+        mmWidth = 10848
         BandType = 0
       end
       object ppDBText9: TppDBText
@@ -1698,9 +1705,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 76465
+        mmLeft = 12700
         mmTop = 15610
-        mmWidth = 21167
+        mmWidth = 28575
         BandType = 0
       end
     end
@@ -1725,9 +1732,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 8467
+        mmLeft = 794
         mmTop = 0
-        mmWidth = 29898
+        mmWidth = 16669
         BandType = 4
       end
       object ppDBText2: TppDBText
@@ -1748,9 +1755,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 39952
+        mmLeft = 17992
         mmTop = 0
-        mmWidth = 16403
+        mmWidth = 6879
         BandType = 4
       end
       object ppDBText3: TppDBText
@@ -1771,9 +1778,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 58208
+        mmLeft = 25929
         mmTop = 0
-        mmWidth = 16404
+        mmWidth = 6350
         BandType = 4
       end
       object ppDBText4: TppDBText
@@ -1794,9 +1801,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 76465
+        mmLeft = 33338
         mmTop = 0
-        mmWidth = 21166
+        mmWidth = 7673
         BandType = 4
       end
     end
@@ -1827,9 +1834,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 76465
+        mmLeft = 33338
         mmTop = 1323
-        mmWidth = 21166
+        mmWidth = 7673
         BandType = 7
       end
       object ppDBCalc2: TppDBCalc
@@ -1850,9 +1857,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Transparent = True
         DataPipelineName = 'ppDBPipeline'
         mmHeight = 3175
-        mmLeft = 39952
+        mmLeft = 17992
         mmTop = 1323
-        mmWidth = 16404
+        mmWidth = 6879
         BandType = 7
       end
       object ppLine3: TppLine
@@ -1864,9 +1871,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Weight = 1.000000000000000000
         Weight = 0.750000000000000000
         mmHeight = 265
-        mmLeft = 6350
+        mmLeft = 254
         mmTop = 0
-        mmWidth = 95250
+        mmWidth = 56896
         BandType = 7
       end
       object ppLabel11: TppLabel
@@ -1884,10 +1891,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Size = 8
         Font.Style = [fsBold]
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 8467
+        mmHeight = 3175
+        mmLeft = 794
         mmTop = 1323
-        mmWidth = 20373
+        mmWidth = 16140
         BandType = 7
       end
       object ppLabel12: TppLabel
@@ -1898,7 +1905,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #24212#25910#37329#39069':'
+        Caption = #24212#25910
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1907,9 +1914,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 60325
+        mmLeft = 25929
         mmTop = 1323
-        mmWidth = 15610
+        mmWidth = 6350
         BandType = 7
       end
       object ppLabel13: TppLabel
@@ -1927,7 +1934,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         Transparent = True
         mmHeight = 3175
-        mmLeft = 22490
+        mmLeft = 794
         mmTop = 6615
         mmWidth = 12700
         BandType = 7
@@ -1940,7 +1947,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #20139#21463#25240#25187':'
+        Caption = #25240#25187':'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Name = #23435#20307
@@ -1948,10 +1955,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 60325
+        mmHeight = 3175
+        mmLeft = 24606
         mmTop = 6615
-        mmWidth = 15610
+        mmWidth = 8202
         BandType = 7
       end
       object ppLabel15: TppLabel
@@ -1962,7 +1969,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Border.Style = psSolid
         Border.Visible = False
         Border.Weight = 1.000000000000000000
-        Caption = #23454#25910#37329#39069':'
+        Caption = #23454#25910':'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Name = #23435#20307
@@ -1971,9 +1978,9 @@ object FormOutDepotMgr: TFormOutDepotMgr
         TextAlignment = taRightJustified
         Transparent = True
         mmHeight = 3175
-        mmLeft = 60325
+        mmLeft = 24606
         mmTop = 10848
-        mmWidth = 15611
+        mmWidth = 8202
         BandType = 7
       end
       object ppLabelCustomerName: TppLabel
@@ -1990,10 +1997,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Size = 8
         Font.Style = []
         Transparent = True
-        mmHeight = 3133
-        mmLeft = 35719
+        mmHeight = 3175
+        mmLeft = 14023
         mmTop = 6615
-        mmWidth = 23537
+        mmWidth = 10160
         BandType = 7
       end
       object ppLabelDiscount: TppLabel
@@ -2011,10 +2018,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3133
-        mmLeft = 76465
+        mmHeight = 3175
+        mmLeft = 33338
         mmTop = 6615
-        mmWidth = 21167
+        mmWidth = 7673
         BandType = 7
       end
       object ppLabelActualMoney: TppLabel
@@ -2032,10 +2039,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3133
-        mmLeft = 76465
+        mmHeight = 3175
+        mmLeft = 33338
         mmTop = 10848
-        mmWidth = 21167
+        mmWidth = 7673
         BandType = 7
       end
       object ppLabel18: TppLabel
@@ -2054,8 +2061,8 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 24871
+        mmHeight = 3175
+        mmLeft = 794
         mmTop = 15875
         mmWidth = 12700
         BandType = 7
@@ -2075,10 +2082,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 38100
+        mmHeight = 3175
+        mmLeft = 14023
         mmTop = 15875
-        mmWidth = 21167
+        mmWidth = 6350
         BandType = 7
       end
       object ppLabel26: TppLabel
@@ -2097,10 +2104,10 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 60325
+        mmHeight = 3175
+        mmLeft = 20902
         mmTop = 15875
-        mmWidth = 15611
+        mmWidth = 12700
         BandType = 7
       end
       object ppLabelIntegral_Sum: TppLabel
@@ -2118,12 +2125,15 @@ object FormOutDepotMgr: TFormOutDepotMgr
         Font.Style = []
         TextAlignment = taRightJustified
         Transparent = True
-        mmHeight = 3217
-        mmLeft = 76465
+        mmHeight = 3175
+        mmLeft = 34131
         mmTop = 15875
-        mmWidth = 21167
+        mmWidth = 6879
         BandType = 7
       end
+    end
+    object raCodeModule1: TraCodeModule
+      ProgramStream = {00}
     end
   end
 end
