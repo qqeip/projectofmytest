@@ -655,11 +655,11 @@ begin
       Application.MessageBox(PChar('出库数量不正确！'),'提示',MB_OK+64);
       Exit;
     end;
-//    if StrToInt(EdtOutDepotNum.Text)>FGoodsTotalNum then
-//    begin
-//      Application.MessageBox(PChar('现库存有此商品'+inttostr(FGoodsTotalNum)+'，不够要求出库数量！'),'提示',MB_OK+64);
-//      Exit;
-//    end;
+    if StrToInt(EdtOutDepotNum.Text)>FGoodsTotalNum then
+    begin
+      Application.MessageBox(PChar('现库存有此商品'+inttostr(FGoodsTotalNum)+'，不够要求出库数量！'),'提示',MB_OK+64);
+      Exit;
+    end;
 
     //lOrderID:= GetID('OrderBH', 'OutDepotSummary');
 //    if GetItemCode(CbbOutDepotType.Text, CbbOutDepotType.Items)=1001 then //如果是零售出库

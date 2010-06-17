@@ -1062,7 +1062,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         mmHeight = 265
         mmLeft = 0
         mmTop = 25929
-        mmWidth = 95250
+        mmWidth = 44186
         BandType = 0
       end
       object ppLabel33: TppLabel
@@ -1315,7 +1315,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         mmHeight = 265
         mmLeft = 0
         mmTop = 5556
-        mmWidth = 95250
+        mmWidth = 44186
         BandType = 7
       end
       object ppLabel35: TppLabel
@@ -1620,7 +1620,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         mmHeight = 265
         mmLeft = 254
         mmTop = 27781
-        mmWidth = 56896
+        mmWidth = 43921
         BandType = 0
       end
       object ppLabel10: TppLabel
@@ -1873,7 +1873,7 @@ object FormOutDepotMgr: TFormOutDepotMgr
         mmHeight = 265
         mmLeft = 254
         mmTop = 0
-        mmWidth = 56896
+        mmWidth = 43921
         BandType = 7
       end
       object ppLabel11: TppLabel
