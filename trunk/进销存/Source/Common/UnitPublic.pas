@@ -2,8 +2,8 @@ unit UnitPublic;
 
 interface
 
-uses Classes, SysUtils, cxGridDBTableView, cxGridTableView, cxTreeView, cxDataStorage,
-     ADODB, IniFiles, DateUtils;
+uses Classes, SysUtils, Controls, cxGridDBTableView, cxGridTableView,
+     cxTreeView, cxDataStorage, ADODB, IniFiles, DateUtils;
 
 type
   TItemObj = class
@@ -39,10 +39,12 @@ end;
 
   procedure OnWorkRegister;
   procedure OffWorkRegister;
+
+  function SolarDateToLunarDateStr(aDate: TDate): String;//转换指定日期为农历日期字符串
   
 implementation
 
-uses UnitDataModule, UnitPublicResourceManager, UnitResource;
+uses UnitDataModule, UnitPublicResourceManager, UnitResource, DateCn;
 
    { TItemObj }
 constructor TItemObj.Create(aFieldID: Integer);
@@ -340,6 +342,11 @@ end;
         Free;
       end;
     end;
+  end;
+
+  function SolarDateToLunarDateStr(aDate: TDate): String;//转换指定日期为农历日期字符串
+  begin
+    Result := CnDateOfDateStr(aDate);
   end;
 
 end.
