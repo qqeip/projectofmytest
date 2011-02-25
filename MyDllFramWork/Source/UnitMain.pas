@@ -7,6 +7,9 @@ uses
   Dialogs, Menus, ExtCtrls, ComCtrls, Tabs, ImgList, ToolWin, UnitDllMgr,
   WinSkinData;
 
+const
+  WM_MSGCLOSE = WM_User + 100; //定义消息常量,关闭dll子窗体;
+
 type
   TFormMain = class(TForm)
     TabSet: TTabSet;
@@ -58,6 +61,8 @@ type
     { Private declarations }
   public
     { Public declarations }
+  protected
+    procedure WNDProc(var msg: TMessage);override;
   end;
 
 var
@@ -176,6 +181,8 @@ begin
   FDllMgr.FreePlugin(Self.MDIChildren[0]);
   if TabSet.TabIndex>-1 then
     TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+  //用消息的方式关闭dll子窗体
+  //PostMessage(self.ActiveMDIChild.Handle, WM_MSGCLOSE, 1, 0);
 end;
 {var
   i : integer;
@@ -274,6 +281,26 @@ begin
   FDllMgr.FreePlugin(aForm);
   if TabSet.TabIndex>-1 then
     TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+end;
+
+procedure TFormMain.WNDProc(var msg: TMessage);
+var
+  FDllHandle: THandle;
+  FPluginName: string;
+  CloseForm: TCloseForm;
+begin
+  inherited;
+  if msg.Msg = WM_MSGCLOSE then begin
+    FPluginName:= 'Dll\CeShi.dll';
+    FDllHandle := LoadLibrary(PChar(extractfilepath(application.ExeName) + FPluginName));
+    if FDllHandle = 0 then begin
+      raise EDLLLoadError.Create('不能载入 [' + extractfilepath(application.ExeName) + FPluginName + ']模块文件!');
+      exit;
+    end;
+    @CloseForm := GetProcAddress(FDllHandle, 'CloseForm');
+    if @CloseForm = nil then exit;
+    CloseForm;
+  end;
 end;
 
 end.
