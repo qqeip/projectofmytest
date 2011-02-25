@@ -1,0 +1,27 @@
+@charset "utf-8"; /* Latest modified at 2009.09.27 */
+
+/* overall */
+
+* {margin:0;padding:0;}
+
+body {background:#ffffff;font-size:12px;}
+
+a,a:visited,a:hover {text-decoration:none;}
+
+.clear {clear:both;}
+
+img {border:none;}
+
+ul {list-style:none;}
+
+
+/* admin login */
+
+#login_wrapper {width:560px;height:333px;margin:130px auto; background:url(../img/admin_login/login_new_bg.jpg) no-repeat;padding:176px 0 0 0;*padding:180px 0 0 0;}
+#login_wrapper2 {width:560px;height:333px;margin:130px auto; background:url(../img/admin_login/login_new_bg2.jpg) no-repeat;padding:176px 0 0 0;*padding:180px 0 0 0;}
+
+.admin_login {margin:0 0 0 102px;}
+.admin_login li {margin:6px 0 0 0;}
+
+.admin_input {width:130px;height:21px;line-height:21px;padding:0 4px;border:1px solid #cccccc;}
+.admin_button {width:72px;height:24px;line-height:26px;border:none;background:url(../img/admin_login/login_btn.jpg) no-repeat;font-weight:bold;color:#333333;}
