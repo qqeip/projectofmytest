@@ -1,0 +1,39 @@
+本实例源码主要是讲了TCP/remote的分布式开发 
+效果还是不错了 改变了以往COM+的实施麻烦的问题
+适合三层应用程序的开发
+
+1.系统服务端开发 采用delphi2007及remobjects SDK 最新版本。
+2.客户端的数据访问已经封装在Dll目录下的DllDataAccessObject.dll中，
+所以新用户开发时不需要再安装delphi2007及remobjects SDK ，
+其他版本也可以。
+3.用户开发时只要写个SQL就可以进行远程传输数据。
+4.ERP模型使用DELPHI7开发，用户在开发时需引用commom目录下的UnitRemoteLibary单元，集成了远程REMOTE访问数据库
+服务端已经考虑了事务，所以不用担心。
+5.请仔细研究源码吧...谢谢！
+
+例：查询数据
+
+procedure TMainForm.Button1Click(Sender: TObject);
+var
+  vDatas:OleVariant;
+begin
+   FRServerAddress:=Edit1.Text;
+   Fiport:=StrToInt(Edit2.Text);
+   vDatas:='select * from tbspda';
+   if Getdatas(FRServerAddress,Fiport,vDatas) then
+   Cds.Data:=vDatas
+   else
+   ShowVarError(Handle,vDatas,'查询时出错!');
+end;
+
+执行数据：
+procedure TMainForm.Button2Click(Sender: TObject);
+var
+  vDatas:OleVariant;
+begin
+  FRServerAddress:=Edit1.Text;
+  Fiport:=StrToInt(Edit2.Text);
+  vDatas:='insert into tbdev(mycode)values(''100'')';
+  if not Setdatas(FRServerAddress,Fiport,vDatas) then
+   ShowVarError(Handle,vDatas,'保存失败!');
+end;
