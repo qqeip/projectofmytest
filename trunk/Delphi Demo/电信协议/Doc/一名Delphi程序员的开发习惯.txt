@@ -1,0 +1,72 @@
+KeyLife富翁笔记  
+作者　: yherxl
+标题　: delphi项目文件目录设置 
+关键字: 
+分类　: 个人专区 
+密级　: 公开 
+
+一名Delphi程序员的开发习惯 
+http://www.delphibbs.com/delphibbs/dispq.asp?lid=2675731
+
+一．建立工程目录 
+       首先，第一步要做的，当然是给新项目建一个单独的目录（别笑）。目录名称与项目名称同名，或者另取一个也可，只要清楚、简练。然后，在此目录中创建以下各个目录： 
+       <Doc>：用来存放该项目相关的开发文档（需求说明，概要设计，详细设计等等等等）； 
+       <Source>：用来存放Delphi源程序中的”.Dpr”,”.Pas”,”.Dfm”等文件； 
+       <Dcu>：该目录中存放”.Dcu”文件，将’.Pas’与’.Dcu’文件分开存放只是为了让Source目录的内容更加清楚一些； 
+       <Bin>：存放工程的输出文件，比如”.Exe”,”.Dll”或者”.Ocx”等等；还有程序要用到的资源文件，如图片，配置文件ini等， 基本上这个目录包含了运行需要的所有文件。 
+       <Log>：用来存放日志文件；通常在这个目录中我会放一个”<项目名称>程序员日志.Txt”文件。 
+       <Images>：当然是存放工程中用到的图片的目录了。一般情况下，这个目录是少不了的。假如还用到其他资源，那么也一样建立各自的目录，比如Wav，比如Avi等等。 
+
+二．设置工程选项 
+在Delphi中创建一个新的工程，将此工程保存到Source目录中，同时： 
+a.       选一个耐看的，与项目有些联系的图标作为这个工程的图标。当然，这个图标可能只是临时用用的，但是总要比Delphi默认的那个难看的要好才行，要不然，怎么对得起自己？ 
+b.       将Project Options -> Directories/Conditionals页面中的Output Directory设置为Bin目录； 
+c.       将Unit output Directory设置为Dcu目录。
+ 
+设置的目录在.dof,.cfg文件中都有保存。
+设置目录时我觉得最好使用相对目录，比如‘../Bin’, 这样目录移动后还能正常。 但也有人说delphi有bug，相对路径会造成调试不到的问题。
+
+三．添加常量单元 
+       添加一个新的Unit，另存为“unt<工程名> Consts.Pas”，用来保存工程中用到的常量。 
+
+四．有关窗体（Form）及单元(Unit)  
+按照匈牙利命名法则给Form命名，则一个用来登录的窗体可以命名为’FrmLogin’，而其单元名可以为’untLogin’。通常，两个对应的Form和Unit的名称在除去’Frm’或’unt’的缩写后应当保持一致。 
+在Unit的头部添加本单元的注释，注释的格式可以参照Delphi的源码，但是至少应当包含以下几项：功能描述；作者；版权；创建时间；最后修改时间；修改历史等等。 
+将新创建好的Form的Caption设置为该Form类的名称，而不是使用Delphi默认的。比如，将Form1更名为FrmLogin后，此时我们获得了TFrmLogin这个新的窗体类，并且Delphi自动将窗体的Caption更新为’FrmLogin’。依我看，该Caption应当为’TFrmLogin’才是，因为我们在设计的是一个窗体类TFrmLogin，而不是仅仅对FrmLogin进行操作。 
+向TFrmLogin这样功能明确的窗体类，许多人都有在设计期就将其Caption设置为诸如“操作员登录”这种名称的习惯。我的习惯是，象“操作员登录”这样的常量，通常存放在unt<工程名>Consts.Pas中，用ResourceString来定义，或者用Const来定义。至于窗体的Caption的命名，应当属于运行期的工作。所以，我往往在TForm.OnCreate事件触发之时才对Caption进行操作，比如： 
+procedure TFrmLogin.FormCreate(Sender: TObject); 
+begin 
+       Caption := csLoginTitle; 
+      .... 
+end; 
+
+五．关于Format函数的使用 
+       有iYear，iMonth，iDay三个数据，要显示诸如“生日：1976/3/18”这样的信息，你通常怎么做？使用s := ‘生日:’+IntToStr(iYear)+’.’+IntToStr(iMonth)+’.’+IntToStr(iDay); 吗？这样实在是太累了。我的习惯是，在unt<工程名>Consts.Pas中增加一个常量csBirthDayFormat = ‘生日：%d/%d/%d’来保存显示格式，然后使用s := Format(csBirthDayFormat, [iYear, iMonth, iDay])；这样的语句完成数据的拼装。这么做的好处显而易见，那就是你只需在一个地方维护数据的显示格式。 
+       Format函数功能强大，我对它很是推崇，你呢？ 
+
+六．关于注册表或者Ini文件的存储 
+原先访问注册表我通常使用TRegistry，而访问Ini文件通常使用TIniFile。这两个类的使用方法各不相同，因此想要使用相同的代码既能访问注册表又能访问Ini文件几乎是不可能的。真头疼啊！ 
+终于我发现了救星!那就是TRegistryIniFile类。查看Registry单元，我们发现，TRegistryIniFile继承自TCusomIniFile。而TIniFile也是继承于TCusomIniFile。因此，使用抽象类TCusomIniFile来实现对注册表或者Ini文件的访问便是一举两得了。比如： 
+var 
+  csmIniFile: TCusomIniFile; 
+begin 
+  if blUseIniFile then//如果使用Ini文件 
+    csmIniFile:= TIniFile.Create(csRootKey) 
+  else 
+    csmIniFile:= TRegistryIniFile.Create(csRootKey); 
+  //接着就可以使用csmIniFile对Ini文件进行访问， 
+//或者用类似访问Ini文件的方式访问注册表。 
+
+七．关于TStream流以及TFileStream，TMemoryStream等等 
+       TFileStream和TMemoryStream都继承自抽象类TStream，这意味着我们可以使用一套代码完成对文件和内存的存取操作。因此，定义一些接口的时候，我往往倾向于将参数的类型定义为抽象类，而不是具体类。比如，要完成保存功能的一个函数，定义成 
+function Save(AStream: TStream): Boolean； 
+就比定义成 
+function Save(AStream: TFileStream): Boolean； 
+要灵活的多。 
+前一个定义是具有前瞻性的，因为它可以适用于以后可能出现的新型态的流。而后一个定义只适用于TFileStream这种流（当然包括TFileStream的子类），呆板多了。 
+我的习惯：如果存在抽象类，那么尽量将参数定义为抽象类的类型，毕竟，我们无法预见未来。 
+
+八．多使用TAction 
+       Delphi 4以后引入了Action的概念，并且在Standard组件栏中增加TActionList组件。使用Action的好处是，控件状态同步的烦恼从此一扫而空！
+  
+ 

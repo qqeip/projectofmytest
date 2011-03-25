@@ -1,0 +1,363 @@
+unit UnitMain;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, ExtCtrls, ComCtrls, Tabs, ImgList, ToolWin, UnitDllMgr,
+  WinSkinData, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient;
+
+const
+  WM_MSGCLOSE = WM_User + 100; //定义消息常量,关闭dll子窗体;
+
+type
+  TFormMain = class(TForm)
+    TabSet: TTabSet;
+    StatusBar: TStatusBar;
+    Panel1: TPanel;
+    PopupMenuTab: TPopupMenu;
+    NRestore: TMenuItem;
+    NMax: TMenuItem;
+    NMin: TMenuItem;
+    NClose: TMenuItem;
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    DllTest11: TMenuItem;
+    DllDemo1: TMenuItem;
+    Help1: TMenuItem;
+    Exit1: TMenuItem;
+    ImageList1: TImageList;
+    ToolBar1: TToolBar;
+    ToolBtnParamConfig: TToolButton;
+    ToolButtonDllDemo: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButtonCloseNow: TToolButton;
+    ToolButtonCloseAll: TToolButton;
+    ToolButtonExit: TToolButton;
+    ToolButton7: TToolButton;
+    SkinData1: TSkinData;
+    ToolButton1: TToolButton;
+    IdTCPClient: TIdTCPClient;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ToolBtnParamConfigClick(Sender: TObject);
+    procedure ToolButtonDllDemoClick(Sender: TObject);
+    procedure ToolButtonExitClick(Sender: TObject);
+    procedure TabSetChange(Sender: TObject; NewTab: Integer;
+      var AllowChange: Boolean);
+    procedure ToolButtonCloseNowClick(Sender: TObject);
+    procedure NRestoreClick(Sender: TObject);
+    procedure NMaxClick(Sender: TObject);
+    procedure NMinClick(Sender: TObject);
+    procedure NCloseClick(Sender: TObject);
+    procedure ToolButtonCloseAllClick(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+    FDllMgr: TPluginMgr;
+    procedure AddToTab(aForm: TForm);
+    procedure DelTab(aForm: TForm);
+    procedure DllClose(aForm: TForm);
+    function  ConnectServer: Boolean;
+    procedure SendMessageToServer(ComID: string);
+  public
+    { Public declarations }
+  protected
+    procedure WNDProc(var msg: TMessage);override;
+  end;
+
+var
+  FormMain: TFormMain;
+  procedure DllCloseRecall(aForm: TForm);stdcall;
+  
+implementation
+
+uses UnitLogIn, UnitDataModuleLocal, UnitCommon;
+
+
+{$R *.dfm}
+
+procedure TFormMain.FormCreate(Sender: TObject);
+begin
+  FDllMgr:= TPluginMgr.Create;
+end;
+
+procedure TFormMain.FormShow(Sender: TObject);
+var fUserName,fUserPwd: string;
+begin
+  if not ConnectServer then
+  begin
+    Application.MessageBox('应用服务连接失败，请检查网络及配置文件！','登录',MB_OK	);
+    Application.Terminate;
+    exit;
+  end;
+
+  FormLogin:= TFormLogin.Create(Application);
+  try
+    if FormLogin.ShowModal=mrOK then
+    begin
+      fUserName:= Trim(FormLogin.UserName);
+      fUserPwd := Trim(FormLogin.PassWord);
+      //验证身份
+      StatusBar.Panels[1].Text:='当前用户：'+String(fUserName);
+    end
+    else
+    begin
+      Application.Terminate;
+      Exit;
+    end;
+  finally
+    FormLogin.Free;
+  end;
+  FDllCloseRecall:= @DllCloseRecall;
+
+  IdTCPClient.Host:= '10.0.0.205';
+  IdTCPClient.Port:= 991;
+  IdTCPClient.Connect;
+  if not IdTCPClient.Connected then
+    Application.MessageBox('连接实时消息服务器错误,无法自动刷新数据!', '警告', MB_OK + MB_ICONINFORMATION);
+  SendMessageToServer('90');
+end;
+
+procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+//
+end;
+
+procedure TFormMain.FormDestroy(Sender: TObject);
+begin
+//
+end;
+
+function TFormMain.ConnectServer: Boolean;
+begin
+  Result:= False;
+  DMLocal.SocketConnection.Address:='10.0.0.205';
+  DMLocal.SocketConnection.Port:=990;
+  try
+    DMLocal.SocketConnection.Open;
+    if DMLocal.SocketConnection.Connected then
+      result:=true
+  except
+    result:=false;
+  end;
+end;
+
+procedure TFormMain.AddToTab(aForm: TForm);
+begin
+  if TabSet.Tabs.IndexOf(aForm.Caption)<>-1 then
+  begin
+    TabSet.TabIndex := TabSet.Tabs.IndexOf(aForm.Caption);
+    Exit;
+  end;
+  TabSet.Tabs.AddObject(aForm.Caption,aForm);
+  TabSet.TabIndex:=TabSet.Tabs.IndexOf(aForm.Caption);
+end;
+
+procedure TFormMain.DelTab(aForm: TForm);
+var
+  i:integer;
+begin
+  for i:=TabSet.Tabs.Count-1 downto 0 do
+  begin
+    if TabSet.Tabs.Objects[i]= aForm then
+    begin
+//      TabSet.Tabs.Objects[i].Free;
+      TabSet.Tabs.Delete(i);
+      break;
+    end;
+  end;
+end;
+
+procedure TFormMain.TabSetChange(Sender: TObject; NewTab: Integer;
+  var AllowChange: Boolean);
+begin
+  TForm(TabSet.Tabs.Objects[NewTab]).Show;
+end;
+
+procedure TFormMain.ToolButtonExitClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TFormMain.ToolButtonCloseNowClick(Sender: TObject);
+begin
+  DelTab(Self.MDIChildren[0]);
+  FDllMgr.FreePlugin(Self.MDIChildren[0]);
+  if TabSet.TabIndex>-1 then
+    TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+  //用消息的方式关闭dll子窗体
+  //PostMessage(self.ActiveMDIChild.Handle, WM_MSGCLOSE, 1, 0);
+end;
+{var
+  i : integer;
+begin
+  for i := 0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption = TabSet.Tabs.Strings[TabSet.TabIndex] then
+    begin
+      DelTab(Self.MDIChildren[i]);
+      FDllMgr.FreePlugin(Self.MDIChildren[i]);
+      Break;
+    end;
+  if TabSet.TabIndex>-1 then
+  TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+end;}
+
+procedure TFormMain.NRestoreClick(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption=TabSet.tabs.Strings[TabSet.TabIndex] then
+    begin
+      Self.MDIChildren[i].WindowState:=wsnormal;
+      break;
+    end;
+end;
+
+procedure TFormMain.NMaxClick(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption=TabSet.tabs.Strings[TabSet.TabIndex] then
+    begin
+      Self.MDIChildren[i].WindowState:=wsMaximized;
+      break;
+    end;
+end;
+
+procedure TFormMain.NMinClick(Sender: TObject);
+var
+  i:integer;
+begin
+  for i:=0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption=TabSet.tabs.Strings[TabSet.TabIndex] then
+    begin
+      Self.MDIChildren[i].WindowState:=wsMinimized;
+      break;
+    end;
+end;
+
+procedure TFormMain.NCloseClick(Sender: TObject);
+var
+  i : integer;
+begin
+  for i := 0 to Self.MDIChildCount-1 do
+  if Self.MDIChildren[i].Caption = TabSet.Tabs.Strings[TabSet.TabIndex] then
+  begin
+    DelTab(Self.MDIChildren[i]);
+    FDllMgr.FreePlugin(Self.MDIChildren[i]);
+    Break;
+  end;
+end;
+
+procedure TFormMain.ToolButtonCloseAllClick(Sender: TObject);
+var
+  i : integer;
+begin
+  for i := Self.MDIChildCount-1 downto 0 do
+  begin
+    DelTab(Self.MDIChildren[i]);
+    FDllMgr.FreePlugin(Self.MDIChildren[i]);
+  end;
+end;
+
+procedure DllCloseRecall(aForm: TForm);
+begin
+  FormMain.DllClose(aForm);
+end;
+
+procedure TFormMain.DllClose(aForm: TForm);
+begin
+  DelTab(aForm);
+  FDllMgr.FreePlugin(aForm);
+  if TabSet.TabIndex>-1 then
+    TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+end;
+
+procedure TFormMain.WNDProc(var msg: TMessage);
+var
+  FDllHandle: THandle;
+  FPluginName: string;
+  CloseForm: TCloseForm;
+begin
+  inherited;
+  if msg.Msg = WM_MSGCLOSE then begin
+    FPluginName:= 'Dll\CeShi.dll';
+    FDllHandle := LoadLibrary(PChar(extractfilepath(application.ExeName) + FPluginName));
+    if FDllHandle = 0 then begin
+      raise EDLLLoadError.Create('不能载入 [' + extractfilepath(application.ExeName) + FPluginName + ']模块文件!');
+      exit;
+    end;
+    @CloseForm := GetProcAddress(FDllHandle, 'CloseForm');
+    if @CloseForm = nil then exit;
+    CloseForm;
+  end;
+end;
+
+procedure TFormMain.ToolBtnParamConfigClick(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\ParamConfig.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolButtonDllDemoClick(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\DllDemo.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolButton1Click(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\DllCeShi.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.SendMessageToServer(ComID: string);
+var
+  userdata: Ruserdata;
+  Fcmd: Tcmd;
+begin
+  try
+    if not IdTCPClient.Connected then
+       IdTCPClient.Connect();
+    if IdTCPClient.Connected then
+    begin
+      Fcmd.command := StrToInt(ComID);
+      userdata.userid := 123;
+      userdata.UserNo := 'Test';
+
+      userdata.Filter :='';
+      IdTCPClient.WriteBuffer(Fcmd,sizeof(Tcmd));
+      IdTCPClient.WriteBuffer(userdata,sizeof(Ruserdata));
+    end;
+  except
+    Application.MessageBox('发送实时消息失败,' + #13 + '请检查应用服务器的实时消息服务是否启动!', '警告', MB_OK + MB_ICONINFORMATION);
+  end;
+end;
+
+end.
