@@ -1,0 +1,24 @@
+PowerDesigner生成sql语句和从SQL语句生成表的反向工程2010-06-17 14:26一、PowerDesigner生成sql问题
+生成sql的方法是 Database -->Generate Database (Ctrl + G ) 但是提示，Could not load VBScript engine.
+Check VBScript installation.
+
+Generation aborted due to errors detected during the verification of the model.
+
+检查了好久 发现将check model 去掉就可以了！其中，
+
+one file on是否需要按照表生成许多个sql（默认选上，即不需要）
+odbc generation    sql直接生成到数据库中
+Automatic archive   生成sql同时生成apm文件。
+
+
+二、Power designer, 反向工程生成ER图
+1. In PowerDesigner, choose File | Reverse Engineer | Database.... The New Physical Data Model Dialog box, shown next, appears.DBMS要选成Oracle 10G, 然后点"OK"
+
+2.在出来的database reverse engineering窗口里, 点上"Using script files", 再点那个"新建"的图标, 会出来个选择文件的对话框,选择script file的位置.then press "OK".
+
+3. 生成ER diagram
+
+
+三、关于利用PowerDesigner导出数据库ER图、PDM图的问题，可参考这里：http://www.cnblogs.com/aspsmile/archive/2008/08/05/1261130.html
+
+ 
