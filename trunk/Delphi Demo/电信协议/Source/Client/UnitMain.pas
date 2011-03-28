@@ -339,21 +339,20 @@ end;
 
 procedure TFormMain.SendMessageToServer(ComID: string);
 var
-  userdata: Ruserdata;
-  Fcmd: Tcmd;
+  FUserData: TUserData;
+  FCmd: Tcmd;
 begin
   try
     if not IdTCPClient.Connected then
        IdTCPClient.Connect();
     if IdTCPClient.Connected then
     begin
-      Fcmd.command := StrToInt(ComID);
-      userdata.userid := 123;
-      userdata.UserNo := 'Test';
+      FCmd.Command := StrToInt(ComID);
+      FUserData.UserID := 123;
+      FUserData.UserNo := 'Test';
 
-      userdata.Filter :='';
-      IdTCPClient.WriteBuffer(Fcmd,sizeof(Tcmd));
-      IdTCPClient.WriteBuffer(userdata,sizeof(Ruserdata));
+      IdTCPClient.WriteBuffer(FCmd,sizeof(TCmd));
+      IdTCPClient.WriteBuffer(FUserData,sizeof(TUserData));
     end;
   except
     Application.MessageBox('发送实时消息失败,' + #13 + '请检查应用服务器的实时消息服务是否启动!', '警告', MB_OK + MB_ICONINFORMATION);
