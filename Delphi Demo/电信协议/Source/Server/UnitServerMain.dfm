@@ -186,7 +186,7 @@ object FormServerMain: TFormServerMain
           Width = 100
         end
         item
-          Caption = #22478#24066#32534#21495
+          Caption = #29992#25143#21517#31216
           Width = 80
         end
         item

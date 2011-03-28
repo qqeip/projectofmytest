@@ -10,15 +10,12 @@ type
     command: integer;
   end;
   {用户信息类型}
+  PUserData = ^TUserData;
   TUserData = record
+    IP: string[20];
+    ConnectTime: TDateTime;
     UserID :integer;
     UserNo :String[20];
-    CompanyID :integer;
-    CityID :integer;
-    ParentID :integer;
-    Filter :String[20];
-    ParentList :String[200];
-    ChildList :String[200];
   end;
 implementation
 
