@@ -5,7 +5,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, ExtCtrls, ComCtrls, Tabs, ImgList, ToolWin, UnitDllMgr,
-  WinSkinData, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient;
+  WinSkinData, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
+  WinSkinStore;
 
 const
   WM_MSGCLOSE = WM_User + 100; //定义消息常量,关闭dll子窗体;
@@ -20,12 +21,6 @@ type
     NMax: TMenuItem;
     NMin: TMenuItem;
     NClose: TMenuItem;
-    MainMenu1: TMainMenu;
-    File1: TMenuItem;
-    DllTest11: TMenuItem;
-    DllDemo1: TMenuItem;
-    Help1: TMenuItem;
-    Exit1: TMenuItem;
     ImageList1: TImageList;
     ToolBar1: TToolBar;
     ToolBtnParamConfig: TToolButton;
@@ -38,6 +33,23 @@ type
     SkinData1: TSkinData;
     ToolButton1: TToolButton;
     IdTCPClient: TIdTCPClient;
+    MainMenu1: TMainMenu;
+    MenuItem1: TMenuItem;
+    Open1: TMenuItem;
+    Close1: TMenuItem;
+    MenuItem2: TMenuItem;
+    Edit1: TMenuItem;
+    Cut1: TMenuItem;
+    Copy1: TMenuItem;
+    Paste1: TMenuItem;
+    Delete1: TMenuItem;
+    Skin1: TMenuItem;
+    SkinMSNStyle1: TMenuItem;
+    SkinOfficeStyle1: TMenuItem;
+    SkinWindowsStyle1: TMenuItem;
+    MenuItem3: TMenuItem;
+    Help2: TMenuItem;
+    SkinStore1: TSkinStore;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
@@ -54,6 +66,11 @@ type
     procedure NCloseClick(Sender: TObject);
     procedure ToolButtonCloseAllClick(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
+    procedure SkinMSNStyle1Click(Sender: TObject);
+    procedure SkinOfficeStyle1Click(Sender: TObject);
+    procedure SkinWindowsStyle1Click(Sender: TObject);
+    procedure StatusBarDrawPanel(StatusBar: TStatusBar;
+      Panel: TStatusPanel; const Rect: TRect);
   private
     { Private declarations }
     FDllMgr: TPluginMgr;
@@ -82,6 +99,9 @@ uses UnitLogIn, UnitDataModuleLocal, UnitCommon;
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
   FDllMgr:= TPluginMgr.Create;
+
+  SkinData1.LoadFromCollection(skinstore1,0);
+  if not SkinData1.active then SkinData1.active:=true;
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -356,6 +376,57 @@ begin
     end;
   except
     Application.MessageBox('发送实时消息失败,' + #13 + '请检查应用服务器的实时消息服务是否启动!', '警告', MB_OK + MB_ICONINFORMATION);
+  end;
+end;
+
+procedure TFormMain.SkinMSNStyle1Click(Sender: TObject);
+var i: Integer;
+begin
+  SkinOfficeStyle1.Checked:= False;
+  SkinMSNStyle1.Checked:= True;
+  SkinWindowsStyle1.Checked:= False;
+  i:= TComponent(Sender).Tag;
+  SkinData1.LoadFromCollection(SkinStore1,i);
+end;
+
+procedure TFormMain.SkinOfficeStyle1Click(Sender: TObject);
+var i: Integer;
+begin
+  SkinOfficeStyle1.Checked:= True;
+  SkinMSNStyle1.Checked:= False;
+  SkinWindowsStyle1.Checked:= False;
+  i:= TComponent(Sender).Tag;
+  SkinData1.LoadFromCollection(SkinStore1,i);
+end;
+
+procedure TFormMain.SkinWindowsStyle1Click(Sender: TObject);
+var i: Integer;
+begin
+  SkinOfficeStyle1.Checked:= False;
+  SkinMSNStyle1.Checked:= False;
+  SkinWindowsStyle1.Checked:= True;
+  i:= TComponent(Sender).Tag;
+  SkinData1.LoadFromCollection(SkinStore1,i);
+end;
+
+procedure TFormMain.StatusBarDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect);
+var FRect: TRect; 
+begin
+  if Panel.Text= '连接服务:' then begin
+    Panel.Style:= psOwnerDraw;
+    StatusBar.Canvas.Brush.Color:=clBlack;
+    StatusBar.Canvas.Font.Color:= clGreen;
+    StatusBar.Canvas.FillRect(Rect);
+    StatusBar.Canvas.TextRect(Rect, Rect.Left, Rect.Top, Panel.Text);
+
+    FRect.Left:= Rect.Left + StatusBar.Canvas.TextWidth('连接服务:');
+    FRect.Top:= Rect.Top;
+    FRect.Right:= Rect.Right;
+    FRect.Bottom:= Rect.Bottom;
+    StatusBar.Canvas.Brush.Color:=clRed;
+    StatusBar.Canvas.FillRect(FRect);
+    StatusBar.Canvas.Font.Color:= clBlack;
+    StatusBar.Canvas.TextRect(FRect, FRect.Left, FRect.Top, '10.0.0.205');
   end;
 end;
 
