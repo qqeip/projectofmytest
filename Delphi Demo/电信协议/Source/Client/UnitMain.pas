@@ -412,7 +412,7 @@ end;
 procedure TFormMain.StatusBarDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel; const Rect: TRect);
 var FRect: TRect; 
 begin
-  if Panel.Text= '连接服务:' then begin
+  if Panel= StatusBar.Panels[2] then begin
     Panel.Style:= psOwnerDraw;
     StatusBar.Canvas.Brush.Color:=clBlack;
     StatusBar.Canvas.Font.Color:= clGreen;

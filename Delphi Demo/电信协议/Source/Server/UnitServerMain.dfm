@@ -123,6 +123,7 @@ object FormServerMain: TFormServerMain
           FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
           FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
         ParentFont = False
+        OnClick = Btn_BroadCastClick
       end
       object MsgInfo: TMemo
         Left = 0
