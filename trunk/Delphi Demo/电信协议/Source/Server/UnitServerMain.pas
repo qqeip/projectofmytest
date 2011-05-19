@@ -8,10 +8,6 @@ uses
   IdComponent, IdTCPServer;
 
 type
-  TCmd = record
-    command: integer;
-  end;
-
   TFormServerMain = class(TForm)
     Panel4: TPanel;
     Label2: TLabel;
@@ -33,6 +29,7 @@ type
     procedure IdTCPServerConnect(AThread: TIdPeerThread);
     procedure IdTCPServerDisconnect(AThread: TIdPeerThread);
     procedure IdTCPServerExecute(AThread: TIdPeerThread);
+    procedure Btn_BroadCastClick(Sender: TObject);
   private
     FCr :Trtlcriticalsection;
     { Private declarations }
@@ -80,8 +77,9 @@ begin
 end;
 
 procedure TFormServerMain.IdTCPServerConnect(AThread: TIdPeerThread);
+var FUserData: TUserData;
 begin
-//
+  FUserData.Thread:= AThread;
 end;
 
 procedure TFormServerMain.IdTCPServerDisconnect(AThread: TIdPeerThread);
@@ -101,10 +99,12 @@ begin
     case FCmd.command of
      90: begin
            AThread.Connection.ReadBuffer(FUserData, SizeOf(TUserData));
+           FUserData.IP:= AThread.Connection.Socket.Binding.PeerIP;
+           FUserData.ConnectTime:= Now;
            EnterCriticalSection(FCr); //加入临界区,避免多线程操作VCL控件
            try
              FListItem:= ListView.Items.Add;
-             FListItem.Caption:= AThread.Connection.Socket.Binding.PeerIP;//'10.0.0.205';//FNewUserData.IP;
+             FListItem.Caption:= FUserData.IP;//'10.0.0.205';//FNewUserData.IP;
              FListItem.SubItems.Add(IntToStr(FUserData.UserID));
              FListItem.SubItems.Add(FUserData.UserNo);
              FListItem.SubItems.Add(DateTimeToStr(FUserData.ConnectTime));
@@ -114,6 +114,20 @@ begin
          end;
     end;
   end;
+end;
+
+procedure TFormServerMain.Btn_BroadCastClick(Sender: TObject);
+var
+  FCmd: TCmd;
+  FUserData: TUserData;
+  FBroadMsg: TBroadMsg;
+  FThread: TIdPeerThread;
+begin
+  FCmd.Command:= 100; //100为广播消息
+  FBroadMsg.Msg:= MsgInfo.Lines.Text;
+  FThread:= FUserData.Thread;
+  FThread.Connection.WriteBuffer(FCmd, SizeOf(TCmd));
+  FThread.Connection.WriteBuffer(FBroadMsg, SizeOf(TBroadMsg));
 end;
 
 end.

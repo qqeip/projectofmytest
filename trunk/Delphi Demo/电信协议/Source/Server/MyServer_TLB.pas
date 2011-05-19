@@ -12,7 +12,7 @@ unit MyServer_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 2011-03-25 17:27:36 from Type Library described below.
+// File generated on 2011-03-31 17:29:18 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: C:\Documents and Settings\1\桌面\Delphi demo\电信协议\Source\Server\MyServer.tlb (1)
