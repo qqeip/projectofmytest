@@ -148,24 +148,27 @@ object FormFtpLoad: TFormFtpLoad
     Align = alClient
     Caption = #33719#21462#32467#26524
     TabOrder = 1
-    object ListBoxLog: TListBox
+    object ListViewLog: TListView
       Left = 2
       Top = 15
       Width = 676
       Height = 276
       Align = alClient
-      BiDiMode = bdLeftToRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ItemHeight = 13
-      ParentBiDiMode = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
+      Columns = <
+        item
+          Caption = #25991#20214#21517
+          Width = 260
+        end
+        item
+          Caption = #31867#22411
+          Width = 100
+        end
+        item
+          Caption = #23436#25104#26102#38388
+          Width = 200
+        end>
       TabOrder = 0
+      ViewStyle = vsReport
     end
   end
   object IdFTP: TIdFTP
