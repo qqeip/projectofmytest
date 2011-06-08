@@ -76,7 +76,7 @@ object FormMain: TFormMain
     Width = 761
     Height = 41
     ButtonHeight = 36
-    ButtonWidth = 55
+    ButtonWidth = 76
     Caption = 'ToolBar1'
     Images = ImageList1
     ShowCaptions = True
@@ -88,22 +88,36 @@ object FormMain: TFormMain
       ImageIndex = 7
       OnClick = ToolBtnParamConfigClick
     end
+    object ToolBtnFtp: TToolButton
+      Left = 76
+      Top = 2
+      Caption = 'FTP'#19978#20256#19979#36733
+      ImageIndex = 5
+      OnClick = ToolBtnFtpClick
+    end
+    object ToolButton2: TToolButton
+      Left = 152
+      Top = 2
+      Caption = 'Ping'#21629#20196#27979#35797
+      ImageIndex = 8
+      OnClick = ToolButton2Click
+    end
     object ToolButtonDllDemo: TToolButton
-      Left = 55
+      Left = 228
       Top = 2
       Caption = 'DllDemo'
       ImageIndex = 5
       OnClick = ToolButtonDllDemoClick
     end
     object ToolButton1: TToolButton
-      Left = 110
+      Left = 304
       Top = 2
       Caption = 'CeShi'
       ImageIndex = 5
       OnClick = ToolButton1Click
     end
     object ToolButton3: TToolButton
-      Left = 165
+      Left = 380
       Top = 2
       Width = 8
       Caption = 'ToolButton3'
@@ -111,21 +125,21 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object ToolButtonCloseNow: TToolButton
-      Left = 173
+      Left = 388
       Top = 2
       Caption = 'CloseNow'
       ImageIndex = 4
       OnClick = ToolButtonCloseNowClick
     end
     object ToolButtonCloseAll: TToolButton
-      Left = 228
+      Left = 464
       Top = 2
       Caption = 'CloseAll'
       ImageIndex = 3
       OnClick = ToolButtonCloseAllClick
     end
     object ToolButton7: TToolButton
-      Left = 283
+      Left = 540
       Top = 2
       Width = 8
       Caption = 'ToolButton7'
@@ -133,7 +147,7 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object ToolButtonExit: TToolButton
-      Left = 291
+      Left = 548
       Top = 2
       Caption = 'Exit'
       ImageIndex = 4

@@ -50,6 +50,8 @@ type
     MenuItem3: TMenuItem;
     Help2: TMenuItem;
     SkinStore1: TSkinStore;
+    ToolBtnFtp: TToolButton;
+    ToolButton2: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
@@ -71,6 +73,8 @@ type
     procedure SkinWindowsStyle1Click(Sender: TObject);
     procedure StatusBarDrawPanel(StatusBar: TStatusBar;
       Panel: TStatusPanel; const Rect: TRect);
+    procedure ToolBtnFtpClick(Sender: TObject);
+    procedure ToolButton2Click(Sender: TObject);
   private
     { Private declarations }
     FDllMgr: TPluginMgr;
@@ -197,34 +201,6 @@ begin
   TForm(TabSet.Tabs.Objects[NewTab]).Show;
 end;
 
-procedure TFormMain.ToolButtonExitClick(Sender: TObject);
-begin
-  close;
-end;
-
-procedure TFormMain.ToolButtonCloseNowClick(Sender: TObject);
-begin
-  DelTab(Self.MDIChildren[0]);
-  FDllMgr.FreePlugin(Self.MDIChildren[0]);
-  if TabSet.TabIndex>-1 then
-    TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
-  //用消息的方式关闭dll子窗体
-  //PostMessage(self.ActiveMDIChild.Handle, WM_MSGCLOSE, 1, 0);
-end;
-{var
-  i : integer;
-begin
-  for i := 0 to Self.MDIChildCount-1 do
-    if Self.MDIChildren[i].Caption = TabSet.Tabs.Strings[TabSet.TabIndex] then
-    begin
-      DelTab(Self.MDIChildren[i]);
-      FDllMgr.FreePlugin(Self.MDIChildren[i]);
-      Break;
-    end;
-  if TabSet.TabIndex>-1 then
-  TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
-end;}
-
 procedure TFormMain.NRestoreClick(Sender: TObject);
 var
   i:integer;
@@ -274,17 +250,6 @@ begin
   end;
 end;
 
-procedure TFormMain.ToolButtonCloseAllClick(Sender: TObject);
-var
-  i : integer;
-begin
-  for i := Self.MDIChildCount-1 downto 0 do
-  begin
-    DelTab(Self.MDIChildren[i]);
-    FDllMgr.FreePlugin(Self.MDIChildren[i]);
-  end;
-end;
-
 procedure DllCloseRecall(aForm: TForm);
 begin
   FormMain.DllClose(aForm);
@@ -315,45 +280,6 @@ begin
     @CloseForm := GetProcAddress(FDllHandle, 'CloseForm');
     if @CloseForm = nil then exit;
     CloseForm;
-  end;
-end;
-
-procedure TFormMain.ToolBtnParamConfigClick(Sender: TObject);
-var
-  FTempForm: TForm;
-begin
-  try
-    FTempForm:= FDllMgr.LoadPlugin('Dll\ParamConfig.dll');
-    FTempForm.Show;
-    AddToTab(FTempForm);
-  except
-    FTempForm.Free;
-  end;
-end;
-
-procedure TFormMain.ToolButtonDllDemoClick(Sender: TObject);
-var
-  FTempForm: TForm;
-begin
-  try
-    FTempForm:= FDllMgr.LoadPlugin('Dll\DllDemo.dll');
-    FTempForm.Show;
-    AddToTab(FTempForm);
-  except
-    FTempForm.Free;
-  end;
-end;
-
-procedure TFormMain.ToolButton1Click(Sender: TObject);
-var
-  FTempForm: TForm;
-begin
-  try
-    FTempForm:= FDllMgr.LoadPlugin('Dll\DllCeShi.dll');
-    FTempForm.Show;
-    AddToTab(FTempForm);
-  except
-    FTempForm.Free;
   end;
 end;
 
@@ -428,6 +354,110 @@ begin
     StatusBar.Canvas.Font.Color:= clBlack;
     StatusBar.Canvas.TextRect(FRect, FRect.Left, FRect.Top, '10.0.0.205');
   end;
+end;
+
+procedure TFormMain.ToolBtnParamConfigClick(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\ParamConfig.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolBtnFtpClick(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\FtpLoad.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolButton2Click(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\GetPingResult.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolButtonDllDemoClick(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\DllDemo.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolButton1Click(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\DllCeShi.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.ToolButtonCloseNowClick(Sender: TObject);
+begin
+  DelTab(Self.MDIChildren[0]);
+  FDllMgr.FreePlugin(Self.MDIChildren[0]);
+  if TabSet.TabIndex>-1 then
+    TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+  //用消息的方式关闭dll子窗体
+  //PostMessage(self.ActiveMDIChild.Handle, WM_MSGCLOSE, 1, 0);
+end;
+{var
+  i : integer;
+begin
+  for i := 0 to Self.MDIChildCount-1 do
+    if Self.MDIChildren[i].Caption = TabSet.Tabs.Strings[TabSet.TabIndex] then
+    begin
+      DelTab(Self.MDIChildren[i]);
+      FDllMgr.FreePlugin(Self.MDIChildren[i]);
+      Break;
+    end;
+  if TabSet.TabIndex>-1 then
+  TForm(TabSet.Tabs.Objects[TabSet.TabIndex]).Show;
+end;}
+
+procedure TFormMain.ToolButtonCloseAllClick(Sender: TObject);
+var
+  i : integer;
+begin
+  for i := Self.MDIChildCount-1 downto 0 do
+  begin
+    DelTab(Self.MDIChildren[i]);
+    FDllMgr.FreePlugin(Self.MDIChildren[i]);
+  end;
+end;
+
+procedure TFormMain.ToolButtonExitClick(Sender: TObject);
+begin
+  close;
 end;
 
 end.
