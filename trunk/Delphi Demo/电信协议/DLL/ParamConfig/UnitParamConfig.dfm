@@ -1,6 +1,6 @@
 object FormParamConfig: TFormParamConfig
-  Left = 316
-  Top = 203
+  Left = 318
+  Top = 108
   Width = 706
   Height = 485
   Caption = #37197#32622#20449#24687
