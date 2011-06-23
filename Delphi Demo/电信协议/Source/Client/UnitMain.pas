@@ -24,14 +24,12 @@ type
     ImageList1: TImageList;
     ToolBar1: TToolBar;
     ToolBtnParamConfig: TToolButton;
-    ToolButtonDllDemo: TToolButton;
     ToolButton3: TToolButton;
     ToolButtonCloseNow: TToolButton;
     ToolButtonCloseAll: TToolButton;
     ToolButtonExit: TToolButton;
     ToolButton7: TToolButton;
     SkinData1: TSkinData;
-    ToolButton1: TToolButton;
     IdTCPClient: TIdTCPClient;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
@@ -52,12 +50,12 @@ type
     SkinStore1: TSkinStore;
     ToolBtnFtp: TToolButton;
     ToolButton2: TToolButton;
+    btn1: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ToolBtnParamConfigClick(Sender: TObject);
-    procedure ToolButtonDllDemoClick(Sender: TObject);
     procedure ToolButtonExitClick(Sender: TObject);
     procedure TabSetChange(Sender: TObject; NewTab: Integer;
       var AllowChange: Boolean);
@@ -67,7 +65,6 @@ type
     procedure NMinClick(Sender: TObject);
     procedure NCloseClick(Sender: TObject);
     procedure ToolButtonCloseAllClick(Sender: TObject);
-    procedure ToolButton1Click(Sender: TObject);
     procedure SkinMSNStyle1Click(Sender: TObject);
     procedure SkinOfficeStyle1Click(Sender: TObject);
     procedure SkinWindowsStyle1Click(Sender: TObject);
@@ -75,6 +72,7 @@ type
       Panel: TStatusPanel; const Rect: TRect);
     procedure ToolBtnFtpClick(Sender: TObject);
     procedure ToolButton2Click(Sender: TObject);
+    procedure btn1Click(Sender: TObject);
   private
     { Private declarations }
     FDllMgr: TPluginMgr;
@@ -395,25 +393,12 @@ begin
   end;
 end;
 
-procedure TFormMain.ToolButtonDllDemoClick(Sender: TObject);
+procedure TFormMain.btn1Click(Sender: TObject);
 var
   FTempForm: TForm;
 begin
   try
-    FTempForm:= FDllMgr.LoadPlugin('Dll\DllDemo.dll');
-    FTempForm.Show;
-    AddToTab(FTempForm);
-  except
-    FTempForm.Free;
-  end;
-end;
-
-procedure TFormMain.ToolButton1Click(Sender: TObject);
-var
-  FTempForm: TForm;
-begin
-  try
-    FTempForm:= FDllMgr.LoadPlugin('Dll\DllCeShi.dll');
+    FTempForm:= FDllMgr.LoadPlugin('Dll\TcpIPFileTransmission.dll');
     FTempForm.Show;
     AddToTab(FTempForm);
   except

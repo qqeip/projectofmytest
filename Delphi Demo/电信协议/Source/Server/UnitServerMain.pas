@@ -92,9 +92,56 @@ var
   FCmd: TCmd;
   FUserData: TUserData;
   FListItem: TListItem;
+  //Tcp下载用的变量
+  RecevFileName:string;
+  iFileHandle:integer;
+  iFileLen,cnt:integer;
+  buf:array[0..4096] of byte;
 begin
   if ((not AThread.Terminated) and (AThread.Connection.Connected)) then
   begin
+    //FTP下载
+    with AThread.Connection do
+    begin
+      Try
+        RecevFileName:=AThread.Connection.ReadLn;//获取文件全路径
+        if FileExists(RecevFileName) then
+        begin
+          Try
+            WriteLn(RecevFileName);//发送全路径
+            iFileHandle:=FileOpen(RecevFileName,fmOpenRead); //得到此文件大小
+            iFileLen:=FileSeek(iFileHandle,0,2);
+            FileSeek(iFileHandle,0,0);
+            AThread.Connection.WriteInteger(iFileLen,True);////hjh 20071009
+
+            while iFileLen >0 do
+            begin
+              if IFileLen > 4096 then
+              begin
+                cnt:=FileRead(iFileHandle,buf,4096);
+                AThread.Connection.WriteBuffer(buf,cnt,True);/////hjh20071009
+                iFileLen:=iFileLen-cnt;
+              end
+              else
+              begin
+                cnt:=FileRead(iFileHandle,buf,iFileLen);
+                AThread.Connection.WriteBuffer(buf,cnt,True);/////hjh20071009
+                iFileLen:=iFileLen-cnt;
+              end;
+            end;
+          Finally
+            FileClose(iFileHandle);
+          end;
+        end
+        else
+        begin
+          WriteLn('文件不存在');
+        end;
+      Finally
+        Disconnect;//断开连接
+      end;
+    end;
+    //消息通知 登陆信息
     AThread.Connection.ReadBuffer(FCmd, SizeOf(TCmd));
     case FCmd.command of
      90: begin
