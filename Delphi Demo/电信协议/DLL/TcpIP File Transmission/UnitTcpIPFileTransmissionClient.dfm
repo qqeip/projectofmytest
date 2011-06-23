@@ -1,8 +1,8 @@
 object FormTcpIPFileTransmissionClint: TFormTcpIPFileTransmissionClint
   Left = 268
   Top = 145
-  Width = 363
-  Height = 250
+  Width = 366
+  Height = 280
   Caption = 'FormTcpIPFileTransmissionClint'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -80,6 +80,21 @@ object FormTcpIPFileTransmissionClint: TFormTcpIPFileTransmissionClint
     AutoSize = False
     Caption = 'SerFileName:'
   end
+  object Label1: TLabel
+    Left = 0
+    Top = 216
+    Width = 358
+    Height = 13
+    Align = alBottom
+    AutoSize = False
+    Caption = 'Label1'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -13
+    Font.Name = #23435#20307
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object BtnTransmission: TButton
     Left = 164
     Top = 184
@@ -144,6 +159,7 @@ object FormTcpIPFileTransmissionClint: TFormTcpIPFileTransmissionClint
     Height = 25
     Caption = 'Close'
     TabOrder = 7
+    OnClick = btnBtn_CloseClick
   end
   object Edt_SerFileName: TEdit
     Left = 96
@@ -152,6 +168,14 @@ object FormTcpIPFileTransmissionClint: TFormTcpIPFileTransmissionClint
     Height = 21
     TabOrder = 8
     Text = '2000.jpg'
+  end
+  object pb1: TProgressBar
+    Left = 0
+    Top = 229
+    Width = 358
+    Height = 17
+    Align = alBottom
+    TabOrder = 9
   end
   object IdTCPClientDowFiles: TIdTCPClient
     MaxLineAction = maException

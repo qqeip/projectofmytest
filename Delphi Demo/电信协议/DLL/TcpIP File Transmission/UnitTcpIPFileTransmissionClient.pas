@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
-  StdCtrls, Buttons, FileCtrl;
+  StdCtrls, Buttons, FileCtrl, ComCtrls;
 
 type
   TFormTcpIPFileTransmissionClint = class(TForm)
@@ -27,9 +27,12 @@ type
     btnBtn_Close: TButton;
     Edt_SerFileName: TEdit;
     IdTCPClientDowFiles: TIdTCPClient;
+    Label1: TLabel;
+    pb1: TProgressBar;
     procedure BtnTransmissionClick(Sender: TObject);
     procedure btnBtn_CurFilePathClick(Sender: TObject);
     procedure btnBtn_SerFilePathClick(Sender: TObject);
+    procedure btnBtn_CloseClick(Sender: TObject);
   private
     Serverip: string;
     function Act_DownFiles(CurFilePath, SerFilePath, CurFileName,
@@ -44,7 +47,7 @@ var
 
 implementation
 
-uses UnitProgress;
+uses UnitProgress, UnitDllPublic;
 
 {$R *.dfm}
 
@@ -90,9 +93,8 @@ begin
 
           if ShowFlag then
           begin
-            FrmProgress.Show;
-            FrmProgress.PB1.Position:=0;
-            FrmProgress.PB1.Max := iFileSize div 100 ;
+            PB1.Position:=0;
+            PB1.Max := iFileSize div 100 ;
           end;
 
           While iFileSize > 4096 do
@@ -104,8 +106,8 @@ begin
             Application.ProcessMessages;
             if ShowFlag then
             begin
-              FrmProgress.Label1.Caption:='正在下载：'+SerFileName;
-              FrmProgress.PB1.Position:= FrmProgress.PB1.Position +(4096 div 100) ;
+//              Label1.Caption:='正在下载：'+SerFileName;
+              PB1.Position:= PB1.Position +(4096 div 100) ;
             end;
           end;  
 
@@ -146,7 +148,7 @@ var
   TempStr: string;
 begin
   if SelectDirectory('请选择目录','',TempStr) then
-    Edt_SerFilePath.Text:= TempStr;
+    Edt_CurFilePath.Text:= TempStr;
 end;
 
 procedure TFormTcpIPFileTransmissionClint.btnBtn_SerFilePathClick(Sender: TObject);
@@ -155,6 +157,12 @@ var
 begin
   if SelectDirectory('请选择目录','',TempStr) then
     Edt_SerFilePath.Text:= TempStr;
+end;
+
+procedure TFormTcpIPFileTransmissionClint.btnBtn_CloseClick(
+  Sender: TObject);
+begin
+  FDllCloseRecall(FormTcpIPFileTransmissionClint);
 end;
 
 end.

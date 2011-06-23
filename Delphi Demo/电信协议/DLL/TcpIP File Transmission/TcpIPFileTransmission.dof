@@ -95,13 +95,13 @@ UnitOutputDir=..\..\Dcu
 PackageDLLOutputDir=
 PackageDCPOutputDir=
 SearchPath=
-Packages=vcl;rtl
+Packages=vcl;rtl;vcl
 Conditionals=
 DebugSourceDirs=
 UsePackages=1
 [Parameters]
 RunParams=
-HostApplication=
+HostApplication=G:\pmj\Delphi demo\电信协议\Bin\MyDllFramWork.exe
 Launcher=
 UseLauncher=0
 DebugCWD=
