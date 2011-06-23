@@ -27,6 +27,7 @@ type
     Btn_DownLoad: TButton;
     OpenDialog: TOpenDialog;
     ListViewLog: TListView;
+    Btn_ChangeFileName: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -36,6 +37,7 @@ type
     procedure Btn_SaveClick(Sender: TObject);
     procedure Btn_DownLoadClick(Sender: TObject);
     procedure Btn_UpLoadClick(Sender: TObject);
+    procedure Btn_ChangeFileNameClick(Sender: TObject);
   private
     procedure SaveLoadLog;
     { Private declarations }
@@ -187,6 +189,31 @@ begin
     writeln(filevar,str);
   end;
   closefile(filevar);
+end;
+
+{ 如 把 "文本文档(1).txt" 改为 "文本文档(001).txt" }
+procedure TFormFtpLoad.Btn_ChangeFileNameClick(Sender: TObject);
+var
+  F: TSearchRec;
+  MyStr, MyDir, MyNum, MyNewNum: string;
+  I, MyBigin,MyEnd:Integer;
+begin
+  MyDir := 'D:\Test\';
+  I:= FindFirst(MyDir + '*.*',faAnyFile,F);
+  while I=0 do
+  begin
+    if (F.Name<>'.') and (F.Name<>'..') then
+    begin
+      if F.attr and faDirectory <> faDirectory then    //是文件
+      begin
+        MyStr := F.Name;
+        MyBigin := Pos('(',MyStr);        MyEnd := Pos(')',MyStr);        MyNum := Copy(MyStr,MyBigin + 1,MyEnd-MyBigin-1);
+        if (Length(MyNum) < 3) and (StrToIntDef(MyNum,-1) >= 0) then
+        begin          MyNewNum := FormatFloat('000',StrToInt(MyNum));          MyStr := StringReplace(MyStr,MyNum,MyNewNum,[rfReplaceAll]);          RenameFile(MyDir + f.Name,MyDir + MyStr);        end;      end      else      begin        showmessage('Directory');      end;    end;    I:= FindNext(F);
+  end;
+  FindClose(F);
+//  if F.FindHandle > 0 then
+//    SysUtils.FindClose(F);
 end;
 
 end.

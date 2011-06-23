@@ -87,7 +87,7 @@ object FormFtpLoad: TFormFtpLoad
       Text = 'pmj888666'
     end
     object Btn_TestLink: TButton
-      Left = 374
+      Left = 333
       Top = 20
       Width = 75
       Height = 25
@@ -96,7 +96,7 @@ object FormFtpLoad: TFormFtpLoad
       OnClick = Btn_TestLinkClick
     end
     object Btn_Save: TButton
-      Left = 374
+      Left = 333
       Top = 53
       Width = 75
       Height = 25
@@ -113,7 +113,7 @@ object FormFtpLoad: TFormFtpLoad
       Text = '21'
     end
     object Btn_Close: TButton
-      Left = 374
+      Left = 333
       Top = 86
       Width = 75
       Height = 25
@@ -122,7 +122,7 @@ object FormFtpLoad: TFormFtpLoad
       OnClick = Btn_CloseClick
     end
     object Btn_UpLoad: TButton
-      Left = 472
+      Left = 431
       Top = 20
       Width = 75
       Height = 25
@@ -131,13 +131,25 @@ object FormFtpLoad: TFormFtpLoad
       OnClick = Btn_UpLoadClick
     end
     object Btn_DownLoad: TButton
-      Left = 472
-      Top = 86
+      Left = 431
+      Top = 53
       Width = 75
       Height = 25
       Caption = #19979#36733
       TabOrder = 8
       OnClick = Btn_DownLoadClick
+    end
+    object Btn_ChangeFileName: TButton
+      Left = 431
+      Top = 86
+      Width = 75
+      Height = 25
+      Hint = #26377#35268#24459#30340#25991#20214#25913#21517
+      Caption = #25991#20214#25913#21517
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 9
+      OnClick = Btn_ChangeFileNameClick
     end
   end
   object GroupBox7: TGroupBox
