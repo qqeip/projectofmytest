@@ -51,6 +51,7 @@ type
     ToolBtnFtp: TToolButton;
     ToolButton2: TToolButton;
     btn1: TToolButton;
+    btn2: TToolButton;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
@@ -73,6 +74,7 @@ type
     procedure ToolBtnFtpClick(Sender: TObject);
     procedure ToolButton2Click(Sender: TObject);
     procedure btn1Click(Sender: TObject);
+    procedure btn2Click(Sender: TObject);
   private
     { Private declarations }
     FDllMgr: TPluginMgr;
@@ -135,7 +137,7 @@ begin
   end;
   FDllCloseRecall:= @DllCloseRecall;
 
-  IdTCPClient.Host:= '10.0.0.205';
+  IdTCPClient.Host:= '127.0.0.1';
   IdTCPClient.Port:= 991;
   IdTCPClient.Connect;
   if not IdTCPClient.Connected then
@@ -156,7 +158,7 @@ end;
 function TFormMain.ConnectServer: Boolean;
 begin
   Result:= False;
-  DMLocal.SocketConnection.Address:='10.0.0.205';
+  DMLocal.SocketConnection.Address:='127.0.0.1';
   DMLocal.SocketConnection.Port:=990;
   try
     DMLocal.SocketConnection.Open;
@@ -350,7 +352,7 @@ begin
     StatusBar.Canvas.Brush.Color:=clRed;
     StatusBar.Canvas.FillRect(FRect);
     StatusBar.Canvas.Font.Color:= clBlack;
-    StatusBar.Canvas.TextRect(FRect, FRect.Left, FRect.Top, '10.0.0.205');
+    StatusBar.Canvas.TextRect(FRect, FRect.Left, FRect.Top, '127.0.0.1');
   end;
 end;
 
@@ -399,6 +401,19 @@ var
 begin
   try
     FTempForm:= FDllMgr.LoadPlugin('Dll\TcpIPFileTransmission.dll');
+    FTempForm.Show;
+    AddToTab(FTempForm);
+  except
+    FTempForm.Free;
+  end;
+end;
+
+procedure TFormMain.btn2Click(Sender: TObject);
+var
+  FTempForm: TForm;
+begin
+  try
+    FTempForm:= FDllMgr.LoadPlugin('Dll\ProcessMgr.dll');
     FTempForm.Show;
     AddToTab(FTempForm);
   except
