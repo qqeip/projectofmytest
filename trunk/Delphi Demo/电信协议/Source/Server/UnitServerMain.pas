@@ -50,7 +50,7 @@ uses UnitCommon;
 procedure TFormServerMain.FormCreate(Sender: TObject);
 begin
   InitializeCriticalSection(FCr);
-  IdTCPServer.Bindings.Add.IP:= '10.0.0.205';
+  IdTCPServer.Bindings.Add.IP:= '127.0.0.1';
   IdTCPServer.Bindings.Add.Port:= 991;
   IdTCPServer.Active:= True;
   if not IdTCPServer.Active then
