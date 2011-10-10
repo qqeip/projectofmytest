@@ -109,8 +109,15 @@ object FormMain: TFormMain
       ImageIndex = 5
       OnClick = btn1Click
     end
-    object ToolButton3: TToolButton
+    object btn2: TToolButton
       Left = 388
+      Top = 2
+      Caption = #36827#31243#31649#29702
+      ImageIndex = 5
+      OnClick = btn2Click
+    end
+    object ToolButton3: TToolButton
+      Left = 485
       Top = 2
       Width = 8
       Caption = 'ToolButton3'
@@ -118,21 +125,21 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object ToolButtonCloseNow: TToolButton
-      Left = 396
+      Left = 493
       Top = 2
       Caption = 'CloseNow'
       ImageIndex = 4
       OnClick = ToolButtonCloseNowClick
     end
     object ToolButtonCloseAll: TToolButton
-      Left = 493
+      Left = 590
       Top = 2
       Caption = 'CloseAll'
       ImageIndex = 3
       OnClick = ToolButtonCloseAllClick
     end
     object ToolButton7: TToolButton
-      Left = 590
+      Left = 687
       Top = 2
       Width = 8
       Caption = 'ToolButton7'
@@ -140,7 +147,7 @@ object FormMain: TFormMain
       Style = tbsSeparator
     end
     object ToolButtonExit: TToolButton
-      Left = 598
+      Left = 695
       Top = 2
       Caption = 'Exit'
       ImageIndex = 4
@@ -838,7 +845,7 @@ object FormMain: TFormMain
       'trmtoolbaraddintools=panel')
     SkinStore = '(Good)'
     SkinFormtype = sfMainform
-    Version = '4.42.12.06'
+    Version = '4.04.04.11'
     MenuUpdate = True
     MenuMerge = False
     Left = 384
