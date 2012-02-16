@@ -1,0 +1,20 @@
+var
+  LastTimeTransfer:Int64;
+  LSourceStream:TFileStream;
+然后再：
+if Form1.OpenDialog1.Execute then //打开对话窗选文件
+  begin
+  LastTimeTransfer := Form1.FTP.Size(ExtractFileName(Form1.OpenDialog1.FileName));//从已连接的服务器上直接取下该文件的长度；
+  if LastTimeTransfer=-1 then //如果为-1表示没有上传过，则新传一个。非APPE方式; 
+    begin
+      Form1.FTP.Put(Form1.OpenDialog1.FileName, ExtractFileName(Form1.OpenDialog1.FileName) , False); //以文件方式上传，非文件流方式。直接覆盖式上传
+    end
+  else //否则
+    begin
+      LSourceStream := TFileStream.Create(ExtractFileName(Form1.OpenDialog1.FileName), fmOpenRead or fmShareDenyNone); //创建文件流；
+      LSourceStream.Seek(LastTimeTransfer, 0);//将文件流指向最后一次上传的位置；
+      Form1.FTP.Put(LSourceStream, ExtractFileName(Form1.OpenDialog1.FileName) , True); //以文件流方式 APPE （追加续传）
+      end;
+end;
+
+多次断掉，多次续传后，下载回来。用MD5码工具对照，两个文件MD5码完全一样。续传上传成功。
